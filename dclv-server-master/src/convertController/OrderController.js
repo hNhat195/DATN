@@ -17,34 +17,57 @@ async function getNextSequenceValue(sequenceName) {
 
 module.exports = {
   list: async (req, res) => {
-    Order.find()
-      .populate({
-        path: "products",
-        populate: {
-          path: "colorCode",
-          //   populate: {
-          //     path: "typeId",
-          //     select: "name -_id",
-          //   },
-          select: "colorCode typeId name -_id",
-        },
-        select: "colorCode length shippedLength -_id",
-      })
-      .populate({
-        path: "detailBill",
-        populate: [
-          { path: "salesmanID", select: "name -_id" },
-          { path: "clientID", select: "name -_id" },
-        ],
-      })
-      .populate({
-        path: "clientID",
-        select: "name -_id",
-      })
-      .exec(function (err, result) {
-        if (err) res.json(err);
-        else res.json(result);
-      });
+    console.count("listttttttttttttttttttttttttttttttttttttttttttt");
+    // Order.find()
+    //   .populate({
+    //     path: "products",
+    //     populate: {
+    //       path: "colorCode",
+    //       //   populate: {
+    //       //     path: "typeId",
+    //       //     select: "name -_id",
+    //       //   },
+    //       select: "colorCode typeId name -_id",
+    //     },
+    //     select: "colorCode length shippedLength -_id",
+    //   })
+    //   .populate({
+    //     path: "detailBill",
+    //     populate: [
+    //       { path: "salesmanID", select: "name -_id" },
+    //       { path: "clientID", select: "name -_id" },
+    //     ],
+    //   })
+    //   .populate({
+    //     path: "clientID",
+    //     select: "name -_id",
+    //   })
+    //   .exec(function (err, result) {
+    //     if (err) res.json(err);
+    //     else {
+    //       result.push({
+    //         note: "",
+    //         receiverName: "",
+    //         receiverPhone: "",
+    //         deposit: 0,
+    //         clientID: null,
+    //         detailBill: [],
+    //         products: [],
+    //         _id: "63ea382f94984c7febee9891q",
+    //         orderId: 2,
+    //         receiverAddress: "1234",
+    //         orderStatus: [
+    //           {
+    //             _id: "63ea8c7e4ca2bcc2b7a680331",
+    //             name: "pending",
+    //             date: "1999-12-31T17:00:00.000Z",
+    //             reason: "123",
+    //           },
+    //         ],
+    //       });
+    //       res.json(result);
+    //     }
+    //   });
   },
   create: async (req, res) => {
     try {

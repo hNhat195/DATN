@@ -43,7 +43,29 @@ module.exports = {
       })
       .exec(function (err, result) {
         if (err) res.json(err);
-        else res.json(result);
+        else {
+          result.push({
+            note: "",
+            receiverName: "",
+            receiverPhone: "",
+            deposit: 0,
+            clientID: null,
+            detailBill: [],
+            products: [],
+            _id: "63ea382f94984c7febee9891q",
+            orderId: 2,
+            receiverAddress: "1234",
+            orderStatus: [
+              {
+                _id: "63ea8c7e4ca2bcc2b7a680331",
+                name: "pending",
+                date: "1999-12-31T17:00:00.000Z",
+                reason: "123",
+              },
+            ],
+          });
+          res.json(result);
+        }
       });
   },
   create: async (req, res) => {
@@ -248,13 +270,13 @@ module.exports = {
           },
         },
       ]);
-      console.log('depositBillTotal', depositBillTotal);
+      console.log("depositBillTotal", depositBillTotal);
       let resultBill;
       if (depositBillTotal?.length === 0) resultBill = 0;
       else {
-        depositBillTotal.map((item) => resultBill = item.depositBill);
+        depositBillTotal.map((item) => (resultBill = item.depositBill));
       }
-      console.log('resultBill', resultBill);
+      console.log("resultBill", resultBill);
       const depositOrderTotal = await Order.aggregate([
         { $project: { _id: 1, orderTime: 1, deposit: 1 } },
         { $addFields: { month: { $month: "$orderTime" } } },
@@ -268,16 +290,16 @@ module.exports = {
           },
         },
       ]);
-      console.log('depositOrderTotal', depositOrderTotal);
+      console.log("depositOrderTotal", depositOrderTotal);
       let resultOrder;
       if (depositOrderTotal?.length === 0) resultOrder = 0;
       else {
-        depositOrderTotal.map((item) => resultOrder = item.totalDeposit);
+        depositOrderTotal.map((item) => (resultOrder = item.totalDeposit));
       }
-      console.log('resultOrder', resultOrder);
+      console.log("resultOrder", resultOrder);
       let result;
       result = resultBill + resultOrder;
-      if (result === 0) result = '0';
+      if (result === 0) result = "0";
       console.log("Get Total Deposit successfully");
       console.log(result);
       res.status(200).json(result);
@@ -314,9 +336,9 @@ module.exports = {
       console.log("Get Total Order By Month successfully");
       console.log(resultTotalOrder);
       let result;
-      if (resultTotalOrder?.length === 0) result = '0';
+      if (resultTotalOrder?.length === 0) result = "0";
       else {
-        resultTotalOrder.map((item) => result = item.monthlyorder);
+        resultTotalOrder.map((item) => (result = item.monthlyorder));
       }
       console.log(result);
       res.status(200).json(result);

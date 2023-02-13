@@ -114,11 +114,12 @@ export default function SignIn() {
     e.preventDefault();
     try {
       const response = await staffApi.login(formState.values);
+      console.log("what the hell is this", response);
       localStorage.setItem("user", JSON.stringify(response));
       localStorage.setItem("access_token", response.access_token);
       history.push("/dashboard");
     } catch (error) {
-      console.log(error);
+      console.log("wtffffffffffffffffffffffffffffffff", error);
     }
   };
 

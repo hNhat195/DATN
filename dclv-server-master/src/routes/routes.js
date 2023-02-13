@@ -77,9 +77,10 @@ const {
 } = require("../controller/CustomerController");
 const {
   createNewStaff,
+  loginstaff,
+  // updateInfo,
   listStaff,
   infoStaffById,
-  loginstaff,
 } = require("../controller/StaffController");
 
 //for customer
@@ -144,5 +145,7 @@ router.get("/api/getfabricwarehouse", getFabricTypeWarehouse);
 router.get("/api/product/list-type", getFullListFabricType);
 router.get("/api/product/colorcode", getListColorcode);
 /*------------------------*/
+
+router.get("/api/user/admin/liststaff", listStaff);
 
 module.exports = router;
