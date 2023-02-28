@@ -7,9 +7,9 @@ import StaffHeader from "./components/StaffHeader";
 import staffApi from "../../api/staffApi";
 
 const useStyles = makeStyles((theme) => ({
-  // staffList: {
-  //   marginTop: "10px",
-  // }
+  staffList: {
+    marginTop: "10px",
+  },
 }));
 
 function StaffPage() {
@@ -22,7 +22,8 @@ function StaffPage() {
     const fetchStaff = async () => {
       try {
         const response = await staffApi.getAll();
-        const data = response.filter((i) => filter.includes(i.role));
+        // const data = response.filter((i) => filter.includes(i.role));
+        const data = response;
         console.log({ data });
         setStaff(data);
       } catch (error) {
@@ -33,13 +34,15 @@ function StaffPage() {
   }, [filter, refresh]);
   return (
     <div className={classes.root}>
-      <FilterBarStaff
+      {/* <FilterBarStaff
         filter={filter}
         setFilter={setFilter}
         setRefresh={setRefresh}
-      />
+      /> */}
       <StaffHeader />
+      {"fuckkkkkkkkkkkkkkkkkkkk" + staff[0]}
       {staff && <StaffList className={classes.staffList} staff={staff} />}
+      <h1>"staffffffffffffffffffffffffffffffffff"</h1>
     </div>
   );
 }

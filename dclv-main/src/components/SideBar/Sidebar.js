@@ -11,7 +11,7 @@ import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles((theme) => ({
   sidebarBg: {
-    backgroundColor: "#000040",
+    backgroundColor: "#344966",
   },
   head: {
     display: "flex",
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   titleLogo: {
     color: "white",
-    marginLeft: "10px",
+    // marginLeft: "10px",
   },
 }));
 
@@ -54,14 +54,14 @@ function Sidebar(props) {
       <div className={classes.head}>
         <Link href="/">
           <Box className={classes.logo}>
-            <img
+            {/* <img
               src={process.env.PUBLIC_URL + "/assets/logobkfabric.png"}
               alt="logo"
               width="50"
               height="50"
-            />
+            /> */}
             <Typography variant="h5" className={classes.titleLogo}>
-              BK Fabric
+              Fabric
             </Typography>
           </Box>
         </Link>
