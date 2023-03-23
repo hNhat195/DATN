@@ -88,7 +88,7 @@ router.post("/api/register", createNewCustomer);
 router.post("/api/customer/login", login);
 
 //for Staff
-router.post("/api/user/staff/login", loginstaff);
+router.post("/api/staff/login", loginstaff);
 router.post("/api/createstaff", createNewStaff);
 // router.put("/updatePassword/:id", updatePassword);
 
