@@ -73,7 +73,7 @@ export default function OrderCreatePage() {
   const [fabricName, setFabricName] = useState("");
   const [fabricMaterial, setFabricMaterial] = useState("");
   const [fabricColor, setFabricColor] = useState("");
-  const [fabricPrice, setFabricPrice] = useState("");
+  const [fabricLength, setFabricLength] = useState("");
   useEffect(() => {
     let mounted = true;
     const fetchOrderDetail = async () => {
@@ -96,11 +96,37 @@ export default function OrderCreatePage() {
     history.push(`/order`);
   };
 
+  const postOrder = async (postData) => {
+    // const response = await orderApi.getAll(1, 100);
+    // if (mounted && response.length > 0) {
+    //   if (filter !== "")
+    //     setOrderList(
+    //       response.filter(
+    //         (item) =>
+    //           item.orderStatus[item.orderStatus.length - 1].name === filter
+    //       )
+    //     );
+    //   else setOrderList(response);
+    // }
+    const response = await orderApi.create(postData);
+    console.log(response)
+  };
+
   const handleSubmit = (event) => {
     console.log("Name: ", fabricName);
     console.log("Material: ", fabricMaterial);
     console.log("Color: ", fabricColor);
-    console.log("Price: ", fabricPrice);
+    console.log("Length: ", fabricLength);
+    let postData = {
+      note: "front end call api",
+      receiverName: "Front end",
+      receiverPhone: "094444",
+      deposit: 10,
+      clientID: null,
+      products: [],
+      receiverAddress: "front end test",
+    };
+    postOrder(postData)
     event.preventDefault();
   };
 
@@ -118,7 +144,7 @@ export default function OrderCreatePage() {
   };
   const handlePrice = () => {
     let form = new FormData(document.getElementById("order-creation"));
-    setFabricPrice(form.get("fabric-price"));
+    setFabricLength(form.get("fabric-length"));
   };
 
   return (
@@ -179,11 +205,11 @@ export default function OrderCreatePage() {
                 <Grid item xs={12}>
                   <TextField
                     required
-                    id="fabric-price"
-                    name="fabric-price"
-                    label="Price"
+                    id="fabric-length"
+                    name="fabric-length"
+                    label="Length"
                     fullWidth
-                    autoComplete="fabric price"
+                    autoComplete="fabric length"
                     variant="standard"
                     onChange={handlePrice}
                   />
