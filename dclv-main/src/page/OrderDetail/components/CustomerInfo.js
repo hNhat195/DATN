@@ -74,12 +74,12 @@ export default function CustomerInfo(props) {
                   {console.log(classes)} */}
                   <Typography
                     component="p"
-                    className={clsx(classes.infoTable, classes.name)}
+                    className={`${classes?.infoTable} ${classes?.name}`}
                   >
-                    {props.customer !== undefined ? props?.customer?.name : ""}
+                    {props.customer?.name || ""}
                   </Typography>
                   <Typography variant="subtitle1">
-                    {props.customer !== undefined ? props.customer?.address : ""}
+                    {props.customer?.address || ""}
                   </Typography>
                   {/* <Typography variant="subtitle1">
                     Đông Hòa - Dĩ An - Bình Dương
@@ -92,7 +92,7 @@ export default function CustomerInfo(props) {
                 </td>
                 <td>
                   <Typography variant="subtitle1">
-                    {props.customer !== undefined ? props.customer?.email : ""}
+                    {props.customer?.email || ""}
                   </Typography>
                 </td>
               </tr>
@@ -102,7 +102,7 @@ export default function CustomerInfo(props) {
                 </td>
                 <td>
                   <Typography variant="subtitle1">
-                    {props.customer !== undefined ? props.customer?.phone : ""}
+                    {props.customer?.phone || ""}
                   </Typography>
                 </td>
               </tr>

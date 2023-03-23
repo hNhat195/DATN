@@ -54,12 +54,12 @@ const useStyles = makeStyles({
 export default function OrderInfo(props) {
   const classes = useStyles();
 
-  let totalLength = props.products.reduce(
-    (totalLength, item) => totalLength + item.length,
+  let totalLength = props.products?.reduce(
+    (totalLength, item) => totalLength + (item.length || 0),
     0
   );
 
-  let totalShippedLength = props.products.reduce(
+  let totalShippedLength = props.products?.reduce(
     (totalShippedLength, item) => totalShippedLength + item.shippedLength,
     0
   );
@@ -81,7 +81,7 @@ export default function OrderInfo(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.products.map((item, idx) => (
+            {props.products?.map((item, idx) => (
               <TableRow
                 key={idx}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
