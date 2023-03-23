@@ -304,7 +304,7 @@ export default function Order(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {product?.products.map((row, idx) => (
+                  {product?.products?.map((row, idx) => (
                     <TableRow
                       key={idx}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

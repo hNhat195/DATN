@@ -4,6 +4,7 @@ import Order from "./components/Order";
 import FilterBar from "./components/FilterBar";
 import ListHeader from "./components/ListHeader";
 import orderApi from "../../api/orderApi";
+import CreateButton from "./components/CreateButton";
 
 export default function OrderListPage() {
   const [orderList, setOrderList] = useState([]);
@@ -39,6 +40,7 @@ export default function OrderListPage() {
     <>
       <Container maxWidth="xl">
         <FilterBar filter={filter} handleFilterChange={handleFilterChange} />
+        <CreateButton></CreateButton>
         <ListHeader />
         {orderList.map((item, idx) => {
           return <Order key={idx} order={item} />;

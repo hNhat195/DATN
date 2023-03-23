@@ -8,10 +8,12 @@ const mongoose = require("mongoose");
 const { Bill } = require("../models/Bill");
 
 async function getNextSequenceValue(sequenceName) {
+  console.log(11)
   let seq = await Counter.findOneAndUpdate(
-    { _id: sequenceName },
+    { counter_type: sequenceName },
     { $inc: { sequence_value: 1 } }
   ).exec();
+  console.log(seq)
   return seq.sequence_value;
 }
 
@@ -46,13 +48,13 @@ module.exports = {
         else {
           result.push({
             note: "",
-            receiverName: "",
-            receiverPhone: "",
+            receiverName: "Phu",
+            receiverPhone: "0944",
             deposit: 0,
             clientID: null,
             detailBill: [],
             products: [],
-            _id: "63ea382f94984c7febee9891q",
+            _id: "63ea382f94984c7febee9891",
             orderId: 2,
             receiverAddress: "1234",
             orderStatus: [
@@ -65,6 +67,7 @@ module.exports = {
             ],
           });
           res.json(result);
+          console.log("get orderlist success")
         }
       });
   },

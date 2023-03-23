@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const CounterSchema = new Schema(
     {
-        _id: {
+        counter_type: {
             type: String,
             required: true
         },

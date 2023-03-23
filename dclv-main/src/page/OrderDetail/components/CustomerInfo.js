@@ -70,14 +70,16 @@ export default function CustomerInfo(props) {
                   <LocationOn />
                 </td>
                 <td>
+                  {/* {console.log("Classes: ")}
+                  {console.log(classes)} */}
                   <Typography
                     component="p"
                     className={clsx(classes.infoTable, classes.name)}
                   >
-                    {props.customer !== undefined ? props.customer.name : ""}
+                    {props.customer !== undefined ? props?.customer?.name : ""}
                   </Typography>
                   <Typography variant="subtitle1">
-                    {props.customer !== undefined ? props.customer.address : ""}
+                    {props.customer !== undefined ? props.customer?.address : ""}
                   </Typography>
                   {/* <Typography variant="subtitle1">
                     Đông Hòa - Dĩ An - Bình Dương
@@ -90,7 +92,7 @@ export default function CustomerInfo(props) {
                 </td>
                 <td>
                   <Typography variant="subtitle1">
-                    {props.customer !== undefined ? props.customer.email : ""}
+                    {props.customer !== undefined ? props.customer?.email : ""}
                   </Typography>
                 </td>
               </tr>
@@ -100,7 +102,7 @@ export default function CustomerInfo(props) {
                 </td>
                 <td>
                   <Typography variant="subtitle1">
-                    {props.customer !== undefined ? props.customer.phone : ""}
+                    {props.customer !== undefined ? props.customer?.phone : ""}
                   </Typography>
                 </td>
               </tr>
@@ -129,10 +131,10 @@ export default function CustomerInfo(props) {
                     variant="subtitle1"
                     className={clsx(classes.infoTable, classes.name)}
                   >
-                    {props.receiverName !== undefined ? props.receiverName : ""}
+                    {props?.receiverName !== undefined ? props?.receiverName : ""}
                   </Typography>
                   <Typography variant="subtitle1">
-                    {props.receiverAddress !== undefined
+                    {props?.receiverAddress !== undefined
                       ? props.receiverAddress
                       : ""}
                   </Typography>
@@ -147,8 +149,8 @@ export default function CustomerInfo(props) {
                 </td>
                 <td>
                   <Typography variant="subtitle1">
-                    {props.receiverPhone !== undefined
-                      ? props.receiverPhone
+                    {props?.receiverPhone !== undefined
+                      ? props?.receiverPhone
                       : ""}
                   </Typography>
                 </td>

@@ -14,6 +14,7 @@ import StaffDetail from "./page/StaffPage/components/StaffDetail";
 
 import SupportPage from "./page/SupportPage/SupportPage";
 import InfoPage from "./page/InfoPage/InfoPage";
+import OrderCreatePage from "./page/OrderCreatePage"
 
 const routes = [
   {
@@ -66,6 +67,11 @@ const routes = [
         path: "/order/orderEdit",
         exact: true,
         component: OrderEdit,
+      },
+      {
+        path: "/order/create",
+        exact: true,
+        component: OrderCreatePage,
       },
       {
         path: "/order/billDetail/:id",
