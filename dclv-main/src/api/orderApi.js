@@ -50,7 +50,7 @@ const orderApi = {
     return axiosClient.post(url, data);
   },
   getOne: (orderId) => {
-    const url = `/order/detail/${orderId}`;
+    const url = `/order/${orderId}`;
     return axiosClient.get(url);
   },
   getProducts: (orderId) => {
