@@ -4,9 +4,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const port = 5000;
-const mongodb_url =
-  "mongodb+srv://tqk:tranquangkha@cluster0.z8ttlef.mongodb.net/dclv?retryWrites=true&w=majority";
+const port = process.env.BACK_END_PORT;
+const mongodb_url = process.env.MONGODB_URL;
 
 const router = require("./src/routes/routes");
 

@@ -157,14 +157,17 @@ const loginstaff = async (req, res) => {
   if (!userLogin) return res.status(403).send("Không tìm thấy email");
 
   // Kiểm tra password
-  const passLogin = await bcrypt.compare(req.body.password, userLogin.password);
+  // const passLogin = await bcrypt.compare(req.body.password, userLogin.password);
+
+  const passLogin = req.body.password == userLogin.password;
   if (!passLogin) {
     return res.status(403).send("Mật khẩu không hợp lệ");
   }
 
   // Ký và tạo token
   const token = jwt.sign({ _id: userLogin._id }, process.env.SECRET_TOKEN);
-  res.send({ ...userLogin._doc, jwt: token });
+
+  res.status(200).json({ ...userLogin._doc, jwt: token });
 };
 
 // const updatePassword = async (req, res) {
