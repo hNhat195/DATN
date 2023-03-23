@@ -1,4 +1,16 @@
-import { Button, Grid, Typography, Container, FormControl, InputLabel, Input, FormHelperText } from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  Typography,
+  Container,
+  FormControl,
+  InputLabel,
+  Input,
+  FormHelperText,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+} from "@material-ui/core";
 import { useState, useEffect } from "react";
 import orderApi from "../../api/orderApi";
 import { makeStyles } from "@material-ui/core/styles";
@@ -58,7 +70,10 @@ export default function OrderCreatePage() {
     products: [],
     detailBill: [],
   });
-
+  const [fabricName, setFabricName] = useState("");
+  const [fabricMaterial, setFabricMaterial] = useState("");
+  const [fabricColor, setFabricColor] = useState("");
+  const [fabricPrice, setFabricPrice] = useState("");
   useEffect(() => {
     let mounted = true;
     const fetchOrderDetail = async () => {
@@ -73,12 +88,37 @@ export default function OrderCreatePage() {
     return () => {
       mounted = false;
     };
-  }, [id]);
+  }, [id, fabricName]);
 
   console.log(detail);
 
   const handleBack = () => {
     history.push(`/order`);
+  };
+
+  const handleSubmit = (event) => {
+    console.log("Name: ", fabricName);
+    console.log("Material: ", fabricMaterial);
+    console.log("Color: ", fabricColor);
+    console.log("Price: ", fabricPrice);
+    event.preventDefault();
+  };
+
+  const handleName = () => {
+    let form = new FormData(document.getElementById("order-creation"));
+    setFabricName(form.get("fabric-name"));
+  };
+  const handleMaterial = () => {
+    let form = new FormData(document.getElementById("order-creation"));
+    setFabricMaterial(form.get("fabric-material"));
+  };
+  const handleColor = () => {
+    let form = new FormData(document.getElementById("order-creation"));
+    setFabricColor(form.get("fabric-color"));
+  };
+  const handlePrice = () => {
+    let form = new FormData(document.getElementById("order-creation"));
+    setFabricPrice(form.get("fabric-price"));
   };
 
   return (
@@ -92,18 +132,68 @@ export default function OrderCreatePage() {
       </Grid>
       <Grid container spacing={2} className={classes.root}>
         <Grid item xs={12} md={7}>
-          <img src='./cat.jpg' alt="cat image"></img>
+          <img src="./cat.jpg" alt="cat image"></img>
         </Grid>
         <Grid item xs={12} md={5}>
-          <div>
+          <form onSubmit={handleSubmit} id="order-creation">
+            <Typography variant="h6" gutterBottom>
+              Order Creation
+            </Typography>
             <FormControl>
-              <InputLabel htmlFor="my-input">Email address</InputLabel>
-              <Input id="my-input" aria-describedby="my-helper-text" />
-              <FormHelperText id="my-helper-text">
-                We'll never share your email.
-              </FormHelperText>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    id="fabric-name"
+                    name="fabric-name"
+                    label="Fabric name"
+                    fullWidth
+                    autoComplete="fabric name"
+                    variant="standard"
+                    onChange={handleName}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    id="fabric-material"
+                    name="fabric-material"
+                    label="Material"
+                    fullWidth
+                    autoComplete="fabric material"
+                    variant="standard"
+                    onChange={handleMaterial}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    id="fabric-color"
+                    name="fabric-color"
+                    label="Color"
+                    fullWidth
+                    autoComplete="fabric color"
+                    variant="standard"
+                    onChange={handleColor}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    id="fabric-price"
+                    name="fabric-price"
+                    label="Price"
+                    fullWidth
+                    autoComplete="fabric price"
+                    variant="standard"
+                    onChange={handlePrice}
+                  />
+                </Grid>
+              </Grid>
+              <Button variant="contained" color="primary" type="submit">
+                Submit
+              </Button>
             </FormControl>
-          </div>
+          </form>
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.btnGroup}>
