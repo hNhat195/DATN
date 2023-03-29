@@ -112,7 +112,7 @@ export default function OrderCreatePage() {
     console.log(response)
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     console.log("Name: ", fabricName);
     console.log("Material: ", fabricMaterial);
     console.log("Color: ", fabricColor);
@@ -123,7 +123,7 @@ export default function OrderCreatePage() {
       receiverPhone: "094444",
       deposit: 10,
       clientID: null,
-      products: [],
+      products: await [{colorCode: fabricColor, length: Number.parseInt(fabricLength)}],
       receiverAddress: "front end test",
     };
     postOrder(postData)

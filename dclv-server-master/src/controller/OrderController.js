@@ -72,10 +72,12 @@ module.exports = {
       });
   },
   create: async (req, res) => {
+    console.log(req.body)
     try {
       const id = await getNextSequenceValue("orderId");
       const asyncRes = await Promise.all(
         req.body.products.map(async (item, idx) => {
+          console.log(item)
           let colorId = await Item.findOne({
             colorCode: item.colorCode,
           }).exec();
@@ -86,6 +88,7 @@ module.exports = {
             length: item.length,
             shippedLength: 0,
           });
+          console.log(a)
           return a._id;
         })
       );
@@ -116,6 +119,7 @@ module.exports = {
       res.send(result);
     } catch (err) {
       console.log(err);
+      console.log("Create order fail")
     }
   },
 
