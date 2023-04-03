@@ -10,6 +10,8 @@ import {
   TextField,
   FormControlLabel,
   Checkbox,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import orderApi from "../../api/orderApi";
@@ -17,6 +19,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { ArrowBack, ArrowUpward, Cancel, Publish } from "@material-ui/icons";
 import DefaultButton from "../../components/Button/DefaultButton";
 import { useHistory, useParams } from "react-router-dom";
+import CreateForm from "./components/CreateForm";
 
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
@@ -109,7 +112,7 @@ export default function OrderCreatePage() {
     //   else setOrderList(response);
     // }
     const response = await orderApi.create(postData);
-    console.log(response)
+    console.log(response);
   };
 
   const handleSubmit = async (event) => {
@@ -123,10 +126,12 @@ export default function OrderCreatePage() {
       receiverPhone: "094444",
       deposit: 10,
       clientID: null,
-      products: await [{colorCode: fabricColor, length: Number.parseInt(fabricLength)}],
+      products: await [
+        { colorCode: fabricColor, length: Number.parseInt(fabricLength) },
+      ],
       receiverAddress: "front end test",
     };
-    postOrder(postData)
+    postOrder(postData);
     event.preventDefault();
   };
 
@@ -157,69 +162,13 @@ export default function OrderCreatePage() {
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.root}>
-        <Grid item xs={12} md={7}>
+        <Grid item xs={12} md={6}>
           <img src="./cat.jpg" alt="cat image"></img>
         </Grid>
-        <Grid item xs={12} md={5}>
-          <form onSubmit={handleSubmit} id="order-creation">
-            <Typography variant="h6" gutterBottom>
-              Order Creation
-            </Typography>
-            <FormControl>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    id="fabric-name"
-                    name="fabric-name"
-                    label="Fabric name"
-                    fullWidth
-                    autoComplete="fabric name"
-                    variant="standard"
-                    onChange={handleName}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    id="fabric-material"
-                    name="fabric-material"
-                    label="Material"
-                    fullWidth
-                    autoComplete="fabric material"
-                    variant="standard"
-                    onChange={handleMaterial}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="fabric-color"
-                    name="fabric-color"
-                    label="Color"
-                    fullWidth
-                    autoComplete="fabric color"
-                    variant="standard"
-                    onChange={handleColor}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    id="fabric-length"
-                    name="fabric-length"
-                    label="Length"
-                    fullWidth
-                    autoComplete="fabric length"
-                    variant="standard"
-                    onChange={handlePrice}
-                  />
-                </Grid>
-              </Grid>
-              <Button variant="contained" color="primary" type="submit">
-                Submit
-              </Button>
-            </FormControl>
-          </form>
+        <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={12}>
+            <CreateForm></CreateForm>
+          </Grid>
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.btnGroup}>

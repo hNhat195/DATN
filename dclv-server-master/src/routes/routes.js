@@ -131,6 +131,8 @@ const {
   getFabricTypeWarehouse,
   getListColorcode,
   getFullListFabricType,
+  getAllMaterialCode,
+  getAllColorCode
 } = require("../controller/FabricRollController");
 
 router.get("/api/product", getProductList);
@@ -144,6 +146,8 @@ router.get("/api/chartwarehouse", getChartWarehouseTrue);
 router.get("/api/getfabricwarehouse", getFabricTypeWarehouse);
 router.get("/api/product/list-type", getFullListFabricType);
 router.get("/api/product/colorcode", getListColorcode);
+router.get("/api/product/allmaterialcode", getAllMaterialCode)
+router.get("/api/product/allcolorcode", getAllColorCode)
 /*------------------------*/
 
 router.get("/api/user/admin/liststaff", listStaff);

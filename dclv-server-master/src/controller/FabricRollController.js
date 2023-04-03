@@ -568,6 +568,16 @@ const getListColorcode = (req, res) => {
   return res.status(200).json(listColor);
 };
 
+async function getAllColorCode(req, res) {
+  var colorMap = await Item.find({})
+  return res.status(200).json(colorMap)
+}
+
+async function getAllMaterialCode(req, res) {
+  var materialMap = await FabricType.find({})
+  return res.status(200).json(materialMap)
+}
+
 module.exports = {
   getProductList,
   getProductList1,
@@ -581,4 +591,6 @@ module.exports = {
   getFabricTypeWarehouse,
   getFullListFabricType,
   getListColorcode,
+  getAllColorCode,
+  getAllMaterialCode
 };

@@ -55,6 +55,14 @@ class ProductApi {
     const url = "/fabric/colorCode";
     return axiosClient.get(url, { params });
   };
+  getAllMaterialCode = (params) => {
+    const url = "/product/allmaterialcode";
+    return axiosClient.get(url, { params });
+  };
+  getAllColorCode = (params) => {
+    const url = "product/allcolorcode";
+    return axiosClient.get(url, { params });
+  };
 }
 const productApi = new ProductApi();
 export default productApi;
