@@ -7,14 +7,14 @@ import orderApi from "../../api/orderApi";
 
 export default function OrderListPage() {
   const [orderList, setOrderList] = useState([]);
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     let mounted = true;
     const fetchOrder = async () => {
       const response = await orderApi.getAll(1, 100);
       if (mounted && response.length > 0) {
-        if (filter !== "")
+        if (filter !== "all")
           setOrderList(
             response.filter(
               (item) =>

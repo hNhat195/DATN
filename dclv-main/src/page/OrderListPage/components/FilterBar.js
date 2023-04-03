@@ -41,11 +41,11 @@ export default function FilterBar(props) {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={filter}
+              value={filter || "all"}
               label="Trạng thái"
               onChange={handleChange}
             >
-              <option aria-label="None" value="" />
+              <option value={"all"}>Tất cả</option>
               <option value={"pending"}>Chờ xử lý</option>
               <option value={"processing"}>Đang xử lý</option>
               <option value={"completed"}>Hoàn tất</option>
