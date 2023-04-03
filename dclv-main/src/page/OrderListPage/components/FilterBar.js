@@ -26,7 +26,12 @@ const useStyles = makeStyles({
 
 export default function FilterBar(props) {
   // const [statusFilter, setStatusFilter] = useState("");
-  const { filter, handleFilterChange } = props;
+  const {
+    filter,
+    handleFilterChange,
+    dateRangeFilter,
+    handleDateRangeFilterChange,
+  } = props;
 
   const handleChange = (event) => {
     handleFilterChange(event.target.value);
@@ -55,7 +60,7 @@ export default function FilterBar(props) {
         </Grid>
         <Grid item xs={1}></Grid>
         <Grid item xs={6}>
-          <DateFilter />
+          <DateFilter onChange={handleDateRangeFilterChange} />
         </Grid>
         <Grid container item xs={3}>
           <Grid item xs={2} className={classes.verticalCenter}>

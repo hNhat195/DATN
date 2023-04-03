@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, TextField } from "@material-ui/core";
 
@@ -17,8 +17,23 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
   },
 }));
-export default function DateFilter() {
+export default function DateFilter({ onChange }) {
   const classes = useStyles();
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const handleStartDateChange = (event) => {
+    const newStartDate = event.target.value;
+    setStartDate(newStartDate);
+    onChange({ startDate: newStartDate, endDate });
+  };
+
+  const handleEndDateChange = (event) => {
+    const newEndDate = event.target.value;
+    setEndDate(newEndDate);
+    onChange({ startDate, endDate: newEndDate });
+  };
+
   return (
     <>
       <Grid container spacing={2}>
@@ -32,6 +47,7 @@ export default function DateFilter() {
             InputLabelProps={{
               shrink: true,
             }}
+            onChange={handleStartDateChange}
           />
         </Grid>
         <Grid item className={classes.container}>
@@ -43,6 +59,7 @@ export default function DateFilter() {
             InputLabelProps={{
               shrink: true,
             }}
+            onChange={handleEndDateChange}
           />
         </Grid>
       </Grid>
