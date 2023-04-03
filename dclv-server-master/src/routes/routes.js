@@ -89,12 +89,12 @@ router.post("/api/customer/login", login);
 
 //for Staff
 router.post("/api/user/staff/login", loginstaff);
-router.post("/api/createstaff", createNewStaff);
+router.post("/api/user/admin/createstaff", createNewStaff);
 // router.put("/updatePassword/:id", updatePassword);
 
 //for admin
 router.get("/api/admin/liststaff", listStaff);
-router.get("/api/admin/liststaff/info/:id", infoStaffById);
+router.get("/api/admin/staffInfo/:id", infoStaffById);
 
 //for product
 /*----Customer route-------*/
