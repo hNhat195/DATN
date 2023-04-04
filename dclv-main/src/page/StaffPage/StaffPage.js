@@ -14,35 +14,55 @@ const useStyles = makeStyles((theme) => ({
 
 function StaffPage() {
   const classes = useStyles();
-  const [staff, setStaff] = useState([]);
+  const [staffs, setStaffs] = useState([]);
+  const [filteredStaffs, setFilteredStaffs] = useState([]);
   const [refresh, setRefresh] = useState(true);
-  const [filter, setFilter] = useState(["ADMIN", "SALESMAN", "SHIPPER"]);
+  const [filterPos, setFilterPos] = useState("all");
+  const [filterName, setFilterName] = useState("");
+
+  const fetchStaff = async () => {
+    try {
+      const response = await staffApi.getAll();
+      const data = response;
+      setStaffs(data);
+      setFilteredStaffs(data);
+    } catch (error) {
+      console.log("Failed to fetch staff list", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchStaff = async () => {
-      try {
-        const response = await staffApi.getAll();
-        // const data = response.filter((i) => filter.includes(i.role));
-        const data = response;
-        console.log({ data });
-        setStaff(data);
-      } catch (error) {
-        console.log("Failed to fetch staff list", error);
-      }
-    };
     fetchStaff();
-  }, [filter, refresh]);
+  }, [refresh]);
+
+  useEffect(() => {
+    let tempStaffs = staffs;
+    if (filterPos !== "all") {
+      tempStaffs = staffs?.filter((item) => item.role === filterPos);
+    }
+
+    if (filterName) {
+      tempStaffs = staffs?.filter((item) =>
+        item.name?.toLowerCase().includes(filterName?.toLowerCase())
+      );
+    }
+
+    setFilteredStaffs(tempStaffs);
+  }, [filterPos, filterName]);
+
   return (
     <div className={classes.root}>
-      {/* <FilterBarStaff
-        filter={filter}
-        setFilter={setFilter}
+      <FilterBarStaff
+        filterPos={filterPos}
+        setFilterPos={setFilterPos}
+        filterName={filterName}
+        setFilterName={setFilterName}
         setRefresh={setRefresh}
-      /> */}
+      />
       <StaffHeader />
-      {"fuckkkkkkkkkkkkkkkkkkkk" + staff[0]}
-      {staff && <StaffList className={classes.staffList} staff={staff} />}
-      <h1>"staffffffffffffffffffffffffffffffffff"</h1>
+      {filteredStaffs && (
+        <StaffList className={classes.staffList} staff={filteredStaffs} />
+      )}
     </div>
   );
 }

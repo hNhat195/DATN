@@ -25,7 +25,7 @@ class StaffApi {
     return axiosClient.get(url);
   };
   getInfoById = (id) => {
-    const url = `/user/admin/staffInfo/${id}`;
+    const url = `/admin/staffInfo/${id}`;
     return axiosClient.get(url);
   };
   getSalesman = () => {
