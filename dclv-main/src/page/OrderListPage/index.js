@@ -13,6 +13,7 @@ export default function OrderListPage() {
     startDate: "",
     endDate: "",
   });
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -40,8 +41,15 @@ export default function OrderListPage() {
           Date.parse(item.orderTime) <= Date.parse(dateRangeFilter.endDate)
       );
     }
+
+    if (searchKeyword) {
+      tempOrderList = tempOrderList?.filter((item) =>
+        item.orderId?.toString().includes(searchKeyword)
+      );
+    }
+
     setFilteredOrderList(tempOrderList);
-  }, [filter, dateRangeFilter]);
+  }, [filter, dateRangeFilter, searchKeyword]);
 
   const handleFilterChange = (value) => {
     setFilter(value);
@@ -49,6 +57,10 @@ export default function OrderListPage() {
 
   const handleDateRangeFilterChange = (newDateRange) => {
     setDateRangeFilter(newDateRange);
+  };
+
+  const handleSearchKeywordChange = (newSearchKeyword) => {
+    setSearchKeyword(newSearchKeyword);
   };
 
   return (
@@ -59,6 +71,7 @@ export default function OrderListPage() {
           handleFilterChange={handleFilterChange}
           dateRangeFilter={dateRangeFilter}
           handleDateRangeFilterChange={handleDateRangeFilterChange}
+          handleSearchKeywordChange={handleSearchKeywordChange}
         />
         <ListHeader />
         {filteredOrderList?.map((item, idx) => {

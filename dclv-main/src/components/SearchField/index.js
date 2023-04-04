@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, TextField, InputAdornment } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
@@ -14,8 +14,15 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SearchField() {
+export default function SearchField({ onChange }) {
   const classes = useStyles();
+  const [keyword, setKeyword] = useState("");
+
+  const handleKeywordChange = (event) => {
+    const newKeyword = event.target.value;
+    setKeyword(newKeyword);
+    onChange(newKeyword);
+  };
   return (
     <>
       <Box className={classes.box}>
@@ -26,11 +33,12 @@ export default function SearchField() {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <Search/>
+                <Search />
               </InputAdornment>
             ),
           }}
           fullWidth
+          onChange={handleKeywordChange}
         />
       </Box>
     </>

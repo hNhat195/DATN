@@ -31,6 +31,8 @@ export default function FilterBar(props) {
     handleFilterChange,
     dateRangeFilter,
     handleDateRangeFilterChange,
+    searchKeyword,
+    handleSearchKeywordChange,
   } = props;
 
   const handleChange = (event) => {
@@ -69,7 +71,7 @@ export default function FilterBar(props) {
             </Button>
           </Grid>
           <Grid item xs={10} className={classes.verticalCenter}>
-            <SearchField />
+            <SearchField onChange={handleSearchKeywordChange} />
           </Grid>
         </Grid>
       </Grid>
