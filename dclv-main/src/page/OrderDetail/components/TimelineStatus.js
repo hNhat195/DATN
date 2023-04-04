@@ -82,7 +82,7 @@ const TimelineItem = withStyles({
 
 export default function TimelineStatus(props) {
   const classes = useStyles();
-  const lastStatusIdx = props.statusList.length - 1;
+  const lastStatusIdx = props.statusList?.length - 1;
   return (
     <Container className={classes.timelineStyle}>
       <Typography variant="h5" className={classes.title}>
@@ -90,7 +90,7 @@ export default function TimelineStatus(props) {
       </Typography>
       <Timeline className={classes.timelineMargin}>
         {props.statusList?.length > 0
-          ? props.statusList.map((item, idx) => {
+          ? props.statusList?.map((item, idx) => {
               return idx !== 0 && idx % 2 === 0 && item.name === "pending" ? (
                 <TimelineItem key={idx}>
                   {idx === lastStatusIdx ? (
