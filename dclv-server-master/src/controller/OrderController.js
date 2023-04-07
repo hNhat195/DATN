@@ -8,12 +8,10 @@ const mongoose = require("mongoose");
 const { Bill } = require("../models/Bill");
 
 async function getNextSequenceValue(sequenceName) {
-  console.log(11)
   let seq = await Counter.findOneAndUpdate(
     { counter_type: sequenceName },
     { $inc: { sequence_value: 1 } }
   ).exec();
-  console.log(seq)
   return seq.sequence_value;
 }
 
@@ -78,10 +76,19 @@ module.exports = {
       const asyncRes = await Promise.all(
         req.body.products.map(async (item, idx) => {
           console.log(item)
-          let colorId = await Item.findOne({
+          let colorIdList = await Item.find({
             colorCode: item.colorCode,
+            // typeId: item.typeId,
           }).exec();
-          console.log(colorId);
+          console.log(colorIdList);
+          let colorId = colorIdList[0];
+          for(let i=0; i<colorIdList.length;i++) {
+            colorId = colorIdList[i]
+            if(colorIdList[i].typeId === item.typeId) {
+              console.log("found material")
+              break;
+            }
+          }
           let a = await Has.create({
             // orderId: id,
             colorCode: colorId._id,

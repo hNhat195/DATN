@@ -578,6 +578,26 @@ async function getAllMaterialCode(req, res) {
   return res.status(200).json(materialMap)
 }
 
+async function getMaterialByColor(req, res) {
+  const body = req.body;
+  console.log(body)
+  const itemList = await Item.find({colorCode: body.colorCode})
+  // const materialList = await FabricType.find({_id: body.typeId}).exec();
+  const materialList = [];
+  await itemList.map(async (item, idx) => {
+    console.log(item)
+    // let mat = await FabricType.find({_id: item.typeId}).populate({
+    //   path: "Item"
+    // });
+    const mat = await FabricType.findOne({_id: item.typeId}).populate({
+      path: "Item"
+    }).exec().then(respone => {materialList.push(respone)});
+    console.log(mat)
+  })
+  console.log(materialList)
+  return res.status(200).json(materialList);
+}
+
 module.exports = {
   getProductList,
   getProductList1,
@@ -592,5 +612,6 @@ module.exports = {
   getFullListFabricType,
   getListColorcode,
   getAllColorCode,
-  getAllMaterialCode
+  getAllMaterialCode,
+  getMaterialByColor,
 };

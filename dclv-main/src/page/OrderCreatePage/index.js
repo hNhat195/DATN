@@ -127,7 +127,7 @@ export default function OrderCreatePage() {
       deposit: 10,
       clientID: null,
       products: await [
-        { colorCode: fabricColor, length: Number.parseInt(fabricLength) },
+        { colorCode: fabricColor, typeId: fabricMaterial, length: Number.parseInt(fabricLength) },
       ],
       receiverAddress: "front end test",
     };

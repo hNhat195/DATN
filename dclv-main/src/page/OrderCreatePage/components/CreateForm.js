@@ -15,13 +15,44 @@ import {
   } from "@material-ui/core";
 import { useState, useEffect } from "react";
 
+import orderApi from "../../../api/orderApi";
 import productApi from "../../../api/productApi";
 
 export default function CreateForm() {
     const [colorList, setColorList] = useState([]);
     const [materialList, setMaterialList] = useState([]);
+    const [fabricColor, setFabricColor] = useState("");
+    const [fabricMaterial, setFabricMaterial] = useState("");
+    const [fabricLength, setFabricLength] = useState("");
+    const [materialId, setMaterialId] = useState("");
+
+    const postOrder = async (postData) => {
+      const response = await orderApi.create(postData);
+      console.log(response);
+    };
+
+    const handleSubmit = async (event) => {
+      
+      console.log("Material: ", fabricMaterial);
+      console.log("Color: ", fabricColor);
+      console.log("Length: ", fabricLength);
+      let postData = {
+        note: "front end call api",
+        receiverName: "Front end",
+        receiverPhone: "094444",
+        deposit: 10,
+        clientID: null,
+        products: await [
+          { colorCode: fabricColor, typeId: materialId, length: Number.parseInt(fabricLength) },
+        ],
+        receiverAddress: "front end test",
+      };
+      postOrder(postData);
+      // console.log(postData)
+      event.preventDefault();
+    };
     useEffect(() => {
-        let mounted = true;
+        
         const fetchColor = async () => {
           const response = await productApi.getAllColorCode();
           console.log(response)
@@ -37,16 +68,28 @@ export default function CreateForm() {
         //   }
             setColorList(response)
         };
-        fetchColor();
-    
-        return () => {
-          mounted = false;
+        const fetchMaterial = async () => {
+          const response = await productApi.getAllMaterialCode();
+          console.log(response)
+        //   if (mounted && response.length > 0) {
+        //     if (filter !== "")
+        //       setOrderList(
+        //         response.filter(
+        //           (item) =>
+        //             item.orderStatus[item.orderStatus.length - 1].name === filter
+        //         )
+        //       );
+        //     else setOrderList(response);
+        //   }
+            setMaterialList(response)
         };
+        fetchColor();
+        fetchMaterial();
       }, []);
 
     // <form onSubmit={handleSubmit} id="order-creation">
     return (
-        <form id="order-creation">
+        <form id="order-creation" onSubmit={handleSubmit}>
             <Typography variant="h6" gutterBottom>
               Order Creation
             </Typography>
@@ -63,18 +106,19 @@ export default function CreateForm() {
                     variant="standard"
                     onChange={handleName}
                   /> */}
-                  <FormControl fullWidth={true}>
+                  {/* <FormControl fullWidth={true}>
                   <InputLabel id="fabric-name">Name</InputLabel>
                   <Select
                     labelId="fabric-name"
                     id="fabric-name"
                     label="Name"
+                    value="fabric-name"
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem>Ten</MenuItem>
+                    <MenuItem>Twenty</MenuItem>
+                    <MenuItem>Thirty</MenuItem>
                   </Select>
-                  </FormControl>
+                  </FormControl> */}
                 </Grid>
                 <Grid item xs={12} md={4}></Grid>
                 <Grid item xs={12} md={8}>
@@ -94,10 +138,21 @@ export default function CreateForm() {
                     labelId="fabric-material"
                     id="fabric-material"
                     label="Material"
+                    onChange={(e) => {
+                      setFabricMaterial(e.target.value)
+                      const mat = materialList.find((x) => {
+                        return x.id === e.target.value; 
+                      })
+                      console.log(mat);
+                      setMaterialId(mat._id);
+                      console.log(e.target.value)
+                    }}
+                    value={fabricMaterial || ""}
+                    // value="type0001"
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {materialList.map((item, idx) => {
+                      return <MenuItem key={idx} value={item.id}>{item.name}</MenuItem>
+                    })}
                   </Select>
                   </FormControl>
                 </Grid>
@@ -118,16 +173,22 @@ export default function CreateForm() {
                     labelId="fabric-color"
                     id="fabric-color"
                     label="Color"
+                    onChange={(e) => {
+                      setFabricColor(e.target.value)
+                      console.log(e.target.value)
+                    }}
+                    value={fabricColor || ""}
+                    // value="ffffff"
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {colorList.map((item, idx) => {
+                      return <MenuItem key={idx} value={item.colorCode}>{item.colorCode}</MenuItem>
+                    })}
                   </Select>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} md={4}></Grid>
                 <Grid item xs={12} md={8}>
-                  {/* <TextField
+                  <TextField
                     required
                     id="fabric-length"
                     name="fabric-length"
@@ -135,21 +196,25 @@ export default function CreateForm() {
                     fullWidth
                     autoComplete="fabric length"
                     variant="standard"
-                    onChange={handlePrice}
-                  /> */}
-                  <FormControl fullWidth={true}>
+                    onChange={(e) => {
+                      setFabricLength(e.target.value)
+                      console.log(e.target.value)
+                    }}
+                  />
+                  {/* <FormControl fullWidth={true}>
                   <InputLabel id="fabric-length">Length</InputLabel>
                   <Select
                     labelId="fabric-length"
                     id="fabric-length"
                     label="Length"
                     fullWidth="true"
+                    //value="fabric-length"
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem>Ten</MenuItem>
+                    <MenuItem>Twenty</MenuItem>
+                    <MenuItem>Thirty</MenuItem>
                   </Select>
-                  </FormControl>
+                  </FormControl> */}
                 </Grid>
                 <Grid item xs={12} md={4}></Grid>
               </Grid>
