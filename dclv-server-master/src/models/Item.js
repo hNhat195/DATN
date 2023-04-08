@@ -17,6 +17,12 @@ const ItemSchema = new Schema(
   { collection: "Item" }
 );
 
+ItemSchema.virtual('FabricType', {
+  ref: 'FabricType',
+  localField: 'typeId',
+  foreignField: '_id'
+})
+
 const Item = mongoose.model("Item", ItemSchema);
 
 module.exports = { Item };

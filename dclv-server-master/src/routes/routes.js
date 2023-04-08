@@ -133,7 +133,8 @@ const {
   getFullListFabricType,
   getAllMaterialCode,
   getAllColorCode,
-  getMaterialByColor
+  getMaterialByColor,
+  getColorByMaterial
 } = require("../controller/FabricRollController");
 
 router.get("/api/product", getProductList);
@@ -150,6 +151,7 @@ router.get("/api/product/colorcode", getListColorcode);
 router.get("/api/product/allmaterialcode", getAllMaterialCode);
 router.get("/api/product/allcolorcode", getAllColorCode);
 router.get("/api/product/matbycolor", getMaterialByColor);
+router.get("/api/product/colorbymat", getColorByMaterial);
 /*------------------------*/
 
 router.get("/api/user/admin/liststaff", listStaff);
