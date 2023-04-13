@@ -18,6 +18,7 @@ import {
 } from "@material-ui/core";
 import { LockOutlined, AccountCircle, Lock } from "@material-ui/icons";
 import axios from "axios";
+import customerApi from "../../api/customerApi";
 import staffApi from "../../api/staffApi";
 
 const constraints = {
@@ -91,7 +92,11 @@ export default function SignIn() {
 
   const [formState, setFormState] = useState({
     isValid: false,
-    values: {},
+    values: {
+      email: "",
+      password: "",
+      role: "",
+    },
     touched: {},
     errors: {},
   });
@@ -113,15 +118,35 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await staffApi.login(formState.values);
-      console.log("what the hell is this", response);
-      localStorage.setItem("user", JSON.stringify(response));
+      const response =
+        formState.values.role === "customer"
+          ? await customerApi.login({
+              email: formState.values.email,
+              password: formState.values.password,
+            })
+          : await staffApi.login({
+              email: formState.values.email,
+              password: formState.values.password,
+            });
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...response, role: formState.values.role })
+      );
       localStorage.setItem("access_token", response.access_token);
       history.push("/dashboard");
     } catch (error) {
-      console.log("wtffffffffffffffffffffffffffffffff", error);
+      console.log(error);
     }
   };
+
+  // const handleChange = (event) => {
+  //   const { name, value, checked } = event.target;
+  //   setFormState((prevFormState) => ({
+  //     ...prevFormState,
+  //     [name]: name === "rememberMe" ? checked : value,
+  //   }));
+  // };
 
   const handleChange = (e) => {
     e.persist();
@@ -210,6 +235,29 @@ export default function SignIn() {
                 ),
               }}
             />
+
+            <TextField
+              select
+              fullWidth
+              variant="outlined"
+              margin="normal"
+              required
+              name="role"
+              label="Vai trò"
+              value={formState.values.email}
+              onChange={handleChange}
+              SelectProps={{
+                native: true,
+              }}
+            >
+              <option value="" disabled>
+                Chọn vai trò
+              </option>
+              <option value="admin">Admin</option>
+              <option value="staff">Nhân viên</option>
+              <option value="customer">Khách hàng</option>
+            </TextField>
+
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Nhớ tài khoản"
