@@ -85,7 +85,7 @@ const {
 
 //for customer
 router.post("/api/register", createNewCustomer);
-router.post("/api/customer/login", login);
+router.post("/api/user/customer/login", login);
 
 //for Staff
 router.post("/api/user/staff/login", loginstaff);
