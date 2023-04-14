@@ -25,7 +25,13 @@ const constraints = {
   email: {
     presence: { allowEmpty: false, message: "bắt buộc" },
   },
-  password: { presence: { allowEmpty: false, message: "bắt buộc" } },
+  password: {
+    presence: { allowEmpty: false, message: "bắt buộc" },
+    length: {
+      minimum: 6,
+      message: "quá ngắn (tối thiểu 6 ký tự)",
+    },
+  },
 };
 
 function Copyright() {
@@ -95,17 +101,18 @@ export default function SignIn() {
     values: {
       email: "",
       password: "",
-      role: "",
+      role: "staff",
     },
     touched: {},
     errors: {},
   });
   const [user, setUser] = useState([]);
   const [alert, setAlert] = useState("");
+  const [loginError, setLoginError] = useState(false);
 
   useEffect(() => {
     const errors = validate(formState.values, constraints);
-
+    setLoginError(false);
     // update form validation
     setFormState((formState) => ({
       ...formState,
@@ -129,6 +136,7 @@ export default function SignIn() {
               password: formState.values.password,
             });
 
+      console.log(response, "responseresponseresponse");
       localStorage.setItem(
         "user",
         JSON.stringify({ ...response, role: formState.values.role })
@@ -136,17 +144,10 @@ export default function SignIn() {
       localStorage.setItem("access_token", response.access_token);
       history.push("/dashboard");
     } catch (error) {
+      setLoginError(true);
       console.log(error);
     }
   };
-
-  // const handleChange = (event) => {
-  //   const { name, value, checked } = event.target;
-  //   setFormState((prevFormState) => ({
-  //     ...prevFormState,
-  //     [name]: name === "rememberMe" ? checked : value,
-  //   }));
-  // };
 
   const handleChange = (e) => {
     e.persist();
@@ -244,16 +245,12 @@ export default function SignIn() {
               required
               name="role"
               label="Vai trò"
-              value={formState.values.email}
+              value={formState.values.role}
               onChange={handleChange}
               SelectProps={{
                 native: true,
               }}
             >
-              <option value="" disabled>
-                Chọn vai trò
-              </option>
-              <option value="admin">Admin</option>
               <option value="staff">Nhân viên</option>
               <option value="customer">Khách hàng</option>
             </TextField>
@@ -262,6 +259,12 @@ export default function SignIn() {
               control={<Checkbox value="remember" color="primary" />}
               label="Nhớ tài khoản"
             />
+
+            {loginError && (
+              <Typography variant="body2" color="error">
+                Đăng nhập thất bại, vui lòng thử lại.
+              </Typography>
+            )}
             <Button
               disabled={!formState.isValid}
               type="submit"
