@@ -601,29 +601,32 @@ async function getMaterialByColor(req, res) {
 }
 
 async function getColorByMaterial(req, res) {
+  console.log("ddddddddddd")
+  console.log(req)
   const body = req.body;
   console.log("aaaaaaaaaaa")
   console.log(body);
-  const ftype = await FabricType.findOne({name: body.typeName});
+  const ftype = await FabricType.findOne({id: body.typeName});
+  let filteredList = []
   
-  await ftype.populate('Item')
-  console.log("bbbbbbbbbbbbb")
-  console.log(ftype._id)
-  let materialId = String(ftype._id)
-  console.log(materialId)
-  console.log(typeof materialId)
-  // const colorList = await Item.find({typeId: ftype._id}).populate({path: 'FabricType'})
-  const colorList = await Item.find({typeId: ftype._id}).populate({path: 'FabricType'})
-  const allColorList = await Item.find({typeId: '641b26fc10ed34a03003258c'}).populate({path: 'FabricType'})
-  console.log("cccccccccccccc")
-  console.log(colorList)
-  console.log(allColorList)
-  // console.log(String(ftype._id))
-  // const colorList = await Item.find({typeId: String(ftype._id)}).exec();
-  // console.log("cccccccccccccc")
-  // console.log(colorList)
-  // return res.status(200).json(colorList);
-  return res.status(200).json(colorList);
+  if(ftype != null) {
+
+    console.log("bbbbbbbbbbbbb")
+    console.log(ftype._id)
+    let materialId = String(ftype._id)
+    
+    
+    const colorList = await Item.find()
+    
+    console.log("cccccccccccccc")
+    console.log(colorList)
+    
+    filteredList = colorList.filter((item) => {return item.typeId == materialId})
+    console.log(filteredList)
+  }
+
+  
+  return res.status(200).json(filteredList);
 }
 
 module.exports = {
