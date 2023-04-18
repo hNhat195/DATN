@@ -20,7 +20,6 @@ class StaffApi {
     return axiosClient.post(url, data);
   };
   getAll = (params) => {
-    console.log("dmmmmmmmmmmmm");
     const url = "/user/admin/liststaff";
     return axiosClient.get(url);
   };
@@ -37,7 +36,6 @@ class StaffApi {
     return axiosClient.get(url);
   };
   createStaff = (data) => {
-    console.log("staffffffffffffffffff", data);
     const url = "/user/admin/createStaff";
     return axiosClient.post(url, data);
   };

@@ -86,7 +86,6 @@ const orderApi = {
 
   cancelStatus: (orderId) => {
     const url = `/order/${orderId}/cancelStatus`;
-    console.log(url);
     return axiosClient.put(url);
   },
 
