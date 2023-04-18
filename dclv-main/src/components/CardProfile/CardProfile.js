@@ -41,13 +41,12 @@ const useStyles = makeStyles((theme) => ({
 function CardProfile() {
   const classes = useStyles();
   const history = useHistory();
-  const role = localStorage.getItem("role");
+  const user = JSON.parse(localStorage.getItem("user"));
+  const role = user ? user.role : "";
 
   const handleClick = () => {
-    if (role) {
-      history.push("/signin");
-      localStorage.removeItem("role");
-    } else history.push("/signin");
+    localStorage.removeItem("user");
+    history.push("/signin");
   };
 
   const handleOpenInfo = () => {
@@ -67,7 +66,7 @@ function CardProfile() {
 
       <Box className={classes.content}>
         <Typography variant="body1" gutterBottom className={classes.text}>
-          {role ? "Nguyễn Văn Tĩnh" : " "}
+          {role ? user.name : " "}
         </Typography>
         <Typography variant="body1">
           {role === "admin"

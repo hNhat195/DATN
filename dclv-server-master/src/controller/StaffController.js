@@ -206,7 +206,7 @@ const infoStaffById = async (req, res) => {
       return res.json({ message: "Error" });
     } else {
       console.log(result);
-      return res.json(result);
+      res.status(200).json(result);
     }
   });
   // Staff.find({}, function (err, result) {
@@ -218,15 +218,15 @@ const infoStaffById = async (req, res) => {
   //         return res.json(result);
   //         }
   // });
-  try {
-    const result = await Staff.aggregate([{ $match: {} }]);
-    console.log("Get List Staff Completed successfully");
-    console.log(result);
-    res.status(200).json(result);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ err });
-  }
+  // try {
+  //   const result = await Staff.aggregate([{ $match: {} }]);
+  //   console.log("Get List Staff Completed successfully");
+  //   console.log(result);
+  //   res.status(200).json(result);
+  // } catch (err) {
+  //   console.log(err);
+  //   res.status(500).json({ err });
+  // }
 };
 
 module.exports = {

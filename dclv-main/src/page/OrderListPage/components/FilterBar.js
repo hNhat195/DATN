@@ -26,7 +26,14 @@ const useStyles = makeStyles({
 
 export default function FilterBar(props) {
   // const [statusFilter, setStatusFilter] = useState("");
-  const { filter, handleFilterChange } = props;
+  const {
+    filter,
+    handleFilterChange,
+    dateRangeFilter,
+    handleDateRangeFilterChange,
+    searchKeyword,
+    handleSearchKeywordChange,
+  } = props;
 
   const handleChange = (event) => {
     handleFilterChange(event.target.value);
@@ -41,11 +48,11 @@ export default function FilterBar(props) {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={filter}
+              value={filter || "all"}
               label="Trạng thái"
               onChange={handleChange}
             >
-              <option aria-label="None" value="" />
+              <option value={"all"}>Tất cả</option>
               <option value={"pending"}>Chờ xử lý</option>
               <option value={"processing"}>Đang xử lý</option>
               <option value={"completed"}>Hoàn tất</option>
@@ -55,7 +62,7 @@ export default function FilterBar(props) {
         </Grid>
         <Grid item xs={1}></Grid>
         <Grid item xs={6}>
-          <DateFilter />
+          <DateFilter onChange={handleDateRangeFilterChange} />
         </Grid>
         <Grid container item xs={3}>
           <Grid item xs={2} className={classes.verticalCenter}>
@@ -64,7 +71,7 @@ export default function FilterBar(props) {
             </Button>
           </Grid>
           <Grid item xs={10} className={classes.verticalCenter}>
-            <SearchField />
+            <SearchField onChange={handleSearchKeywordChange} />
           </Grid>
         </Grid>
       </Grid>

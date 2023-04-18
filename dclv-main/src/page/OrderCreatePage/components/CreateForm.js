@@ -2,14 +2,9 @@ import {
   Button,
   Grid,
   Typography,
-  Container,
   FormControl,
   InputLabel,
-  Input,
-  FormHelperText,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Select,
   MenuItem,
 } from "@material-ui/core";
@@ -29,13 +24,10 @@ export default function CreateForm() {
 
   const postOrder = async (postData) => {
     const response = await orderApi.create(postData);
-    console.log(response);
+    return response;
   };
 
   const handleSubmit = async (event) => {
-    console.log("Material: ", fabricMaterial);
-    console.log("Color: ", fabricColor);
-    console.log("Length: ", fabricLength);
     let postData = {
       note: "front end call api",
       receiverName: "Front end",
@@ -52,22 +44,12 @@ export default function CreateForm() {
       receiverAddress: "front end test",
     };
     postOrder(postData);
-    // console.log(postData)
     event.preventDefault();
   };
-  const fetchColor = async () => {
-    //const response = await productApi.getAllColorCode();
-    console.log("mattype: //////////////" + materialType);
-    const response = await productApi.getColorByMaterial(materialType);
-    console.log("fetch color response: sssssssssssss" + response);
-    return response;
-    //setColorList(response)
-  };
+
   useEffect(() => {
     const fetchMaterial = async () => {
       const response = await productApi.getAllMaterialCode();
-      console.log(response);
-
       setMaterialList(response);
     };
 
@@ -75,12 +57,14 @@ export default function CreateForm() {
   }, []);
 
   useEffect(async () => {
+    const fetchColor = async () => {
+      const response = await productApi.getColorByMaterial(materialType);
+      return response;
+    };
     const response = await fetchColor();
-
     setColorList(response);
   }, [materialType]);
 
-  // <form onSubmit={handleSubmit} id="order-creation">
   return (
     <form id="order-creation" onSubmit={handleSubmit}>
       <Typography variant="h6" gutterBottom>
@@ -136,10 +120,9 @@ export default function CreateForm() {
                 const mat = await materialList.find((x) => {
                   return x.id === e.target.value;
                 });
-                
+
                 setMaterialId(mat._id);
                 setMaterialType(e.target.value);
-                
               }}
               value={fabricMaterial || ""}
               // value="type0001"

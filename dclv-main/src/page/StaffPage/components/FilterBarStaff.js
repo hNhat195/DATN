@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Grid, Typography } from "@material-ui/core";
+import {
+  Grid,
+  FormControl,
+  InputLabel,
+  Select,
+  Button,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
 import CustomCheckbox from "../../../components/Button/CustomCheckbox";
@@ -27,41 +33,32 @@ const useStyles = makeStyles(() => ({
 
 function FilterBarStaff(props) {
   const classes = useStyles();
-  const { filter, setFilter, setRefresh } = props;
+  const { filterPos, setFilterPos, filterName, setFilterName, setRefresh } =
+    props;
+
+  const handleChange = (event) => {
+    console.log("event.target.valueevent.target.value", event.target.value);
+    setFilterPos(event.target.value);
+  };
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        <Grid item container md={6} sm={6} xs={12}>
-          <Grid item md={4} sm={4} xs={4} className={classes.checkBoxCustom}>
-            <CustomCheckbox
-              filter={filter}
-              setFilter={setFilter}
-              role="SALESMAN"
-            />
-            <Typography variant="h6" className={classes.checkboxText}>
-              Nhân viên bán hàng
-            </Typography>
-          </Grid>
-          <Grid item md={4} sm={4} xs={4} className={classes.checkBoxCustom}>
-            <CustomCheckbox
-              filter={filter}
-              setFilter={setFilter}
-              role="SHIPPER"
-            />
-            <Typography variant="h6" className={classes.checkboxText}>
-              Nhân viên giao hàng
-            </Typography>
-          </Grid>
-          <Grid item md={4} sm={4} xs={4} className={classes.checkBoxCustom}>
-            <CustomCheckbox
-              filter={filter}
-              setFilter={setFilter}
-              role="ADMIN"
-            />
-            <Typography variant="h6" className={classes.checkboxText}>
-              Quản lý
-            </Typography>
-          </Grid>
+        <Grid item xs={3}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Chức vụ</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={filterPos || "all"}
+              label="Chức vụ"
+              onChange={handleChange}
+            >
+              <option value={"all"}>Tất cả</option>
+              <option value={"SALESMAN"}>Nhân viên bán hàng</option>
+              <option value={"SHIPPER"}>Nhân viên giao hàng</option>
+              <option value={"ADMIN"}>Quản lý</option>
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item container md={2} sm={3} xs={12}>
           <AddStaffModal setRefresh={setRefresh} />
@@ -78,7 +75,7 @@ function FilterBarStaff(props) {
             <NotificationButton />
           </Grid>
           <Grid item xs={10}>
-            <SearchField />
+            <SearchField onChange={setFilterName} />
           </Grid>
         </Grid>
       </Grid>

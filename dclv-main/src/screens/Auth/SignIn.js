@@ -18,13 +18,20 @@ import {
 } from "@material-ui/core";
 import { LockOutlined, AccountCircle, Lock } from "@material-ui/icons";
 import axios from "axios";
+import customerApi from "../../api/customerApi";
 import staffApi from "../../api/staffApi";
 
 const constraints = {
   email: {
     presence: { allowEmpty: false, message: "bắt buộc" },
   },
-  password: { presence: { allowEmpty: false, message: "bắt buộc" } },
+  password: {
+    presence: { allowEmpty: false, message: "bắt buộc" },
+    length: {
+      minimum: 6,
+      message: "quá ngắn (tối thiểu 6 ký tự)",
+    },
+  },
 };
 
 function Copyright() {
@@ -91,16 +98,21 @@ export default function SignIn() {
 
   const [formState, setFormState] = useState({
     isValid: false,
-    values: {},
+    values: {
+      email: "",
+      password: "",
+      role: "staff",
+    },
     touched: {},
     errors: {},
   });
   const [user, setUser] = useState([]);
   const [alert, setAlert] = useState("");
+  const [loginError, setLoginError] = useState(false);
 
   useEffect(() => {
     const errors = validate(formState.values, constraints);
-
+    setLoginError(false);
     // update form validation
     setFormState((formState) => ({
       ...formState,
@@ -113,13 +125,27 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await staffApi.login(formState.values);
-      console.log("what the hell is this", response);
-      localStorage.setItem("user", JSON.stringify(response));
+      const response =
+        formState.values.role === "customer"
+          ? await customerApi.login({
+              email: formState.values.email,
+              password: formState.values.password,
+            })
+          : await staffApi.login({
+              email: formState.values.email,
+              password: formState.values.password,
+            });
+
+      console.log(response, "responseresponseresponse");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...response, role: formState.values.role })
+      );
       localStorage.setItem("access_token", response.access_token);
       history.push("/dashboard");
     } catch (error) {
-      console.log("wtffffffffffffffffffffffffffffffff", error);
+      setLoginError(true);
+      console.log(error);
     }
   };
 
@@ -210,10 +236,35 @@ export default function SignIn() {
                 ),
               }}
             />
+
+            <TextField
+              select
+              fullWidth
+              variant="outlined"
+              margin="normal"
+              required
+              name="role"
+              label="Vai trò"
+              value={formState.values.role}
+              onChange={handleChange}
+              SelectProps={{
+                native: true,
+              }}
+            >
+              <option value="staff">Nhân viên</option>
+              <option value="customer">Khách hàng</option>
+            </TextField>
+
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Nhớ tài khoản"
             />
+
+            {loginError && (
+              <Typography variant="body2" color="error">
+                Đăng nhập thất bại, vui lòng thử lại.
+              </Typography>
+            )}
             <Button
               disabled={!formState.isValid}
               type="submit"

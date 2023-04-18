@@ -85,16 +85,16 @@ const {
 
 //for customer
 router.post("/api/register", createNewCustomer);
-router.post("/api/customer/login", login);
+router.post("/api/user/customer/login", login);
 
 //for Staff
-router.post("/api/staff/login", loginstaff);
-router.post("/api/createstaff", createNewStaff);
+router.post("/api/user/staff/login", loginstaff);
+router.post("/api/user/admin/createstaff", createNewStaff);
 // router.put("/updatePassword/:id", updatePassword);
 
 //for admin
 router.get("/api/admin/liststaff", listStaff);
-router.get("/api/admin/liststaff/info/:id", infoStaffById);
+router.get("/api/admin/staffInfo/:id", infoStaffById);
 
 //for product
 /*----Customer route-------*/
@@ -134,7 +134,7 @@ const {
   getAllMaterialCode,
   getAllColorCode,
   getMaterialByColor,
-  getColorByMaterial
+  getColorByMaterial,
 } = require("../controller/FabricRollController");
 
 router.get("/api/product", getProductList);
@@ -151,7 +151,7 @@ router.get("/api/product/colorcode", getListColorcode);
 router.get("/api/product/allmaterialcode", getAllMaterialCode);
 router.get("/api/product/allcolorcode", getAllColorCode);
 router.get("/api/product/matbycolor", getMaterialByColor);
-router.get("/api/product/colorbymat", getColorByMaterial);
+router.post("/api/product/colorbymat", getColorByMaterial);
 /*------------------------*/
 
 router.get("/api/user/admin/liststaff", listStaff);

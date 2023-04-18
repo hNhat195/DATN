@@ -50,7 +50,9 @@ const login = async (req, res) => {
   if (!userLogin) return res.status(400).send("Không tìm thấy email");
 
   // Kiểm tra password
-  const passLogin = await bcrypt.compare(req.body.password, userLogin.password);
+  //const passLogin = await bcrypt.compare(req.body.password, userLogin.password);
+  const passLogin = req.body.password === userLogin.password;
+
   if (!passLogin) return res.status(400).send("Mật khẩu không hợp lệ");
 
   // Ký và tạo token
