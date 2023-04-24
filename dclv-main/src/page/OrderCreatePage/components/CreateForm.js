@@ -72,43 +72,9 @@ export default function CreateForm() {
       </Typography>
 
       <Grid container spacing={3} xs={12}>
-        <Grid item xs={12} md={8}>
-          {/* <TextField
-                    required
-                    id="fabric-name"
-                    name="fabric-name"
-                    label="Fabric name"
-                    fullWidth
-                    autoComplete="fabric name"
-                    variant="standard"
-                    onChange={handleName}
-                  /> */}
-          {/* <FormControl fullWidth={true}>
-                  <InputLabel id="fabric-name">Name</InputLabel>
-                  <Select
-                    labelId="fabric-name"
-                    id="fabric-name"
-                    label="Name"
-                    value="fabric-name"
-                  >
-                    <MenuItem>Ten</MenuItem>
-                    <MenuItem>Twenty</MenuItem>
-                    <MenuItem>Thirty</MenuItem>
-                  </Select>
-                  </FormControl> */}
-        </Grid>
+        <Grid item xs={12} md={8}></Grid>
         <Grid item xs={12} md={4}></Grid>
         <Grid item xs={12} md={8}>
-          {/* <TextField
-                    required
-                    id="fabric-material"
-                    name="fabric-material"
-                    label="Material"
-                    fullWidth
-                    autoComplete="fabric material"
-                    variant="standard"
-                    onChange={handleMaterial}
-                  /> */}
           <FormControl fullWidth={true}>
             <InputLabel id="fabric-material">Material</InputLabel>
             <Select
@@ -125,7 +91,6 @@ export default function CreateForm() {
                 setMaterialType(e.target.value);
               }}
               value={fabricMaterial || ""}
-              // value="type0001"
             >
               {materialList.map((item, idx) => {
                 return (
@@ -139,15 +104,6 @@ export default function CreateForm() {
         </Grid>
         <Grid item xs={12} md={4}></Grid>
         <Grid item xs={12} md={8}>
-          {/* <TextField
-                    id="fabric-color"
-                    name="fabric-color"
-                    label="Color"
-                    fullWidth
-                    autoComplete="fabric color"
-                    variant="standard"
-                    onChange={handleColor}
-                  /> */}
           <FormControl fullWidth={true}>
             <InputLabel id="fabric-color">Color</InputLabel>
             <Select
@@ -159,7 +115,6 @@ export default function CreateForm() {
                 console.log(e.target.value);
               }}
               value={fabricColor || ""}
-              // value="ffffff"
             >
               {colorList.map((item, idx) => {
                 return (
@@ -186,20 +141,6 @@ export default function CreateForm() {
               console.log(e.target.value);
             }}
           />
-          {/* <FormControl fullWidth={true}>
-                  <InputLabel id="fabric-length">Length</InputLabel>
-                  <Select
-                    labelId="fabric-length"
-                    id="fabric-length"
-                    label="Length"
-                    fullWidth="true"
-                    //value="fabric-length"
-                  >
-                    <MenuItem>Ten</MenuItem>
-                    <MenuItem>Twenty</MenuItem>
-                    <MenuItem>Thirty</MenuItem>
-                  </Select>
-                  </FormControl> */}
         </Grid>
         <Grid item xs={12} md={4}></Grid>
       </Grid>

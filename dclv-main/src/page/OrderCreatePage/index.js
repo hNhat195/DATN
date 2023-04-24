@@ -77,23 +77,7 @@ export default function OrderCreatePage() {
   const [fabricMaterial, setFabricMaterial] = useState("");
   const [fabricColor, setFabricColor] = useState("");
   const [fabricLength, setFabricLength] = useState("");
-  useEffect(() => {
-    let mounted = true;
-    const fetchOrderDetail = async () => {
-      const response = await orderApi.getOne(id);
-      console.log(response);
-      if (mounted) {
-        setDetail(response);
-      }
-    };
-    fetchOrderDetail();
-
-    return () => {
-      mounted = false;
-    };
-  }, [id, fabricName]);
-
-  console.log(detail);
+  
 
   const handleBack = () => {
     history.push(`/order`);
@@ -135,29 +119,14 @@ export default function OrderCreatePage() {
     event.preventDefault();
   };
 
-  const handleName = () => {
-    let form = new FormData(document.getElementById("order-creation"));
-    setFabricName(form.get("fabric-name"));
-  };
-  const handleMaterial = () => {
-    let form = new FormData(document.getElementById("order-creation"));
-    setFabricMaterial(form.get("fabric-material"));
-  };
-  const handleColor = () => {
-    let form = new FormData(document.getElementById("order-creation"));
-    setFabricColor(form.get("fabric-color"));
-  };
-  const handlePrice = () => {
-    let form = new FormData(document.getElementById("order-creation"));
-    setFabricLength(form.get("fabric-length"));
-  };
+  
 
   return (
     <Container maxWidth="xl" className={classes.orderDetailBox}>
       <Grid container spacing={2}>
         <Grid item xs={9}>
           <Typography variant="h4" className={classes.titlePage}>
-            {"Chi tiết đơn đặt hàng MDH" + detail.orderId}
+
           </Typography>
         </Grid>
       </Grid>
