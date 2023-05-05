@@ -12,7 +12,7 @@
 //   return (
 //     <Box className={classes.root}>
 //       <Container maxWidth="xl">
-        
+
 //         <Grid container spacing={3}>
 //             <Grid item xs={12} sm={2} md={2}>
 //             </Grid>
@@ -27,11 +27,11 @@
 //                     <SearchField />
 //                 </Grid>
 //             </Grid>
-            
+
 //         </Grid>
 //       </Container>
 //     </Box>
-    
+
 //   );
 // }
 
@@ -88,14 +88,14 @@ import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
 import SearchField from "../../components/SearchField";
 import NotificationButton from "../../components/Button/NotificationButton";
-import DateFilter from "../../components/DateFilter"
+import DateFilter from "../../components/DateFilter";
 
 const useStyles = makeStyles(() => ({
   root: {
     padding: "16px",
   },
   contain: {
-    marginBottom: "16px"
+    marginBottom: "16px",
   },
   notificationList: {
     marginTop: "16px",
@@ -116,7 +116,6 @@ function NotificationPage() {
       axios.get("notificationsstaff").then((response) => {
         if (mounted) {
           setNotification(response.data.notificationStaff);
-          console.log(response.data.notificationStaff);
         }
       });
     };
@@ -143,7 +142,10 @@ function NotificationPage() {
         </Grid>
       </Grid>
       {notification && (
-        <NotificationsList className={classes.notificationList} notification={notification} />
+        <NotificationsList
+          className={classes.notificationList}
+          notification={notification}
+        />
       )}
     </div>
   );

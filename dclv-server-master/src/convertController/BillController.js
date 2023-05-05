@@ -19,7 +19,7 @@ async function getNextSequenceValue(sequenceName) {
 
 const createBill = async (req, res) => {
   const id = await getNextSequenceValue("billId");
-  console.log(req.body);
+
   // Change status of FabricRoll from true->false
   const listFabricRoll = await Promise.all(
     req.body.ids?.map(async (item, idx) => {
@@ -30,7 +30,6 @@ const createBill = async (req, res) => {
       return fabricRollId;
     })
   );
-  console.log(listFabricRoll);
 
   // Create Bill and add to list bill of Order
   const billObjId = new mongoose.Types.ObjectId();
@@ -58,7 +57,6 @@ const createBill = async (req, res) => {
 
   ValidateOrder(req.body.orderId);
 
-  console.log(result);
   res.send("Ok");
 };
 
@@ -79,7 +77,7 @@ const getListBill = async (req, res) => {
 const getListBillByIds = async (req, res) => {
   const body = qs.parse(req.body);
   const ids = body.ids || [];
-  console.log(body.ids);
+
   Bill.find({ _id: { $in: ids } })
     .populate({ path: "salesmanID", select: "name" })
     .exec(function (err, result) {

@@ -136,7 +136,6 @@ export default function SignIn() {
               password: formState.values.password,
             });
 
-      console.log(response, "responseresponseresponse");
       localStorage.setItem(
         "user",
         JSON.stringify({ ...response, role: formState.values.role })
@@ -145,7 +144,6 @@ export default function SignIn() {
       history.push("/dashboard");
     } catch (error) {
       setLoginError(true);
-      console.log(error);
     }
   };
 
@@ -182,8 +180,7 @@ export default function SignIn() {
             <Typography
               component="span"
               variant="subtitle1"
-              className={classes.alert}
-            >
+              className={classes.alert}>
               {alert}
             </Typography>
           </div>
@@ -249,8 +246,7 @@ export default function SignIn() {
               onChange={handleChange}
               SelectProps={{
                 native: true,
-              }}
-            >
+              }}>
               <option value="staff">Nhân viên</option>
               <option value="customer">Khách hàng</option>
             </TextField>
@@ -271,8 +267,7 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}
-            >
+              className={classes.submit}>
               Đăng nhập
             </Button>
             <Grid container>

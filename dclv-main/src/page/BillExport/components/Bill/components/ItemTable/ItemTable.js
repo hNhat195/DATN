@@ -44,8 +44,6 @@ function ItemTable(props) {
     "",
   ];
 
-  console.log("ItemTable render", listProductAdded);
-
   const getTotalLength = (prevVal, nextItem) => prevVal + nextItem?.length;
   return (
     <TableContainer className={classes.root}>
@@ -74,8 +72,7 @@ function ItemTable(props) {
                 <TableCell>
                   <Typography
                     variant="subtitle2"
-                    className={classes.capitalize}
-                  >
+                    className={classes.capitalize}>
                     {item?.item?.name}
                   </Typography>
                 </TableCell>

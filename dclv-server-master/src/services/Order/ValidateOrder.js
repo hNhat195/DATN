@@ -8,7 +8,6 @@ async function ValidateOrder(order_id) {
   const order = await Order.findById(mongoose.Types.ObjectId(order_id))
     .populate({ path: "products", populate: { path: "colorCode" } })
     .exec();
-  // console.log(order);
 
   let orderProductMap = new Map();
   order.products.forEach((item) =>
@@ -20,13 +19,13 @@ async function ValidateOrder(order_id) {
 
   //Get list bill info
   const bill_id = order.detailBill;
-  // console.log(bill_id);
+
   let listBillInfo = [];
   for (let i = 0; i < bill_id.length; i++) {
     const bill = await Bill.findById(mongoose.Types.ObjectId(bill_id[i]))
       .populate("fabricRoll")
       .exec();
-    // console.log(bill);
+
     listBillInfo.push(bill);
   }
   if (listBillInfo.length !== 0)
@@ -67,7 +66,7 @@ async function ValidateOrder(order_id) {
       }
     }
   }
-  // console.log(status);
+
   if (
     order.orderStatus[order.orderStatus.length - 1].name !== status &&
     order.orderStatus[order.orderStatus.length - 1].name !== "cancel"
@@ -85,7 +84,7 @@ async function ValidateOrder(order_id) {
     );
   }
   //Update ShippedLength
-  // console.log(order.products);
+
   order.products.forEach((item) => {
     Has.findOneAndUpdate(
       { _id: mongoose.Types.ObjectId(item._id) },
@@ -100,7 +99,6 @@ async function ValidateOrder(order_id) {
       }
     );
   });
-  console.log(orderProductMap);
 }
 
 module.exports = { ValidateOrder };

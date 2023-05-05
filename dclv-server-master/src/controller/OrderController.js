@@ -65,27 +65,23 @@ module.exports = {
             ],
           });
           res.json(result);
-          console.log("get orderlist success")
         }
       });
   },
   create: async (req, res) => {
-    console.log(req.body)
     try {
       const id = await getNextSequenceValue("orderId");
       const asyncRes = await Promise.all(
         req.body.products.map(async (item, idx) => {
-          console.log(item)
           let colorIdList = await Item.find({
             colorCode: item.colorCode,
             // typeId: item.typeId,
           }).exec();
-          console.log(colorIdList);
+
           let colorId = colorIdList[0];
-          for(let i=0; i<colorIdList.length;i++) {
-            colorId = colorIdList[i]
-            if(colorIdList[i].typeId === item.typeId) {
-              console.log("found material")
+          for (let i = 0; i < colorIdList.length; i++) {
+            colorId = colorIdList[i];
+            if (colorIdList[i].typeId === item.typeId) {
               break;
             }
           }
@@ -95,7 +91,7 @@ module.exports = {
             length: item.length,
             shippedLength: 0,
           });
-          console.log(a)
+
           return a._id;
         })
       );
@@ -120,13 +116,9 @@ module.exports = {
         Has.findOneAndUpdate({ _id: item }, { orderId: result._id }).exec();
       });
       //Update Has order id
-
-      console.log(result);
-      console.log("Create order successfully!");
       res.send(result);
     } catch (err) {
       console.log(err);
-      console.log("Create order fail")
     }
   },
 
@@ -198,7 +190,6 @@ module.exports = {
       },
       function (err, result) {
         if (err) {
-          console.log(err);
           return res.json({ message: "Error" });
         } else {
           return res.json(result);
@@ -212,7 +203,7 @@ module.exports = {
       { _id: mongoose.Types.ObjectId(req.params.id) },
       "orderStatus"
     ).exec();
-    console.log("Update", status.orderStatus);
+
     if (status.orderStatus[status.orderStatus.length - 1].name !== "processing")
       Order.findOneAndUpdate(
         { _id: mongoose.Types.ObjectId(req.params.id) },
@@ -223,10 +214,8 @@ module.exports = {
         },
         function (err, result) {
           if (err) {
-            console.log(err);
             return res.json({ message: "Error" });
           } else {
-            console.log(result);
             return res.json(result);
           }
         }
@@ -238,7 +227,7 @@ module.exports = {
       { _id: mongoose.Types.ObjectId(req.params.id) },
       "orderStatus"
     ).exec();
-    console.log("Cancle ", status);
+
     if (status.orderStatus[status.orderStatus.length - 1].name === "processing")
       Order.findOneAndUpdate(
         { _id: mongoose.Types.ObjectId(req.params.id) },
@@ -249,10 +238,8 @@ module.exports = {
         },
         function (err, result) {
           if (err) {
-            console.log(err);
             return res.json({ message: "Error" });
           } else {
-            console.log(result);
             return res.json(result);
           }
         }
@@ -284,13 +271,13 @@ module.exports = {
           },
         },
       ]);
-      console.log("depositBillTotal", depositBillTotal);
+
       let resultBill;
       if (depositBillTotal?.length === 0) resultBill = 0;
       else {
         depositBillTotal.map((item) => (resultBill = item.depositBill));
       }
-      console.log("resultBill", resultBill);
+
       const depositOrderTotal = await Order.aggregate([
         { $project: { _id: 1, orderTime: 1, deposit: 1 } },
         { $addFields: { month: { $month: "$orderTime" } } },
@@ -304,21 +291,19 @@ module.exports = {
           },
         },
       ]);
-      console.log("depositOrderTotal", depositOrderTotal);
+
       let resultOrder;
       if (depositOrderTotal?.length === 0) resultOrder = 0;
       else {
         depositOrderTotal.map((item) => (resultOrder = item.totalDeposit));
       }
-      console.log("resultOrder", resultOrder);
+
       let result;
       result = resultBill + resultOrder;
       if (result === 0) result = "0";
-      console.log("Get Total Deposit successfully");
-      console.log(result);
+
       res.status(200).json(result);
     } catch (err) {
-      console.log(err);
       res.status(500).json({ err });
     }
   },
@@ -347,17 +332,15 @@ module.exports = {
           },
         },
       ]);
-      console.log("Get Total Order By Month successfully");
-      console.log(resultTotalOrder);
+
       let result;
       if (resultTotalOrder?.length === 0) result = "0";
       else {
         resultTotalOrder.map((item) => (result = item.monthlyorder));
       }
-      console.log(result);
+
       res.status(200).json(result);
     } catch (err) {
-      console.log(err);
       res.status(500).json({ err });
     }
   },
@@ -379,11 +362,8 @@ module.exports = {
       })
       .exec(function (err, result) {
         if (err) {
-          console.log(err);
           res.json(err);
         } else {
-          console.log("Get Fabric Type Order Success");
-          console.log(result);
           res.json(result);
         }
       });
@@ -415,12 +395,9 @@ module.exports = {
         },
         { $sort: { _id: 1 } },
       ]);
-      console.log("Get Order Status successfully");
-      console.log(result);
-      console.log(result);
+
       res.status(200).json(result);
     } catch (err) {
-      console.log(err);
       res.status(500).json({ err });
     }
   },
@@ -452,11 +429,9 @@ module.exports = {
         { $match: { "_id.month": monthSel } },
         { $sort: { "_id.date": 1 } },
       ]);
-      console.log("Get Order Monthly successfully");
-      console.log(result);
+
       res.status(200).json(result);
     } catch (err) {
-      console.log(err);
       res.status(500).json({ err });
     }
   },
@@ -521,14 +496,12 @@ module.exports = {
         // { $sort: { countFabrictype: -1 } },
         // { $limit: 5 },
       ]);
-      console.log("Get Order Fabric Type successfully");
-      console.log(result);
+
       res.status(200).json(result);
       // {result.map((item) => (
       //   res.status(200).json(item.fabricRoll)
       // ))}
     } catch (err) {
-      console.log(err);
       res.status(500).json({ err });
     }
   },

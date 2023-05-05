@@ -161,8 +161,6 @@ export default function AddStaffModal({ setRefresh }) {
   const handleOpenAddStaff = (e) => {
     e.stopPropagation();
     setOpen(true);
-
-    console.log("Click Add Staff");
   };
 
   const handleClose = (e) => {
@@ -176,7 +174,6 @@ export default function AddStaffModal({ setRefresh }) {
         alert("Vui lòng điền đầy đủ thông tin nhân viên!");
       else {
         try {
-          console.log(staff);
           await staffApi.createStaff(staff);
           setOpen(false);
           setRefresh((prevState) => !prevState);
@@ -212,15 +209,13 @@ export default function AddStaffModal({ setRefresh }) {
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
-        }}
-      >
+        }}>
         <Card>
           <CardContent>
             <Typography
               gutterBottom
               variant="h6"
-              className={classes.titleModal}
-            >
+              className={classes.titleModal}>
               Thêm nhân viên mới
             </Typography>
             <form className={classes.formModal} autoComplete="off">
@@ -228,14 +223,12 @@ export default function AddStaffModal({ setRefresh }) {
                 <FormControl
                   fullWidth
                   margin="dense"
-                  style={{ marginRight: "10px" }}
-                >
+                  style={{ marginRight: "10px" }}>
                   <InputLabel htmlFor="firstname-staff"></InputLabel>
                   <Typography
                     gutterBottom
                     variant="h6"
-                    className={classes.btnColor}
-                  >
+                    className={classes.btnColor}>
                     Họ và tên
                   </Typography>
                   <TextField
@@ -255,8 +248,7 @@ export default function AddStaffModal({ setRefresh }) {
                 <Typography
                   gutterBottom
                   variant="h6"
-                  className={classes.btnColor}
-                >
+                  className={classes.btnColor}>
                   Số điện thoại
                 </Typography>
                 <TextField
@@ -275,8 +267,7 @@ export default function AddStaffModal({ setRefresh }) {
                 <Typography
                   gutterBottom
                   variant="h6"
-                  className={classes.btnColor}
-                >
+                  className={classes.btnColor}>
                   Email
                 </Typography>
                 <TextField
@@ -296,8 +287,7 @@ export default function AddStaffModal({ setRefresh }) {
                 <Typography
                   gutterBottom
                   variant="h6"
-                  className={classes.btnColor}
-                >
+                  className={classes.btnColor}>
                   Mật khẩu
                 </Typography>
                 <TextField
@@ -320,14 +310,12 @@ export default function AddStaffModal({ setRefresh }) {
                 <FormControl
                   fullWidth
                   margin="dense"
-                  style={{ marginRight: "10px" }}
-                >
+                  style={{ marginRight: "10px" }}>
                   <InputLabel htmlFor="email-staff"></InputLabel>
                   <Typography
                     gutterBottom
                     variant="h6"
-                    className={classes.btnColor}
-                  >
+                    className={classes.btnColor}>
                     Giới tính
                   </Typography>
                   <TextField
@@ -335,8 +323,7 @@ export default function AddStaffModal({ setRefresh }) {
                     select
                     value={gender}
                     onChange={handleSelectGender}
-                    variant="outlined"
-                  >
+                    variant="outlined">
                     {genders.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.value}
@@ -347,14 +334,12 @@ export default function AddStaffModal({ setRefresh }) {
                 <FormControl
                   fullWidth
                   margin="dense"
-                  style={{ marginLeft: "10px" }}
-                >
+                  style={{ marginLeft: "10px" }}>
                   <InputLabel htmlFor="email-staff"></InputLabel>
                   <Typography
                     gutterBottom
                     variant="h6"
-                    className={classes.btnColor}
-                  >
+                    className={classes.btnColor}>
                     Ngày sinh
                   </Typography>
                   <TextField
@@ -381,8 +366,7 @@ export default function AddStaffModal({ setRefresh }) {
                 <Typography
                   gutterBottom
                   variant="h6"
-                  className={classes.btnColor}
-                >
+                  className={classes.btnColor}>
                   Địa chỉ
                 </Typography>
                 <TextField
@@ -399,14 +383,12 @@ export default function AddStaffModal({ setRefresh }) {
               <FormControl
                 fullWidth
                 margin="dense"
-                style={{ marginBottom: "10px" }}
-              >
+                style={{ marginBottom: "10px" }}>
                 <InputLabel htmlFor="email-staff"></InputLabel>
                 <Typography
                   gutterBottom
                   variant="h6"
-                  className={classes.btnColor}
-                >
+                  className={classes.btnColor}>
                   Role
                 </Typography>
                 <TextField
@@ -414,8 +396,7 @@ export default function AddStaffModal({ setRefresh }) {
                   select
                   value={role}
                   onChange={handleSelectRole}
-                  variant="outlined"
-                >
+                  variant="outlined">
                   {roles.map((option) => (
                     <MenuItem key={option.value} value={option.role}>
                       {option.value}
@@ -428,8 +409,7 @@ export default function AddStaffModal({ setRefresh }) {
                   startIcon={<Cancel />}
                   size="large"
                   className={classes.btnCancel}
-                  onClick={handleClose}
-                >
+                  onClick={handleClose}>
                   <Typography variant="h6" className={classes.btnCancelTitle}>
                     Hủy
                   </Typography>

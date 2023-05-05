@@ -43,7 +43,7 @@ function StaffDetail() {
       mounted = false;
     };
   }, [id]);
-  console.log(staff);
+
   return (
     <Box className={classes.root}>
       <Grid container className={classes.contain} space={3}>
@@ -53,8 +53,7 @@ function StaffDetail() {
           sm={3}
           md={3}
           xs={12}
-          className={classes.buttonProfile}
-        >
+          className={classes.buttonProfile}>
           <Grid item sm={12} md={12} xs={12} className={classes.ProfileCard}>
             <ProfileCardComp staff={staff} />
           </Grid>

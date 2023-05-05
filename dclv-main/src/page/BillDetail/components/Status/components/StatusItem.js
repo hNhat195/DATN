@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 function StatusItem(props) {
   const { index, item, isLast, numberOfFailed } = props;
   const classes = useStyles();
-  console.log(index);
+
   return (
     <TimelineItem>
       <TimelineSeparator>
@@ -73,8 +73,7 @@ function StatusItem(props) {
                     (item.name === "completed" && classes.successTypo) ||
                     (item.name === "failed" && classes.failTypo)
                   : classes.pastTypo
-              }
-            >
+              }>
               {(item.name === "exported" && "Đã xuất") ||
                 (item.name === "shipping" && "Đang vận chuyển") ||
                 (item.name === "completed" && "Giao hàng thành công") ||
@@ -95,8 +94,7 @@ function StatusItem(props) {
                     (item.name === "completed" && classes.successTypo) ||
                     (item.name === "failed" && classes.failTypo)
                   : classes.pastTypo
-              }
-            >
+              }>
               {moment(item.date).format("DD/MM/YYYY")}
             </Typography>
           </Grid>
@@ -104,8 +102,7 @@ function StatusItem(props) {
 
         <Typography
           variant="subtitle1"
-          className={isLast ? "" : classes.pastTypo}
-        >
+          className={isLast ? "" : classes.pastTypo}>
           {(item.name === "exported" &&
             "Đơn hàng đã được xuất, chuẩn bị vận chuyển") ||
             (item.name === "shipping" && "Đơn hàng đang được vận chuyển") ||
@@ -119,8 +116,7 @@ function StatusItem(props) {
         {item.reason ? (
           <Typography
             variant="subtitle1"
-            className={isLast ? classes.failTypo : classes.pastTypo}
-          >
+            className={isLast ? classes.failTypo : classes.pastTypo}>
             Lí do: {item.reason}
           </Typography>
         ) : null}

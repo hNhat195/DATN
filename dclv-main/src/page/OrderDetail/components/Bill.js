@@ -114,10 +114,8 @@ export default function Bill(props) {
     let mounted = true;
 
     const fetchFabricRoll = async (listId) => {
-      // console.log(listId);
       const response = await productApi.getListById(listId);
       if (mounted) setFabricRolls(response);
-      console.log(response);
     };
 
     fetchFabricRoll({ ids: bill.fabricRoll });
@@ -169,8 +167,7 @@ export default function Bill(props) {
             (status === "shipping" && classes.deliveryTypo) ||
             (status === "completed" && classes.successTypo) ||
             (status === "failed" && classes.failTypo)
-          }
-        >
+          }>
           {(status === "exported" && "Đã xuất") ||
             (status === "shipping" && "Đang vận chuyển") ||
             (status === "completed" && "Giao hàng thành công") ||
@@ -187,8 +184,7 @@ export default function Bill(props) {
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
-        }}
-      >
+        }}>
         <Card>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
@@ -198,8 +194,7 @@ export default function Bill(props) {
               <Table
                 stickyHeader
                 sx={{ minWidth: "40vh" }}
-                aria-label="simple table"
-              >
+                aria-label="simple table">
                 <TableHead>
                   <TableRow>
                     <TableCell className={classes.headerTable}>STT</TableCell>
@@ -217,20 +212,19 @@ export default function Bill(props) {
                   {fabricRolls.map((row, idx) => (
                     <TableRow
                       key={idx}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                      }}>
                       <TableCell
                         component="th"
                         scope="row"
-                        className={classes.tableContentBlack}
-                      >
+                        className={classes.tableContentBlack}>
                         {idx + 1}
                       </TableCell>
                       <TableCell
                         component="th"
                         scope="row"
-                        className={classes.tableContentBlack}
-                      >
+                        className={classes.tableContentBlack}>
                         {row.item.name}
                       </TableCell>
                       <TableCell className={classes.tableContentBlack}>

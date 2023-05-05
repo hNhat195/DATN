@@ -60,11 +60,9 @@ const getProductList1 = async (req, res) => {
         },
       },
     ]);
-    console.log("Get all Fabric Roll successfully!");
 
     res.status(200).json(products);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err });
   }
 };
@@ -123,17 +121,15 @@ const getProductList = async (req, res) => {
       },
       { $unwind: "$item" },
     ]);
-    console.log("Get all Fabric Roll successfully!");
+
     res.status(200).json(products);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err });
   }
 };
 
 //Get specific product with its id
 const getProductById = async (req, res) => {
-  console.log(mongoose.Types.ObjectId(req.query.id));
   try {
     const product = await FabricRoll.aggregate([
       { $match: { _id: mongoose.Types.ObjectId(req.query.id) } },
@@ -187,8 +183,7 @@ const getProductById = async (req, res) => {
       },
       { $unwind: "$item" },
     ]);
-    console.log(product);
-    console.log("Get Fabric Roll successfully", product);
+
     res.status(200).json(product[0]);
   } catch (err) {
     res.status(500).json(err);
@@ -253,7 +248,6 @@ const getListFabricRollWithIds = async (req, res) => {
       },
       { $unwind: "$item" },
     ]);
-    console.log("Get List Fabric Roll successfully");
     res.status(200).json(result);
     // res.status(200).json(result);
   } catch (err) {
@@ -264,7 +258,7 @@ const getListFabricRollWithIds = async (req, res) => {
 //Get sort list fabric roll with ids
 const getFabricRollOfBill = async (req, res) => {
   const body = qs.parse(req.body);
-  // console.log(body);
+
   const ids = body.ids || [];
   ids.forEach((item) => ids.push(mongoose.Types.ObjectId(item)));
   try {
@@ -320,7 +314,7 @@ const getFabricRollOfBill = async (req, res) => {
       },
       { $unwind: "$item" },
     ]);
-    console.log("Get List Fabric Roll of Bill successfully");
+
     var lastResult = _.mapValues(_.groupBy(result, "colorCode"), (clist) =>
       clist.map((item) => _.omit(item, "colorCode"))
     );
@@ -350,7 +344,6 @@ const updateMarketPrice = async (req, res) => {
   try {
     const body = req.body;
     const id = req.params.id;
-    console.log(id, body);
 
     const newMarketPrice = new MarketPrice({
       dayApplied: Date.now(),
@@ -371,7 +364,6 @@ const updateMarketPrice = async (req, res) => {
       }
     );
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err });
   }
 };
@@ -393,8 +385,7 @@ const getChartWarehouseTrue = async (req, res) => {
       // }}
       // { $count: "warehouseId" }
     ]);
-    console.log("Get Chart Warehouse successfully");
-    console.log(result);
+
     res.status(200).json(result);
   } catch (err) {
     console.log(err);
@@ -510,8 +501,7 @@ const getFabricTypeWarehouse = async (req, res) => {
       // { $sort: { countFabrictype: -1 } },
       // { $limit: 7 },
     ]);
-    console.log("Get Fabric Type Warehouse successfully");
-    // console.log(result);
+
     res.status(200).json(result);
   } catch (err) {
     console.log(err);
@@ -601,24 +591,19 @@ async function getMaterialByColor(req, res) {
 }
 
 async function getColorByMaterial(req, res) {
-  
   const body = req.body;
 
   const ftype = await FabricType.findOne({ id: body.typeName });
   let filteredList = [];
 
   if (ftype != null) {
-    
     let materialId = String(ftype._id);
 
     const colorList = await Item.find();
 
-    
-
     filteredList = colorList.filter((item) => {
       return item.typeId == materialId;
     });
-    
   }
 
   return res.status(200).json(filteredList);

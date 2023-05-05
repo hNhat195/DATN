@@ -56,7 +56,7 @@ export default function OrderDetail() {
   const history = useHistory();
   const { id } = useParams();
   const role = localStorage.getItem("role");
-  console.log(id);
+
   const [detail, setDetail] = useState({
     orderStatus: [],
     products: [],
@@ -67,7 +67,7 @@ export default function OrderDetail() {
     let mounted = true;
     const fetchOrderDetail = async () => {
       const response = await orderApi.getOne(id);
-      console.log(response);
+
       if (mounted) {
         setDetail(response);
       }
@@ -78,8 +78,6 @@ export default function OrderDetail() {
       mounted = false;
     };
   }, [id]);
-
-  console.log(detail);
 
   const handleBack = () => {
     history.push(`/order`);
@@ -119,8 +117,7 @@ export default function OrderDetail() {
           <Button
             startIcon={<Cancel />}
             size="large"
-            className={classes.btnCancel}
-          >
+            className={classes.btnCancel}>
             <Typography variant="h6" className={classes.btnCancelTitle}>
               Hủy
             </Typography>

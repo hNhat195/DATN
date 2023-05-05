@@ -67,7 +67,7 @@ function Product() {
   const handleFilterChange = (filter) => {
     setFilter(filter);
   };
-  console.log(product);
+
   return (
     <div className={classes.root}>
       <Grid container>
@@ -87,8 +87,10 @@ function Product() {
           </Grid>
         </Grid>
       </Grid>
-      <ListTypeHeader/>
-      {product?.map((item, idx) => <TypeItem key={idx} fabricType={item}/>)}
+      <ListTypeHeader />
+      {product?.map((item, idx) => (
+        <TypeItem key={idx} fabricType={item} />
+      ))}
     </div>
   );
 }

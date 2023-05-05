@@ -20,7 +20,7 @@ async function getNextSequenceValue(sequenceName) {
 
 const createBill = async (req, res) => {
   const id = await getNextSequenceValue("billId");
-  console.log(req.body);
+
   // Change status of FabricRoll from true->false
   const listFabricRoll = await Promise.all(
     req.body.ids?.map(async (item, idx) => {
@@ -31,14 +31,13 @@ const createBill = async (req, res) => {
       return fabricRollId;
     })
   );
-  console.log(listFabricRoll);
+
   // Update Has-> Already have in validate
   // const hasList = await Has.find({
   //   orderId: mongoose.Types.ObjectId(req.body.orderID),
   // })
   //   .populate("colorCode", "colorCode -_id")
   //   .exec();
-  // console.log(hasList);
   // const hasUpdate = await Promise.all(
   //   listFabricRoll.map(async (item, idx) => {
   //     for (let i = 0; i < hasList.length; i++) {
@@ -81,7 +80,6 @@ const createBill = async (req, res) => {
 
   ValidateOrder(req.body.orderId);
 
-  console.log(result);
   res.send("Ok");
 };
 
@@ -97,11 +95,9 @@ const getListBill = async (req, res) => {
   //aggregate bo qua nhung key trong
   try {
     const result = await Bill.aggregate([{ $match: {} }]);
-    console.log("Get Bill Completed successfully");
-    console.log(result);
+
     res.status(200).json(result);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err });
   }
   Bill.find({})
@@ -110,7 +106,6 @@ const getListBill = async (req, res) => {
     .populate({ path: "salesmanID" })
     .exec(function (err, result) {
       if (err) {
-        console.log(err);
         return res.json({ message: "Error" });
       } else {
         return res.json(result);
@@ -125,7 +120,6 @@ const getListBillComplete = async (req, res) => {
     .populate({ path: "salesmanID" })
     .exec(function (err, result) {
       if (err) {
-        console.log(err);
         return res.json({ message: "Error" });
       } else {
         const newResult = result.filter((item) => {
@@ -150,7 +144,6 @@ const getListBillUncomplete = async (req, res) => {
     .populate({ path: "salesmanID" })
     .exec(function (err, result) {
       if (err) {
-        console.log(err);
         return res.json({ message: "Error" });
       } else {
         const newResult = result.filter((item) => {
@@ -172,7 +165,7 @@ const getListBillUncomplete = async (req, res) => {
 const getListBillByIds = async (req, res) => {
   // const body = qs.parse(req.body);
   // const ids = body.ids || [];
-  // console.log(body.ids);
+
   // Bill.find({ _id: { $in: ids } })
   //   .populate({ path: "salesmanID", select: "name" })
   //   .exec(function (err, result) {
@@ -183,11 +176,8 @@ const getListBillByIds = async (req, res) => {
     const body = qs.parse(req.body);
     const ids = body.ids || [];
     const result = await Bill.aggregate([{ $match: { _id: ids } }]);
-    console.log("Get Bill By Ids Completed successfully");
-    console.log(result);
     res.status(200).json(result);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err });
   }
 };
@@ -206,11 +196,9 @@ const getListBillByOrderId = async (req, res) => {
   try {
     const id = mongoose.Types.ObjectId(req.params.orderid);
     const result = await Bill.aggregate([{ $match: { orderID: id } }]);
-    console.log("Get list bill of ${_id} success!");
-    console.log(result);
+
     res.status(200).json(result);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err });
   }
 };
@@ -289,11 +277,9 @@ const getBillDetail = async (req, res) => {
         },
       },
     ]);
-    console.log("Get Bill Detail successfully");
-    console.log(result[0]);
+
     res.status(200).json(result[0]);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err });
   }
 };
@@ -325,25 +311,20 @@ const getBillComplete = async (req, res) => {
       },
     ]);
 
-    console.log("Get Bill Completed successfully");
-    console.log(resultBillCompleted);
     let result = 0;
     if (resultBillCompleted?.length === 0) {
-      result = '0';
+      result = "0";
+    } else {
+      resultBillCompleted.map((item) => (result = item.billcompleted));
     }
-    else {
-      resultBillCompleted.map((item) => result = item.billcompleted);
-    }
-    console.log(result);
+
     res.status(200).json(result);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err });
   }
 };
 
 const getFabricRollBillCompleted = async (req, res) => {
-
   try {
     if (req.query.date) {
       selectDate = req.query.date;
@@ -366,17 +347,14 @@ const getFabricRollBillCompleted = async (req, res) => {
       { $count: "fabricRoll" },
     ]);
 
-    console.log("Get Total Fabric Roll Bill Completed successfully");
-    console.log(resultFabricRollBill);
     let result;
-    if (resultFabricRollBill?.length === 0) result = '0';
+    if (resultFabricRollBill?.length === 0) result = "0";
     else {
-      resultFabricRollBill.map((item) => result = item.fabricRoll);
+      resultFabricRollBill.map((item) => (result = item.fabricRoll));
     }
-    console.log(result);
+
     res.status(200).json(result);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err });
   }
 };
@@ -451,11 +429,8 @@ const getBillFabricTypeSell = async (req, res) => {
       { $limit: 5 },
     ]);
 
-    console.log("Get Bill Fabric Type Sell successfully");
-    console.log(result);
     res.status(200).json(result);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err });
   }
 };
@@ -486,11 +461,9 @@ const getBillStatus = async (req, res) => {
       },
       { $sort: { _id: 1 } },
     ]);
-    console.log("Get Bill Status successfully");
-    console.log(result);
+
     res.status(200).json(result);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err });
   }
 };
@@ -517,8 +490,6 @@ const getBillCompletePicker = async (req, res) => {
       },
     ]);
 
-    console.log("Get Bill Completed successfully");
-    console.log(result);
     if (result.length === 0) {
       res.status(200).json(0);
     }
@@ -527,7 +498,6 @@ const getBillCompletePicker = async (req, res) => {
       result.map((item) => res.status(200).json(item.billcompleted));
     }
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err });
   }
 };
@@ -541,10 +511,8 @@ const updateBillStatus = async (req, res) => {
       },
       function (err, result) {
         if (err) {
-          console.log(err);
           res.json({ message: err });
         } else {
-          console.log("Update bill status successfull");
           res.json(result);
         }
       }
@@ -553,7 +521,6 @@ const updateBillStatus = async (req, res) => {
     console.log(err);
   }
 };
-
 
 module.exports = {
   getListBill,

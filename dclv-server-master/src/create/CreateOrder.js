@@ -49,7 +49,7 @@ async function updateProduct() {
   // console.log(listOrderId);
   listOrderId.forEach(async (item) => {
     const listHasOfOrder = await getListHasOfOrder(item);
-    console.log(listHasOfOrder, item);
+
     Order.findOneAndUpdate(
       { _id: item },
       { products: listHasOfOrder },

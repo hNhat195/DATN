@@ -28,9 +28,6 @@ function BillExport() {
   const history = useHistory();
   const [listProductAdded, setListProductAdded] = useState([]);
 
-  console.log("Bill render");
-  console.log(listProductAdded);
-
   const handleAddProduct = (product) => {
     setListProductAdded([...listProductAdded, product]);
   };
@@ -59,11 +56,10 @@ function BillExport() {
       orderID: id,
       clientID: order.clientID !== undefined ? order.clientID : "",
       fabricRoll: listFabricRollId,
-      note: order.note !== undefined ? order.note : ""
+      note: order.note !== undefined ? order.note : "",
     };
     let result = await billApi.createBill(JSON.stringify(createBillData));
-    console.log(result); 
-  }
+  };
 
   return (
     <div>

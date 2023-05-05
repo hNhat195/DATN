@@ -90,8 +90,7 @@ export default function CreateForm() {
                 setMaterialId(mat._id);
                 setMaterialType(e.target.value);
               }}
-              value={fabricMaterial || ""}
-            >
+              value={fabricMaterial || ""}>
               {materialList.map((item, idx) => {
                 return (
                   <MenuItem key={idx} value={item.id}>
@@ -112,10 +111,8 @@ export default function CreateForm() {
               label="Color"
               onChange={(e) => {
                 setFabricColor(e.target.value);
-                console.log(e.target.value);
               }}
-              value={fabricColor || ""}
-            >
+              value={fabricColor || ""}>
               {colorList.map((item, idx) => {
                 return (
                   <MenuItem key={idx} value={item.colorCode}>
@@ -138,7 +135,6 @@ export default function CreateForm() {
             variant="standard"
             onChange={(e) => {
               setFabricLength(e.target.value);
-              console.log(e.target.value);
             }}
           />
         </Grid>

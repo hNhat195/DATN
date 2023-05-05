@@ -67,7 +67,7 @@ export default function OrderCreatePage() {
   const history = useHistory();
   const { id } = useParams();
   const role = localStorage.getItem("role");
-  console.log(id);
+
   const [detail, setDetail] = useState({
     orderStatus: [],
     products: [],
@@ -77,7 +77,6 @@ export default function OrderCreatePage() {
   const [fabricMaterial, setFabricMaterial] = useState("");
   const [fabricColor, setFabricColor] = useState("");
   const [fabricLength, setFabricLength] = useState("");
-  
 
   const handleBack = () => {
     history.push(`/order`);
@@ -96,14 +95,9 @@ export default function OrderCreatePage() {
     //   else setOrderList(response);
     // }
     const response = await orderApi.create(postData);
-    console.log(response);
   };
 
   const handleSubmit = async (event) => {
-    console.log("Name: ", fabricName);
-    console.log("Material: ", fabricMaterial);
-    console.log("Color: ", fabricColor);
-    console.log("Length: ", fabricLength);
     let postData = {
       note: "front end call api",
       receiverName: "Front end",
@@ -111,7 +105,11 @@ export default function OrderCreatePage() {
       deposit: 10,
       clientID: null,
       products: await [
-        { colorCode: fabricColor, typeId: fabricMaterial, length: Number.parseInt(fabricLength) },
+        {
+          colorCode: fabricColor,
+          typeId: fabricMaterial,
+          length: Number.parseInt(fabricLength),
+        },
       ],
       receiverAddress: "front end test",
     };
@@ -119,15 +117,11 @@ export default function OrderCreatePage() {
     event.preventDefault();
   };
 
-  
-
   return (
     <Container maxWidth="xl" className={classes.orderDetailBox}>
       <Grid container spacing={2}>
         <Grid item xs={9}>
-          <Typography variant="h4" className={classes.titlePage}>
-
-          </Typography>
+          <Typography variant="h4" className={classes.titlePage}></Typography>
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.root}>
@@ -145,8 +139,7 @@ export default function OrderCreatePage() {
           <Button
             startIcon={<Cancel />}
             size="large"
-            className={classes.btnCancel}
-          >
+            className={classes.btnCancel}>
             <Typography variant="h6" className={classes.btnCancelTitle}>
               Hủy
             </Typography>

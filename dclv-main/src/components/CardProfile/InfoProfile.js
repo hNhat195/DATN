@@ -30,13 +30,9 @@ const useStyles = makeStyles(() => ({
 function InfoProfile({ staff }) {
   const classes = useStyles();
 
-  const handleClickChangePhone = () => {
-    console.log("Modal Change Phone");
-  };
+  const handleClickChangePhone = () => {};
 
-  const handleClickChangeAddress = () => {
-    console.log("Modal Change Addresss");
-  };
+  const handleClickChangeAddress = () => {};
 
   return (
     <Box className={classes.container}>
@@ -74,8 +70,7 @@ function InfoProfile({ staff }) {
                     aria-label="EditPhone"
                     onClick={handleClickChangePhone}
                     //onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
+                    edge="end">
                     <EditIcon />
                   </IconButton>
                 </InputAdornment>
@@ -138,8 +133,7 @@ function InfoProfile({ staff }) {
                     aria-label="EditAddress"
                     onClick={handleClickChangeAddress}
                     //onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
+                    edge="end">
                     <EditIcon />
                   </IconButton>
                 </InputAdornment>

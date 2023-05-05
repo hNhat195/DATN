@@ -70,12 +70,9 @@ export default function CustomerInfo(props) {
                   <LocationOn />
                 </td>
                 <td>
-                  {/* {console.log("Classes: ")}
-                  {console.log(classes)} */}
                   <Typography
                     component="p"
-                    className={`${classes?.infoTable} ${classes?.name}`}
-                  >
+                    className={`${classes?.infoTable} ${classes?.name}`}>
                     {props.customer?.name || ""}
                   </Typography>
                   <Typography variant="subtitle1">
@@ -129,9 +126,10 @@ export default function CustomerInfo(props) {
                 <td>
                   <Typography
                     variant="subtitle1"
-                    className={clsx(classes.infoTable, classes.name)}
-                  >
-                    {props?.receiverName !== undefined ? props?.receiverName : ""}
+                    className={clsx(classes.infoTable, classes.name)}>
+                    {props?.receiverName !== undefined
+                      ? props?.receiverName
+                      : ""}
                   </Typography>
                   <Typography variant="subtitle1">
                     {props?.receiverAddress !== undefined

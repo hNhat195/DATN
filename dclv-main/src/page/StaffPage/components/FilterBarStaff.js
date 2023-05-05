@@ -37,7 +37,6 @@ function FilterBarStaff(props) {
     props;
 
   const handleChange = (event) => {
-    console.log("event.target.valueevent.target.value", event.target.value);
     setFilterPos(event.target.value);
   };
   return (
@@ -51,8 +50,7 @@ function FilterBarStaff(props) {
               id="demo-simple-select"
               value={filterPos || "all"}
               label="Chức vụ"
-              onChange={handleChange}
-            >
+              onChange={handleChange}>
               <option value={"all"}>Tất cả</option>
               <option value={"SALESMAN"}>Nhân viên bán hàng</option>
               <option value={"SHIPPER"}>Nhân viên giao hàng</option>
@@ -69,8 +67,7 @@ function FilterBarStaff(props) {
           md={4}
           sm={3}
           xs={12}
-          className={classes.notiSearch}
-        >
+          className={classes.notiSearch}>
           <Grid item xs={2}>
             <NotificationButton />
           </Grid>

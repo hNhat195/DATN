@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 function AnotherInfo(props) {
   const { bill } = props;
-  console.log("Bill", bill);
   const classes = useStyles();
   return (
     <Card>

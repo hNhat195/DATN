@@ -147,19 +147,18 @@ const createNewStaff = async (req, res) => {
 };
 
 const loginstaff = async (req, res) => {
-  // Validate user
-  console.log(req.body);
   const { error } = loginValidation(req.body);
   if (error) return res.status(403).send(error.details[0].message);
 
   // Kiểm tra email
   const userLogin = await Staff.findOne({ email: req.body.email });
-  if (!userLogin) return res.status(403).send("Không tìm thấy email");
+  if (!userLogin)
+    return res.status(403).send("Tài khoản hoặc mật khẩu không đúng");
 
   // Kiểm tra password
   const passLogin = await bcrypt.compare(req.body.password, userLogin.password);
   if (!passLogin) {
-    return res.status(403).send("Mật khẩu không hợp lệ");
+    return res.status(403).send("Tài khoản hoặc mật khẩu không đúng");
   }
 
   // Ký và tạo token

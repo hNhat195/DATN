@@ -133,7 +133,6 @@ export default function Bill(props) {
       const response = await productApi.getListById(listId);
 
       if (mounted) setListFabricRoll(response);
-      // console.log(response);
     };
 
     fetchFabricRoll({ ids: bill.fabricRoll });
@@ -159,8 +158,7 @@ export default function Bill(props) {
       <Grid
         item
         xs={2}
-        className={clsx(classes.billId, classes.verticalCenter)}
-      >
+        className={clsx(classes.billId, classes.verticalCenter)}>
         HD{bill.billID}
       </Grid>
       <Grid item xs={2} className={classes.verticalCenter}>
@@ -185,8 +183,7 @@ export default function Bill(props) {
               : bill.status[bill.status.length - 1].name === "completed"
               ? classes.successTypo
               : classes.failTypo
-          }
-        >
+          }>
           {bill.status[bill.status.length - 1].name === "exported"
             ? "Đã xuất"
             : bill.status[bill.status.length - 1].name === "shipping"
@@ -206,8 +203,7 @@ export default function Bill(props) {
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
-        }}
-      >
+        }}>
         <Card>
           <CardContent>
             <Typography gutterBottom variant="h4" component="h2">
@@ -217,8 +213,7 @@ export default function Bill(props) {
               <Table
                 stickyHeader
                 sx={{ minWidth: "40vh" }}
-                aria-label="simple table"
-              >
+                aria-label="simple table">
                 <TableHead>
                   <TableRow>
                     <TableCell className={classes.headerTable}>STT</TableCell>
@@ -236,20 +231,19 @@ export default function Bill(props) {
                   {listFabricRoll?.map((row, idx) => (
                     <TableRow
                       key={idx}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                      }}>
                       <TableCell
                         component="th"
                         scope="row"
-                        className={classes.tableContentBlack}
-                      >
+                        className={classes.tableContentBlack}>
                         {idx + 1}
                       </TableCell>
                       <TableCell
                         component="th"
                         scope="row"
-                        className={classes.tableContentBlack}
-                      >
+                        className={classes.tableContentBlack}>
                         {row?.colorCode}
                       </TableCell>
                       <TableCell className={classes.tableContentBlack}>

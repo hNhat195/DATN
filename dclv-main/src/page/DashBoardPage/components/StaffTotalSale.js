@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { alpha, styled } from "@material-ui/core/styles";
 import { Card, Typography } from "@material-ui/core";
 // utils
-import {fNumber} from "../../../utils/formatNumber";
+import { fNumber } from "../../../utils/formatNumber";
 import orderApi from "../../../api/orderApi";
 
 const RootStyle = styled(Card)(({ theme }) => ({
@@ -35,14 +35,13 @@ export default function StaffTotalSale() {
   const [orderTotal, setOrderTotal] = useState([]);
   useEffect(() => {
     const fetCountOrder = async () => {
-        try {
-          const response = await orderApi.countAllOrder();
-          console.log(response);
-          setOrderTotal(response);
-        }catch (error) {
-          console.log("Failed to fetch order count", error);
-        }
-    }
+      try {
+        const response = await orderApi.countAllOrder();
+        setOrderTotal(response);
+      } catch (error) {
+        console.log("Failed to fetch order count", error);
+      }
+    };
     fetCountOrder();
   }, []);
   return (
