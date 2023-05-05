@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 import orderApi from "../../../api/orderApi";
 import productApi from "../../../api/productApi";
 
-export default function CreateForm() {
+export default function CreateForm({productList, setProductList}) {
   const [colorList, setColorList] = useState([]);
   const [materialList, setMaterialList] = useState([]);
   const [fabricColor, setFabricColor] = useState("");
@@ -21,6 +21,8 @@ export default function CreateForm() {
   const [fabricLength, setFabricLength] = useState("");
   const [materialId, setMaterialId] = useState("");
   const [materialType, setMaterialType] = useState("");
+  const [materialName, setMaterialName] = useState("");
+  //const [productList, setProductList] = useState([])
 
   const postOrder = async (postData) => {
     const response = await orderApi.create(postData);
@@ -34,16 +36,22 @@ export default function CreateForm() {
       receiverPhone: "094444",
       deposit: 10,
       clientID: null,
-      products: await [
-        {
-          colorCode: fabricColor,
-          typeId: materialId,
-          length: Number.parseInt(fabricLength),
-        },
-      ],
+      products: productList,
       receiverAddress: "front end test",
     };
     postOrder(postData);
+    event.preventDefault();
+  };
+
+  const handleAdd = (event) => {
+    let addData = {
+      colorCode: fabricColor,
+      typeId: materialName,
+      length: Number.parseInt(fabricLength),
+    };
+    
+    setProductList([...productList, addData])
+    
     event.preventDefault();
   };
 
@@ -68,7 +76,7 @@ export default function CreateForm() {
   return (
     <form id="order-creation" onSubmit={handleSubmit}>
       <Typography variant="h6" gutterBottom>
-        Order Creation
+        Tạo đơn hàng
       </Typography>
 
       <Grid container spacing={3} xs={12}>
@@ -76,7 +84,7 @@ export default function CreateForm() {
         <Grid item xs={12} md={4}></Grid>
         <Grid item xs={12} md={8}>
           <FormControl fullWidth={true}>
-            <InputLabel id="fabric-material">Material</InputLabel>
+            <InputLabel id="fabric-material">Chất liệu</InputLabel>
             <Select
               labelId="fabric-material"
               id="fabric-material"
@@ -86,7 +94,7 @@ export default function CreateForm() {
                 const mat = await materialList.find((x) => {
                   return x.id === e.target.value;
                 });
-
+                setMaterialName(mat.name)
                 setMaterialId(mat._id);
                 setMaterialType(e.target.value);
               }}
@@ -104,7 +112,7 @@ export default function CreateForm() {
         <Grid item xs={12} md={4}></Grid>
         <Grid item xs={12} md={8}>
           <FormControl fullWidth={true}>
-            <InputLabel id="fabric-color">Color</InputLabel>
+            <InputLabel id="fabric-color">Mã màu</InputLabel>
             <Select
               labelId="fabric-color"
               id="fabric-color"
@@ -129,10 +137,11 @@ export default function CreateForm() {
             required
             id="fabric-length"
             name="fabric-length"
-            label="Length"
+            label="Số cây vải"
             fullWidth
             autoComplete="fabric length"
             variant="standard"
+            type="number"
             onChange={(e) => {
               setFabricLength(e.target.value);
             }}
@@ -140,8 +149,11 @@ export default function CreateForm() {
         </Grid>
         <Grid item xs={12} md={4}></Grid>
       </Grid>
+      <Button variant="contained" color="primary" type="button" onClick={handleAdd}>
+        Thêm
+      </Button>
       <Button variant="contained" color="primary" type="submit">
-        Submit
+        Tạo đơn hàng
       </Button>
     </form>
   );

@@ -20,6 +20,7 @@ import { ArrowBack, ArrowUpward, Cancel, Publish } from "@material-ui/icons";
 import DefaultButton from "../../components/Button/DefaultButton";
 import { useHistory, useParams } from "react-router-dom";
 import CreateForm from "./components/CreateForm";
+import OrderTable from "./components/OrderTable";
 
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
@@ -77,45 +78,13 @@ export default function OrderCreatePage() {
   const [fabricMaterial, setFabricMaterial] = useState("");
   const [fabricColor, setFabricColor] = useState("");
   const [fabricLength, setFabricLength] = useState("");
+  const [productList, setProductList] = useState([]);
 
   const handleBack = () => {
     history.push(`/order`);
   };
 
-  const postOrder = async (postData) => {
-    // const response = await orderApi.getAll(1, 100);
-    // if (mounted && response.length > 0) {
-    //   if (filter !== "")
-    //     setOrderList(
-    //       response.filter(
-    //         (item) =>
-    //           item.orderStatus[item.orderStatus.length - 1].name === filter
-    //       )
-    //     );
-    //   else setOrderList(response);
-    // }
-    const response = await orderApi.create(postData);
-  };
 
-  const handleSubmit = async (event) => {
-    let postData = {
-      note: "front end call api",
-      receiverName: "Front end",
-      receiverPhone: "094444",
-      deposit: 10,
-      clientID: null,
-      products: await [
-        {
-          colorCode: fabricColor,
-          typeId: fabricMaterial,
-          length: Number.parseInt(fabricLength),
-        },
-      ],
-      receiverAddress: "front end test",
-    };
-    postOrder(postData);
-    event.preventDefault();
-  };
 
   return (
     <Container maxWidth="xl" className={classes.orderDetailBox}>
@@ -125,13 +94,14 @@ export default function OrderCreatePage() {
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.root}>
-        <Grid item xs={12} md={6}>
-          <img src="./cat.jpg" alt="cat image"></img>
-        </Grid>
+        
         <Grid item xs={12} md={6}>
           <Grid item xs={12} md={12}>
-            <CreateForm></CreateForm>
+            <CreateForm productList={productList} setProductList={setProductList} />
           </Grid>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <OrderTable productList={productList} setProductList={setProductList} />
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.btnGroup}>
