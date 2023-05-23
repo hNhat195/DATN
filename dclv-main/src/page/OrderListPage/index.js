@@ -88,7 +88,7 @@ export default function OrderListPage() {
           return <Order key={idx} order={item} />;
         })}
         
-        <ListPagination orderList={orderList} setOrderList={setOrderList}/>
+        <ListPagination orderList={orderList} setOrderList={setOrderList} getAll={orderApi.getAll}/>
 
       </Container>
     </>

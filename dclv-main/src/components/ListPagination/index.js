@@ -1,10 +1,9 @@
 import { Box } from "@material-ui/core";
 import Pagination from "@mui/material/Pagination";
 import { useEffect, useState } from "react";
-import orderApi from "../../api/orderApi";
 const pageSize = 6;
 
-export default function ListPagination({ orderList, setOrderList }) {
+export default function ListPagination({ orderList, setOrderList, getAll }) {
   const [allProduct, setAllProduct] = useState([]);
   const [pagination, setPagination] = useState({
     count: 0,
@@ -14,11 +13,9 @@ export default function ListPagination({ orderList, setOrderList }) {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await orderApi.getAll(0, 100);
+      const response = await getAll(0, 100);
       setPagination({ ...pagination, count: response.length });
       setAllProduct(response);
-
-      //setOrderList(response);
     }
     fetchData();
   }, []);
