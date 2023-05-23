@@ -19,19 +19,7 @@ export default function OrderListPage() {
     endDate: "",
   });
   const [searchKeyword, setSearchKeyword] = useState("");
-
-  const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true)
-      // const response = await orderApi.getAll(0, 100);
-      // setOrderList(response);
-      // setFilteredOrderList(response);
-      setLoading(false)
-    }
-    fetchData();
-  }, []);
+  const pageSize = 6;
 
   useEffect(() => {
     let tempOrderList = [];
@@ -87,9 +75,7 @@ export default function OrderListPage() {
         {orderList?.map((item, idx) => {
           return <Order key={idx} order={item} />;
         })}
-        
-        <ListPagination orderList={orderList} setOrderList={setOrderList} getAll={orderApi.getAll}/>
-
+        <ListPagination pageSize={pageSize} itemList={orderList} setItemList={setOrderList} getAll={orderApi.getAll}/>
       </Container>
     </>
   );

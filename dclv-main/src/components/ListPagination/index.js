@@ -1,9 +1,8 @@
 import { Box } from "@material-ui/core";
 import Pagination from "@mui/material/Pagination";
 import { useEffect, useState } from "react";
-const pageSize = 6;
 
-export default function ListPagination({ orderList, setOrderList, getAll }) {
+export default function ListPagination({ pageSize, itemList, setItemList, getAll }) {
   const [allProduct, setAllProduct] = useState([]);
   const [pagination, setPagination] = useState({
     count: 0,
@@ -21,11 +20,11 @@ export default function ListPagination({ orderList, setOrderList, getAll }) {
   }, []);
 
   useEffect(() => {
-    setOrderList(allProduct.slice(0, pageSize));
+    setItemList(allProduct.slice(0, pageSize));
   }, [allProduct]);
 
   useEffect(() => {
-    setOrderList(allProduct.slice(pagination.from, pagination.to));
+    setItemList(allProduct.slice(pagination.from, pagination.to));
   }, [pagination.from, pagination.to]);
 
   const handlePageChange = (event, page) => {
