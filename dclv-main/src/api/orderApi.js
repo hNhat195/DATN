@@ -41,6 +41,7 @@ import axiosClient from "./axiosClient";
 const orderApi = {
   getAll: (page, limit) => {
     let url;
+    
     if (page && limit) url = `/order?page=${page}&limit=${limit}`;
     else url = `/order`;
     return axiosClient.get(url);

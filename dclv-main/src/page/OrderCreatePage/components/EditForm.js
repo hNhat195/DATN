@@ -13,7 +13,12 @@ import { useState, useEffect } from "react";
 import orderApi from "../../../api/orderApi";
 import productApi from "../../../api/productApi";
 
-export default function CreateForm({productList, setProductList}) {
+export default function EditForm({
+  chosenProduct,
+  productList,
+  setProductList,
+  row,
+}) {
   const [colorList, setColorList] = useState([]);
   const [materialList, setMaterialList] = useState([]);
   const [fabricColor, setFabricColor] = useState("");
@@ -49,29 +54,47 @@ export default function CreateForm({productList, setProductList}) {
       typeId: materialName,
       length: Number.parseInt(fabricLength),
     };
-    
-    setProductList([...productList, addData])
-    
+
+    setProductList([...productList, addData]);
+
     event.preventDefault();
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     const fetchMaterial = async () => {
       const response = await productApi.getAllMaterialCode();
+      //console.log(response)
       setMaterialList(response);
     };
-    console.log(materialList)
-    fetchMaterial();
+
+    await fetchMaterial();
+    const response = await productApi.getAllMaterialCode();
+    console.log(response);
+    for (let i = 0; i < response.length; i++) {
+      if (response[i].name == chosenProduct.row.typeId) {
+        setFabricMaterial(response[i].id);
+
+        const colorResponse = await productApi.getColorByMaterial(response[i].id);
+        for (let j = 0; j < colorResponse.length; j++) {
+          if (colorResponse[j].colorCode == chosenProduct.row.colorCode)
+            console.log(colorResponse[j])
+            setFabricColor(colorResponse[j].colorCode);
+        }
+      }
+    }
+
+    console.log(fabricColor);
+    setFabricLength(chosenProduct.row.length);
   }, []);
 
   useEffect(async () => {
     const fetchColor = async () => {
-      console.log(materialType)
+      console.log(materialType);
       const response = await productApi.getColorByMaterial(materialType);
       return response;
     };
+    console.log("material change");
     const response = await fetchColor();
-    console.log(response)
     setColorList(response);
   }, [materialType]);
 
@@ -96,11 +119,12 @@ export default function CreateForm({productList, setProductList}) {
                 const mat = await materialList.find((x) => {
                   return x.id === e.target.value;
                 });
-                setMaterialName(mat.name)
+                setMaterialName(mat.name);
                 setMaterialId(mat._id);
                 setMaterialType(e.target.value);
               }}
-              value={fabricMaterial || ""}>
+              value={fabricMaterial || ""}
+            >
               {materialList.map((item, idx) => {
                 return (
                   <MenuItem key={idx} value={item.id}>
@@ -120,13 +144,14 @@ export default function CreateForm({productList, setProductList}) {
               id="fabric-color"
               label="Color"
               onChange={(e) => {
-                console.log(e.target.value)
                 setFabricColor(e.target.value);
               }}
-              value={fabricColor || ""}>
+              defaultValue={fabricColor}
+              value={fabricColor || ""}
+            >
               {colorList.map((item, idx) => {
                 return (
-                  <MenuItem key={idx} value={item.colorCode}>
+                  <MenuItem key={idx} value={item._id}>
                     {item.colorCode}
                   </MenuItem>
                 );
@@ -147,19 +172,18 @@ export default function CreateForm({productList, setProductList}) {
             type="number"
             onChange={(e) => {
               setFabricLength(e.target.value);
-              console.log(fabricMaterial)
-              console.log(fabricColor)
-              console.log(fabricLength)
             }}
           />
         </Grid>
         <Grid item xs={12} md={4}></Grid>
       </Grid>
-      <Button variant="contained" color="primary" type="button" onClick={handleAdd}>
+      <Button
+        variant="contained"
+        color="primary"
+        type="button"
+        onClick={handleAdd}
+      >
         Thêm
-      </Button>
-      <Button variant="contained" color="primary" type="submit">
-        Tạo đơn hàng
       </Button>
     </form>
   );

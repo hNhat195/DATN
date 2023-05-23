@@ -5,6 +5,10 @@ import FilterBar from "./components/FilterBar";
 import ListHeader from "./components/ListHeader";
 import orderApi from "../../api/orderApi";
 import CreateButton from "./components/CreateButton";
+import ListPagination from "../../components/ListPagination";
+
+import Pagination from '@mui/material/Pagination';
+
 
 export default function OrderListPage() {
   const [orderList, setOrderList] = useState([]);
@@ -16,11 +20,15 @@ export default function OrderListPage() {
   });
   const [searchKeyword, setSearchKeyword] = useState("");
 
+  const [loading, setLoading] = useState(false)
+
   useEffect(() => {
     async function fetchData() {
-      const response = await orderApi.getAll(1, 100);
-      setOrderList(response);
-      setFilteredOrderList(response);
+      setLoading(true)
+      // const response = await orderApi.getAll(0, 100);
+      // setOrderList(response);
+      // setFilteredOrderList(response);
+      setLoading(false)
     }
     fetchData();
   }, []);
@@ -64,6 +72,7 @@ export default function OrderListPage() {
     setSearchKeyword(newSearchKeyword);
   };
 
+  
   return (
     <>
       <Container maxWidth="xl">
@@ -75,9 +84,12 @@ export default function OrderListPage() {
           handleSearchKeywordChange={handleSearchKeywordChange}
         />
         <ListHeader />
-        {filteredOrderList?.map((item, idx) => {
+        {orderList?.map((item, idx) => {
           return <Order key={idx} order={item} />;
         })}
+        
+        <ListPagination orderList={orderList} setOrderList={setOrderList}/>
+
       </Container>
     </>
   );

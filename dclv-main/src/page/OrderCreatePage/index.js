@@ -104,28 +104,7 @@ export default function OrderCreatePage() {
           <OrderTable productList={productList} setProductList={setProductList} />
         </Grid>
       </Grid>
-      <Grid container spacing={2} className={classes.btnGroup}>
-        <Grid item>
-          <Button
-            startIcon={<Cancel />}
-            size="large"
-            className={classes.btnCancel}>
-            <Typography variant="h6" className={classes.btnCancelTitle}>
-              Hủy
-            </Typography>
-          </Button>
-        </Grid>
-        <Grid item>
-          <DefaultButton
-            title="Quay lại"
-            icon={ArrowBack}
-            clickEvent={handleBack}
-          />
-        </Grid>
-        <Grid item>
-          <DefaultButton title="Cập nhật" icon={ArrowUpward} />
-        </Grid>
-      </Grid>
+      
     </Container>
   );
 }

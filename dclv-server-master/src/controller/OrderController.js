@@ -17,6 +17,10 @@ async function getNextSequenceValue(sequenceName) {
 
 module.exports = {
   list: async (req, res) => {
+    
+    const page = Number.parseInt(req.query.page) || 0;
+    const limit = Number.parseInt(req.query.limit) || 6;
+    
     Order.find()
       .populate({
         path: "products",
@@ -41,30 +45,13 @@ module.exports = {
         path: "clientID",
         select: "name -_id",
       })
+      // .skip(page * limit)
+      // .limit(limit)
       .exec(function (err, result) {
         if (err) res.json(err);
         else {
-          result.push({
-            note: "",
-            receiverName: "Phu",
-            receiverPhone: "0944",
-            deposit: 0,
-            clientID: null,
-            detailBill: [],
-            products: [],
-            _id: "63ea382f94984c7febee9891",
-            orderId: 2,
-            receiverAddress: "1234",
-            orderStatus: [
-              {
-                _id: "63ea8c7e4ca2bcc2b7a680331",
-                name: "pending",
-                date: "1999-12-31T17:00:00.000Z",
-                reason: "123",
-              },
-            ],
-          });
           res.json(result);
+          console.log(result.length)
         }
       });
   },

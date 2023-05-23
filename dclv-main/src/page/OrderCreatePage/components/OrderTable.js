@@ -8,11 +8,20 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CancelIcon from '@mui/icons-material/Cancel';
+import EditPopup from "./EditPopup";
 
 export default function OrderTable({ productList, setProductList }) {
+  const handleEdit = (index) => {
+    console.log("Editingggggg")
+    console.log(index)
+  }
+  const handleDelete = (index) => {
+    console.log("Deletingggggg")
+    console.log(index)
+  }
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 450 }} aria-label="simple table">
+    <TableContainer component={Paper} sx={{ maxHeight: 350 }}>
+      <Table sx={{ minWidth: 450 }} aria-label="simple table" stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>Chất liệu</TableCell>
@@ -28,16 +37,14 @@ export default function OrderTable({ productList, setProductList }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.typeId}
+                {productList[index].typeId}
               </TableCell>
               <TableCell align="left">{row.colorCode}</TableCell>
               <TableCell align="left">{row.length}</TableCell>
               <TableCell>
-                <button className="complete-btn">
-                  <BorderColorIcon/>
-                </button>
-                <button className="trash-btn">
-                  <CancelIcon/>
+                <EditPopup index={index} productList={productList} setProductList={setProductList} row={row}/>
+                <button className="trash-btn" onClick={() => handleDelete(index)}>
+                  <CancelIcon />
                 </button>
               </TableCell>
             </TableRow>
