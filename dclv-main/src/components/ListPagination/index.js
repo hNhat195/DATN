@@ -2,36 +2,32 @@ import { Box } from "@material-ui/core";
 import Pagination from "@mui/material/Pagination";
 import { useEffect, useState } from "react";
 
-export default function ListPagination({ pageSize, itemList, setItemList, getAll }) {
-  const [allProduct, setAllProduct] = useState([]);
+export default function ListPagination({ pageSize, itemList, setItemList, itemPerPage, setItemPerPage, filter}) {
+  
   const [pagination, setPagination] = useState({
-    count: 0,
     from: 0,
     to: pageSize,
   });
+  const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
-    async function fetchData() {
-      const response = await getAll(0, 100);
-      setPagination({ ...pagination, count: response.length });
-      setAllProduct(response);
-    }
-    fetchData();
-  }, []);
+    setItemPerPage(itemList.slice(0, pageSize));
+  }, [itemList]);
 
   useEffect(() => {
-    setItemList(allProduct.slice(0, pageSize));
-  }, [allProduct]);
-
-  useEffect(() => {
-    setItemList(allProduct.slice(pagination.from, pagination.to));
+    setItemPerPage(itemList.slice(pagination.from, pagination.to));
   }, [pagination.from, pagination.to]);
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [filter])
 
   const handlePageChange = (event, page) => {
     const from = (page - 1) * pageSize;
     const to = (page - 1) * pageSize + pageSize;
-
+    setCurrentPage(page);
     setPagination({ ...pagination, from: from, to: to });
+    
   };
   return (
     <Box
@@ -41,8 +37,9 @@ export default function ListPagination({ pageSize, itemList, setItemList, getAll
       sx={{ margin: "20px 0px" }}
     >
       <Pagination
-        count={Math.ceil(pagination.count / pageSize)}
+        count={Math.ceil(itemList.length / pageSize)}
         onChange={handlePageChange}
+        page={currentPage}
       />
     </Box>
   );

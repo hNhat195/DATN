@@ -6,9 +6,18 @@ import ListHeader from "./components/ListHeader";
 import orderApi from "../../api/orderApi";
 import CreateButton from "./components/CreateButton";
 import ListPagination from "../../components/ListPagination";
+import { makeStyles } from "@material-ui/core/styles";
 
-import Pagination from '@mui/material/Pagination';
-
+const useStyles = makeStyles((theme) => ({
+  containerStyled: {
+    minHeight: "575px",
+  },
+  paginationStyled: {
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+  },
+}));
 
 export default function OrderListPage() {
   const [orderList, setOrderList] = useState([]);
@@ -19,7 +28,20 @@ export default function OrderListPage() {
     endDate: "",
   });
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [orderPerPage, setOrderPerPage] = useState([]);
   const pageSize = 6;
+
+  const classes = useStyles();
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await orderApi.getAll(0, 100);
+      setOrderList(response);
+      setFilteredOrderList(response);
+      setOrderPerPage(response.slice(0, pageSize));
+    }
+    fetchData();
+  }, []);
 
   useEffect(() => {
     let tempOrderList = [];
@@ -60,22 +82,31 @@ export default function OrderListPage() {
     setSearchKeyword(newSearchKeyword);
   };
 
-  
   return (
     <>
       <Container maxWidth="xl">
-        <FilterBar
+        <Container maxWidth="xl" className={classes.containerStyled}>
+          <FilterBar
+            filter={filter}
+            handleFilterChange={handleFilterChange}
+            dateRangeFilter={dateRangeFilter}
+            handleDateRangeFilterChange={handleDateRangeFilterChange}
+            handleSearchKeywordChange={handleSearchKeywordChange}
+          />
+          <ListHeader />
+          {orderPerPage?.map((item, idx) => {
+            return <Order key={idx} order={item} />;
+          })}
+        </Container>
+        <ListPagination
+          className={classes.paginationStyled}
+          pageSize={pageSize}
+          itemList={filteredOrderList}
+          setItemList={setFilteredOrderList}
+          itemPerPage={orderPerPage}
+          setItemPerPage={setOrderPerPage}
           filter={filter}
-          handleFilterChange={handleFilterChange}
-          dateRangeFilter={dateRangeFilter}
-          handleDateRangeFilterChange={handleDateRangeFilterChange}
-          handleSearchKeywordChange={handleSearchKeywordChange}
         />
-        <ListHeader />
-        {orderList?.map((item, idx) => {
-          return <Order key={idx} order={item} />;
-        })}
-        <ListPagination pageSize={pageSize} itemList={orderList} setItemList={setOrderList} getAll={orderApi.getAll}/>
       </Container>
     </>
   );

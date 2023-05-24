@@ -51,7 +51,6 @@ module.exports = {
         if (err) res.json(err);
         else {
           res.json(result);
-          console.log(result.length)
         }
       });
   },
