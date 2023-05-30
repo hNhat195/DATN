@@ -9,13 +9,13 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { useState, useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
 
 import orderApi from "../../../api/orderApi";
 import productApi from "../../../api/productApi";
 
-export default function CreateForm({productList, setProductList}) {
-  const [colorList, setColorList] = useState([]);
-  const [materialList, setMaterialList] = useState([]);
+export default function CreateForm({productList, setProductList, colorList, materialList, setColorList, setMaterialList}) {
+
   const [fabricColor, setFabricColor] = useState("");
   const [fabricMaterial, setFabricMaterial] = useState("");
   const [fabricLength, setFabricLength] = useState("");
@@ -23,7 +23,7 @@ export default function CreateForm({productList, setProductList}) {
   const [materialType, setMaterialType] = useState("");
   const [materialName, setMaterialName] = useState("");
   //const [productList, setProductList] = useState([])
-
+  const history = useHistory();
   const postOrder = async (postData) => {
     const response = await orderApi.create(postData);
     return response;
@@ -41,6 +41,7 @@ export default function CreateForm({productList, setProductList}) {
     };
     postOrder(postData);
     event.preventDefault();
+    history.push(`/order`);
   };
 
   const handleAdd = (event) => {
@@ -53,6 +54,7 @@ export default function CreateForm({productList, setProductList}) {
     setProductList([...productList, addData])
     
     event.preventDefault();
+    
   };
 
   useEffect(() => {
@@ -60,18 +62,18 @@ export default function CreateForm({productList, setProductList}) {
       const response = await productApi.getAllMaterialCode();
       setMaterialList(response);
     };
-    console.log(materialList)
+    //console.log(materialList)
     fetchMaterial();
   }, []);
 
   useEffect(async () => {
     const fetchColor = async () => {
-      console.log(materialType)
+     // console.log(materialType)
       const response = await productApi.getColorByMaterial(materialType);
       return response;
     };
     const response = await fetchColor();
-    console.log(response)
+    //console.log(response)
     setColorList(response);
   }, [materialType]);
 
@@ -120,7 +122,7 @@ export default function CreateForm({productList, setProductList}) {
               id="fabric-color"
               label="Color"
               onChange={(e) => {
-                console.log(e.target.value)
+                //console.log(e.target.value)
                 setFabricColor(e.target.value);
               }}
               value={fabricColor || ""}>
@@ -147,9 +149,9 @@ export default function CreateForm({productList, setProductList}) {
             type="number"
             onChange={(e) => {
               setFabricLength(e.target.value);
-              console.log(fabricMaterial)
-              console.log(fabricColor)
-              console.log(fabricLength)
+              //console.log(fabricMaterial)
+              //console.log(fabricColor)
+              //console.log(fabricLength)
             }}
           />
         </Grid>

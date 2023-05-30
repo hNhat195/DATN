@@ -74,17 +74,13 @@ export default function OrderCreatePage() {
     products: [],
     detailBill: [],
   });
-  const [fabricName, setFabricName] = useState("");
-  const [fabricMaterial, setFabricMaterial] = useState("");
-  const [fabricColor, setFabricColor] = useState("");
-  const [fabricLength, setFabricLength] = useState("");
+  const [colorList, setColorList] = useState([]);
+  const [materialList, setMaterialList] = useState([]);
   const [productList, setProductList] = useState([]);
 
   const handleBack = () => {
     history.push(`/order`);
   };
-
-
 
   return (
     <Container maxWidth="xl" className={classes.orderDetailBox}>
@@ -94,17 +90,25 @@ export default function OrderCreatePage() {
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.root}>
-        
         <Grid item xs={12} md={6}>
           <Grid item xs={12} md={12}>
-            <CreateForm productList={productList} setProductList={setProductList} />
+            <CreateForm
+              productList={productList}
+              setProductList={setProductList}
+              colorList={colorList}
+              setColorList={setColorList}
+              materialList={materialList}
+              setMaterialList={setMaterialList}
+            />
           </Grid>
         </Grid>
         <Grid item xs={12} md={6}>
-          <OrderTable productList={productList} setProductList={setProductList} />
+          <OrderTable
+            productList={productList}
+            setProductList={setProductList}
+          />
         </Grid>
       </Grid>
-      
     </Container>
   );
 }
