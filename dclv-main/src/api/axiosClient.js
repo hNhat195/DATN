@@ -1,9 +1,15 @@
 import axios from "axios";
 import qs from "qs";
+const dotenv = require("dotenv");
+const path = require("path");
+const envPath = path.resolve(__dirname, "../../../.env");
+dotenv.config({ path: envPath });
+
+const port = process.env.BACK_END_PORT;
 
 const axiosClient = axios.create({
   // baseURL: process.env.REACT_APP_API_URL,
-  baseURL: `http://localhost:5000/api`,
+  baseURL: `http://localhost:${port || 5001}/api`,
   headers: {
     "content-type": "application/json",
   },
