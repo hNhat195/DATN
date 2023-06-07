@@ -7,7 +7,7 @@
 
 export const StaffRule = {
   ADMIN: "admin",
-  EMP: "employee",
-  SHI: "shipper",
-  STF: "staff",
+  EMPLOYEE: "employee",
+  SHIPPER: "shipper",
+  STAFF: "staff",
 };

@@ -11,12 +11,12 @@ export const OrderStatus = {
   READY: "ready",
   IN_PROGRESS: "in-progress",
   COMPLETED: "completed",
-  CANCEL: "canceled",
+  CANCELED: "canceled",
 };
 
 export const SubOrderStatus = {
   READY: "ready",
   IN_TRANSIT: "in-transit",
   COMPLETED: "completed",
-  CANCEL: "canceled",
+  CANCELED: "canceled",
 };

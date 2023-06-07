@@ -18,7 +18,7 @@ const SubOrderSchema = new Schema(
       default: "",
       required: false,
     },
-    totalRoll: {
+    totalQty: {
       type: Number,
     },
     products: [

@@ -49,7 +49,7 @@ const OrderSchema = new Schema(
       default: null,
       ref: "Customer",
     },
-    totalRoll: {
+    totalQuantity: {
       type: Number,
     },
     detailBill: [
@@ -62,6 +62,12 @@ const OrderSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "OrderItem",
+      },
+    ],
+    subOrder: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "SubOrder",
       },
     ],
   },
