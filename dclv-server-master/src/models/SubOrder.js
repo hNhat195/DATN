@@ -30,5 +30,5 @@ const SubOrderSchema = new Schema(
   },
   { collection: "SubOrder" }
 );
-const Order = mongoose.model("SubOrder", SubOrderSchema);
-module.exports = { Order };
+const SubOrder = mongoose.model("SubOrder", SubOrderSchema);
+module.exports = { SubOrder };
