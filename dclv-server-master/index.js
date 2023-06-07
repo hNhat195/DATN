@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const port = process.env.BACK_END_PORT;
-const mongodb_url = process.env.MONGODB_URL;
+const mongodb_url = process.env.MONGODB_URL_V2;
 
 const router = require("./src/routes/routes");
 
