@@ -1,29 +1,29 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const HasSchema = new Schema(
+const OrderItemSchema = new Schema(
   {
     orderId: {
       type: Schema.Types.ObjectId,
       default: null,
     },
-    colorCode: {
+    fabricID: {
       type: Schema.Types.ObjectId,
       default: null,
       required: true,
-      ref: "Item",
+      ref: "Fabric",
     },
-    length: {
+    quantity: {
       type: Number,
       default: 0,
       required: true,
     },
-    shippedLength: {
+    shipped: {
       type: Number,
       default: 0,
       required: true,
     },
   },
-  { collection: "Has" }
+  { collection: "OrderItem" }
 );
-const Has = mongoose.model("Has", HasSchema);
+const Has = mongoose.model("OrderItem", OrderItemSchema);
 module.exports = { Has };
