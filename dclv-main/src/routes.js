@@ -15,6 +15,7 @@ import StaffDetail from "./page/StaffPage/components/StaffDetail";
 import SupportPage from "./page/SupportPage/SupportPage";
 import InfoPage from "./page/InfoPage/InfoPage";
 import OrderCreatePage from "./page/OrderCreatePage"
+import HomePage from "./page/HomePage"
 
 const routes = [
   {
@@ -92,6 +93,11 @@ const routes = [
         path: "/info",
         exact: true,
         component: InfoPage,
+      },
+      {
+        path: "/home",
+        exact: true,
+        component: HomePage,
       },
     ],
   },

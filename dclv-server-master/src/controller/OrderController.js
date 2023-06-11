@@ -190,7 +190,23 @@ module.exports = {
       "orderStatus"
     ).exec();
 
-    if (status.orderStatus[status.orderStatus.length - 1].name !== "processing")
+    // if (status.orderStatus[status.orderStatus.length - 1].name !== "processing")
+    //   Order.findOneAndUpdate(
+    //     { _id: mongoose.Types.ObjectId(req.params.id) },
+    //     {
+    //       $push: {
+    //         orderStatus: { name: req.body.status, reason: req.body.reason },
+    //       },
+    //     },
+    //     function (err, result) {
+    //       if (err) {
+    //         return res.json({ message: "Error" });
+    //       } else {
+    //         return res.json(result);
+    //       }
+    //     }
+    //   );
+    if (status.orderStatus[status.orderStatus.length - 1].name === "pending" && req.body.status === "cancel") {
       Order.findOneAndUpdate(
         { _id: mongoose.Types.ObjectId(req.params.id) },
         {
@@ -206,6 +222,8 @@ module.exports = {
           }
         }
       );
+    }
+      
   },
 
   cancleExportBill: async (req, res) => {
