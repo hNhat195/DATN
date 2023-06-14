@@ -12,6 +12,13 @@ const port = process.env.BACK_END_PORT;
 const mongodb_url = process.env.MONGODB_URL_V2;
 
 const router = require("./src/routes/routes");
+const { InsertToStaff } = require("./src/create/CreateStaff");
+const { createColorFabric } = require("./src/create/createColor");
+const {
+  createFabricType,
+  createColor,
+  CreateFabricRoll,
+} = require("./src/create/CreateFabricRoll");
 
 const app = express();
 app.use(bodyParser.json());
@@ -27,13 +34,13 @@ mongoose
     app.listen(port, () => {
       console.log(`Server is running at http://localhost:${port}`);
     });
-
-    const { ValidateOrder } = require("./src/services/Order/ValidateOrder");
-    // ValidateOrder("61bb45f4fcfed50810d281a9");
-    const { UpdateItem } = require("./src/create/CreateItem");
-    // UpdateItem();
-    const { updateLength } = require("./src/create/CreateFabricRoll");
-    // updateLength();
+  })
+  .then(async () => {
+    try {
+      await CreateFabricRoll();
+    } catch (error) {
+      console.log(error);
+    }
   })
   .catch((error) => {
     console.log("Connect to MongoDB failed!" + error);

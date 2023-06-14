@@ -8,11 +8,12 @@ const ColorSchema = new Schema(
       type: String,
       default: "",
       required: true,
+      unique: true,
     },
   },
-  { collection: "FabricRoll" }
+  { collection: "Color" }
 );
 
-const FabricRoll = mongoose.model("Color", ColorSchema);
+const Color = mongoose.model("Color", ColorSchema);
 
-module.exports = { FabricRoll };
+module.exports = { Color };
