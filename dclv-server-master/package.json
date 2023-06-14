@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec index.js"
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",

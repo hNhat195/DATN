@@ -1,5 +1,5 @@
 const { Order } = require("../models/Order");
-const { Has } = require("../models/Has");
+const { Has } = require("../models/OrderItem");
 const { Item } = require("../models/Item");
 const { FabricType } = require("../models/FabricType");
 const { Customer } = require("../models/Customer");
@@ -17,10 +17,9 @@ async function getNextSequenceValue(sequenceName) {
 
 module.exports = {
   list: async (req, res) => {
-    
     const page = Number.parseInt(req.query.page) || 0;
     const limit = Number.parseInt(req.query.limit) || 6;
-    
+
     Order.find()
       .populate({
         path: "products",
