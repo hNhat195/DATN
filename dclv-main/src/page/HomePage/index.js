@@ -5,7 +5,8 @@ import { ArrowBack, ArrowUpward, Cancel, Publish } from "@material-ui/icons";
 import { useHistory, useParams } from "react-router-dom";
 
 import ProductList from "./components/ProductList";
-
+import TopBar from "./components/TopBar";
+import SelectHover from "./components/SelectHover";
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
     direction: "row",
@@ -47,13 +48,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const itemList = ["option 1", "option 2", "option 3", "option 4"];
+
 export default function OrderDetail() {
   const classes = useStyles();
   const history = useHistory();
 
   return (
-       
-        <ProductList></ProductList>
-      
+    <div>
+      <TopBar></TopBar>
+      {/* <SelectHover options={itemList}></SelectHover> */}
+      <ProductList></ProductList>
+    </div>
   );
 }

@@ -16,6 +16,7 @@ import SupportPage from "./page/SupportPage/SupportPage";
 import InfoPage from "./page/InfoPage/InfoPage";
 import OrderCreatePage from "./page/OrderCreatePage"
 import HomePage from "./page/HomePage"
+import ProductDetail from "./page/ProductDetail";
 
 const routes = [
   {
@@ -30,6 +31,21 @@ const routes = [
     component: SignIn,
   },
   { path: "/signup", exact: true, component: SignUp },
+  {
+    path: "/home",
+    exact: true,
+    component: HomePage,
+  },
+  {
+    path: "/home/type/:type",
+    exact: true,
+    component: Product,
+  },
+  {
+    path: "/home/:productId",
+    exact: true,
+    component: ProductDetail,
+  },
   {
     path: "*",
     component: Main,
@@ -93,11 +109,6 @@ const routes = [
         path: "/info",
         exact: true,
         component: InfoPage,
-      },
-      {
-        path: "/home",
-        exact: true,
-        component: HomePage,
       },
     ],
   },

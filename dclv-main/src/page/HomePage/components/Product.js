@@ -5,10 +5,19 @@ import { Grid } from '@material-ui/core'
 //import { Product as ProductType } from 'src/types/product.type'
 //import { formatCurrency, formatNumberToSocialStyle, generateNameId } from 'src/utils/utils'
 import { useHistory } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 
+
+const useStyles = makeStyles((theme) => ({
+  imageStyled: {
+    width: "100%",
+    height: "auto"
+  }
+}));
 
 export default function Product({ product }) {
   const history = useHistory();
+  const classes = useStyles();
   const handleClick = (orderId) => {
     console.log(orderId)
     history.push(`/order/orderDetail/${orderId}`);
@@ -18,23 +27,24 @@ export default function Product({ product }) {
       <div className='overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md'>
         <div className='relative w-full pt-[100%]'>
           <img
-            src={"./cat.jpg"}
+            src={product.images[0]}
             alt
-            className='absolute top-0 left-0 h-full w-full bg-white object-cover'
+            // className='absolute top-0 left-0 h-full w-full bg-white object-cover'
+            className={classes.imageStyled}
           />
         </div>
         <div className='overflow-hidden p-2'>
-          <div className='min-h-[2rem] text-xs line-clamp-2'>{"MDH" + product.orderId}</div>
+          <div className='min-h-[2rem] text-xs line-clamp-2'>{product.product_name}</div>
           <div className='mt-3 flex items-center'>
             <div className='max-w-[50%] truncate text-gray-500 line-through'>
-              <span className='text-xs'>₫</span>
+              <span className='text-xs'>Màu: </span>
               {/* <span className='text-sm'>{formatCurrency(product.price_before_discount)}</span> */}
-              <span className='text-sm'>{product.deposit}</span>
+              <span className='text-sm'>{product.color}</span>
             </div>
             <div className='ml-1 truncate text-orange'>
-              <span className='text-xs'>₫</span>
+              <span className='text-xs'>Chất liệu: </span>
               {/* <span className='text-sm'>{formatCurrency(product.price)}</span> */}
-              <span className='text-sm'>{product.orderTime}</span>
+              <span className='text-sm'>{product.Composition}</span>
             </div>
           </div>
           <div className='mt-3 flex items-center justify-end'>

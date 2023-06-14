@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 import { Button, Grid, Typography, Container } from "@material-ui/core";
 import ListPagination from "../../../components/ListPagination";
 import { makeStyles } from "@material-ui/core/styles";
+import merino from "../data/merino-fabric.json";
+
 
 const pageSize = 9;
 
@@ -24,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
   gridStyled: {
     minHeight: "550px",
   },
+  productStyled: {
+    margin: "20px 20px"
+  }
 }));
 
 export default function ProductList() {
@@ -32,12 +37,8 @@ export default function ProductList() {
   const [filter, setFilter] = useState("all");
   const classes = useStyles();
   useEffect(() => {
-    const fetchOrder = async () => {
-      const response = await orderApi.getAll(1, 100);
-      setProductsData(response);
-      setOrderPerPage(response.slice(0, pageSize));
-    };
-    fetchOrder();
+    setProductsData(merino);
+    setOrderPerPage(merino.slice(0, pageSize));
   }, []);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function ProductList() {
       <Grid item xs={3}></Grid>
       <Grid item container xs={9} className={classes.gridStyled}>
         {orderPerPage?.map((product) => (
-          <Grid item xs={4}>
+          <Grid item xs={3} className={classes.productStyled}>
             <Product product={product} />
           </Grid>
         ))}
