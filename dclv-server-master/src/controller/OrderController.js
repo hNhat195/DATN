@@ -6,6 +6,10 @@ const { Customer } = require("../models/Customer");
 const { Counter } = require("../models/Counter");
 const mongoose = require("mongoose");
 const { Bill } = require("../models/Bill");
+const { OrderItem } = require("../models/OrderItem");
+const { FabricRoll } = require("../models/FabricRoll");
+const { Color } = require("../models/Color");
+const { SubOrder } = require("../models/SubOrder");
 
 async function getNextSequenceValue(sequenceName) {
   let seq = await Counter.findOneAndUpdate(
@@ -20,18 +24,56 @@ module.exports = {
     const page = Number.parseInt(req.query.page) || 0;
     const limit = Number.parseInt(req.query.limit) || 6;
 
+    // Order.find()
+    //   .populate({
+    //     path: "orderItem",
+    //     populate: {
+    //       path: "colorCode",
+    //       //   populate: {
+    //       //     path: "typeId",
+    //       //     select: "name -_id",
+    //       //   },
+    //       select: "colorCode typeId name -_id",
+    //     },
+    //     select: "colorCode length shippedLength -_id",
+    //   })
+    //   .populate({
+    //     path: "detailBill",
+    //     populate: [
+    //       { path: "salesmanID", select: "name -_id" },
+    //       { path: "clientID", select: "name -_id" },
+    //     ],
+    //   })
+    //   .populate({
+    //     path: "clientID",
+    //     select: "name -_id",
+    //   })
+    //   // .skip(page * limit)
+    //   // .limit(limit)
+    //   .exec(function (err, result) {
+    //     if (err) res.json(err);
+    //     else {
+    //       res.json(result);
+    //     }
+    //   });
     Order.find()
       .populate({
         path: "products",
         populate: {
-          path: "colorCode",
-          //   populate: {
-          //     path: "typeId",
-          //     select: "name -_id",
-          //   },
-          select: "colorCode typeId name -_id",
+          path: "fabricID",
+          populate: [
+            {
+              path: "fabricTypeId",
+              select: "name -_id",
+            },
+            {
+              path: "colorId",
+              select: "colorCode -_id",
+            },
+          ],
+          select: "fabricTypeId colorId -_id",
         },
-        select: "colorCode length shippedLength -_id",
+        select: "quantity shipped -_id",
       })
       .populate({
         path: "detailBill",
@@ -56,31 +98,11 @@ module.exports = {
   create: async (req, res) => {
     try {
       const id = await getNextSequenceValue("orderId");
-      const asyncRes = await Promise.all(
-        req.body.products.map(async (item, idx) => {
-          let colorIdList = await Item.find({
-            colorCode: item.colorCode,
-            // typeId: item.typeId,
-          }).exec();
+      const subOrderList = [];
+      const productList = [];
+      let totalQuantity = 0;
 
-          let colorId = colorIdList[0];
-          for (let i = 0; i < colorIdList.length; i++) {
-            colorId = colorIdList[i];
-            if (colorIdList[i].typeId === item.typeId) {
-              break;
-            }
-          }
-          let a = await Has.create({
-            // orderId: id,
-            colorCode: colorId._id,
-            length: item.length,
-            shippedLength: 0,
-          });
-
-          return a._id;
-        })
-      );
-      let result = await Order.create({
+      let temp = await Order.create({
         orderId: id,
         orderStatus: [
           {
@@ -95,11 +117,58 @@ module.exports = {
         deposit: req.body.deposit,
         clientID: mongoose.Types.ObjectId(req.body.clientID),
         detailBill: [],
-        products: asyncRes,
+        products: productList,
+        subOrder: subOrderList,
       });
-      asyncRes.forEach((item) => {
-        Has.findOneAndUpdate({ _id: item }, { orderId: result._id }).exec();
+
+      const asyncRes = await Promise.all(
+        req.body.products.map(async (item, idx) => {
+          
+          let colorId = await Color.findOne({
+            colorCode: item.colorCode,
+          }).exec();
+
+          let matId = await FabricType.findOne({
+            name: item.typeId,
+          }).exec();
+          totalQuantity += item.length;
+
+          let roll = await FabricRoll.findOne({
+            fabricTypeId: matId,
+            colorId: colorId,
+          });
+
+          let a = await OrderItem.create({
+            orderId: temp._id,
+            fabricID: roll._id,
+            quantity: item.length,
+            shipped: 0,
+          });
+
+          productList.push(a);
+
+          return roll._id;
+        })
+      );
+
+      let subOrder = await SubOrder.create({
+        orderId: temp._id,
+        totalQty: totalQuantity,
+        products: productList,
       });
+      
+      let result = await Order.findOneAndUpdate(
+        { _id: temp._id },
+        {
+          products: productList,
+          subOrder: subOrder,
+        },
+        { new: true }
+      );
+
+      // asyncRes.forEach((item) => {
+      //   Has.findOneAndUpdate({ _id: item }, { orderId: result._id }).exec();
+      // });
       //Update Has order id
       res.send(result);
     } catch (err) {
@@ -108,25 +177,58 @@ module.exports = {
   },
 
   detail: (req, res) => {
+    // Order.findOne({ _id: mongoose.Types.ObjectId(req.params.id) })
+    //   .populate({
+    //     path: "products",
+    //     populate: {
+    //       path: "colorCode",
+    //       populate: [
+    //         {
+    //           path: "typeId",
+    //           select: "name -_id",
+    //         },
+    //         {
+    //           path: "marketPriceId",
+    //           options: { sort: { dayApplied: "desc" }, limit: 1 },
+    //           select: "price -_id",
+    //         },
+    //       ],
+    //       select: "colorCode typeId name -_id",
+    //     },
+    //     select: "colorCode length shippedLength -_id",
+    //   })
+    //   .populate({
+    //     path: "clientID",
+    //     select: "name email address phone",
+    //   })
+    //   .populate({
+    //     path: "detailBill",
+    //     populate: { path: "salesmanID", select: "name -_id" },
+    //   })
+    //   .exec(function (err, result) {
+    //     if (err) res.json(err);
+    //     else {
+    //       res.json(result);
+    //     }
+    //   });
     Order.findOne({ _id: mongoose.Types.ObjectId(req.params.id) })
       .populate({
         path: "products",
         populate: {
-          path: "colorCode",
+          path: "fabricID",
           populate: [
             {
-              path: "typeId",
+              path: "fabricTypeId",
               select: "name -_id",
             },
             {
-              path: "marketPriceId",
-              options: { sort: { dayApplied: "desc" }, limit: 1 },
-              select: "price -_id",
+              path: "colorId",
+              select: "colorCode -_id",
             },
           ],
-          select: "colorCode typeId name -_id",
+          select: "fabricTypeId colorId -_id",
         },
-        select: "colorCode length shippedLength -_id",
+        select: "quantity shipped -_id",
       })
       .populate({
         path: "clientID",
@@ -205,7 +307,10 @@ module.exports = {
     //       }
     //     }
     //   );
-    if (status.orderStatus[status.orderStatus.length - 1].name === "pending" && req.body.status === "cancel") {
+    if (
+      status.orderStatus[status.orderStatus.length - 1].name === "pending" &&
+      req.body.status === "cancel"
+    ) {
       Order.findOneAndUpdate(
         { _id: mongoose.Types.ObjectId(req.params.id) },
         {
@@ -222,7 +327,6 @@ module.exports = {
         }
       );
     }
-      
   },
 
   cancleExportBill: async (req, res) => {

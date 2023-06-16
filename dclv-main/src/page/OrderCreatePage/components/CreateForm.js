@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "true",
   }
 }));
+
+const objectIdPattern = /^[0-9a-fA-F]{24}$/;
+
 export default function CreateForm({
   productList,
   setProductList,
@@ -69,38 +72,63 @@ export default function CreateForm({
   };
 
   const handleAdd = (event) => {
-    let addData = {
-      colorCode: fabricColor,
-      typeId: materialName,
-      length: Number.parseInt(fabricLength),
-    };
-    if(addData.colorCode == '' || addData.typeId == '' || isNaN(addData.length)) {
+    if(fabricColor == '' || fabricMaterial == '' || isNaN(Number.parseInt(fabricLength))) {
       console.log("please add information")
     }
-    else  setProductList([...productList, addData]);
+    // let checkDuplicate = false
+    // let i=0
+    // for(; i<productList.length; i++) {
+    //   if(productList[i].colorCode == fabricColor && productList[i].typeId == fabricMaterial) {
+    //     checkDuplicate = true;
+    //     const temp = productList;
+    //     temp[i].length += Number.parseInt(fabricLength)
+    //     console.log(temp)
+    //     setProductList(temp)
+    //   }
+    // }
 
+    // if(checkDuplicate == false) {
+      // let addData = {
+      //   colorCode: fabricColor,
+      //   typeId: fabricMaterial,
+      //   length: Number.parseInt(fabricLength),
+      // };
+    //   setProductList([...productList, addData]);
+    // }
+    let addData = {
+      colorCode: fabricColor,
+      typeId: fabricMaterial,
+      length: Number.parseInt(fabricLength),
+    };
+    setProductList([...productList, addData]);
     event.preventDefault();
   };
 
   useEffect(() => {
     const fetchMaterial = async () => {
       const response = await productApi.getAllMaterialCode();
+      console.log(response)
       setMaterialList(response);
     };
-    //console.log(materialList)
     fetchMaterial();
   }, []);
 
   useEffect(async () => {
     const fetchColor = async () => {
+      if(objectIdPattern.test(materialId)) {
+        const response = await productApi.getColorByMaterial(materialId);
+        setColorList(response);
+      }
       // console.log(materialType)
-      const response = await productApi.getColorByMaterial(materialType);
-      return response;
     };
-    const response = await fetchColor();
+    await fetchColor();
     //console.log(response)
-    setColorList(response);
-  }, [materialType]);
+    
+  }, [materialId]);
+
+  useEffect(() => {
+    console.log(productList)
+  }, [productList])
 
   return (
     <div>
@@ -121,17 +149,15 @@ export default function CreateForm({
               onChange={async (e) => {
                 setFabricMaterial(e.target.value);
                 const mat = await materialList.find((x) => {
-                  return x.id === e.target.value;
+                  return x.name === e.target.value;
                 });
-                setMaterialName(mat.name);
-                setMaterialId(mat._id);
-                setMaterialType(e.target.value);
+                setMaterialId(mat._id)
               }}
               value={fabricMaterial || ""}
             >
               {materialList.map((item, idx) => {
                 return (
-                  <MenuItem key={idx} value={item.id}>
+                  <MenuItem key={idx} value={item.name}>
                     {item.name}
                   </MenuItem>
                 );

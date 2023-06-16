@@ -75,24 +75,24 @@ export default function OrderDetail() {
     // }
   }
 
+  // useEffect(() => {
+  //   let mounted = true;
+  //   const fetchOrderDetail = async () => {
+  //     const response = await orderApi.getOne(id);
+
+  //     if (mounted) {
+  //       setDetail(response);
+  //     }
+  //   };
+  //   fetchOrderDetail();
+
+  //   return () => {
+  //     mounted = false;
+  //   };
+  // }, [id, detail.orderStatus]);
+
   useEffect(() => {
-    let mounted = true;
-    const fetchOrderDetail = async () => {
-      const response = await orderApi.getOne(id);
-
-      if (mounted) {
-        setDetail(response);
-      }
-    };
-    fetchOrderDetail();
-
-    return () => {
-      mounted = false;
-    };
-  }, [id, detail.orderStatus]);
-
-  useEffect(() => {
-    console.log(detail.orderStatus)
+    
     let mounted = true;
     const fetchOrderDetail = async () => {
       const response = await orderApi.getOne(id);
