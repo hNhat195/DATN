@@ -100,10 +100,6 @@ module.exports = {
         { new: true }
       );
 
-      // asyncRes.forEach((item) => {
-      //   Has.findOneAndUpdate({ _id: item }, { orderId: result._id }).exec();
-      // });
-
       res.send(result);
     } catch (err) {
       console.log(err);

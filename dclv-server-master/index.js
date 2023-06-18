@@ -35,13 +35,6 @@ mongoose
       console.log(`Server is running at http://localhost:${port}`);
     });
   })
-  .then(async () => {
-    try {
-      await CreateFabricRoll();
-    } catch (error) {
-      console.log(error);
-    }
-  })
   .catch((error) => {
     console.log("Connect to MongoDB failed!" + error);
   });
