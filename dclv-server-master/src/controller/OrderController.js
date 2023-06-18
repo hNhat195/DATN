@@ -58,49 +58,52 @@ module.exports = {
       const id = await getNextSequenceValue("orderId");
       const asyncRes = await Promise.all(
         req.body.products.map(async (item, idx) => {
-          let colorIdList = await Item.find({
+          let colorId = await Color.findOne({
             colorCode: item.colorCode,
-            // typeId: item.typeId,
           }).exec();
 
-          let colorId = colorIdList[0];
-          for (let i = 0; i < colorIdList.length; i++) {
-            colorId = colorIdList[i];
-            if (colorIdList[i].typeId === item.typeId) {
-              break;
-            }
-          }
-          let a = await Has.create({
-            // orderId: id,
-            colorCode: colorId._id,
-            length: item.length,
-            shippedLength: 0,
+          let matId = await FabricType.findOne({
+            name: item.typeId,
+          }).exec();
+          totalQuantity += item.length;
+
+          let roll = await FabricRoll.findOne({
+            fabricTypeId: matId,
+            colorId: colorId,
           });
 
-          return a._id;
+          let a = await OrderItem.create({
+            orderId: temp._id,
+            fabricID: roll._id,
+            quantity: item.length,
+            shipped: 0,
+          });
+
+          productList.push(a);
+
+          return roll._id;
         })
       );
-      let result = await Order.create({
-        orderId: id,
-        orderStatus: [
-          {
-            name: "pending",
-            date: Date.now(),
-          },
-        ],
-        note: req.body.note,
-        receiverName: req.body.receiverName,
-        receiverPhone: req.body.receiverPhone,
-        receiverAddress: req.body.receiverAddress,
-        deposit: req.body.deposit,
-        clientID: mongoose.Types.ObjectId(req.body.clientID),
-        detailBill: [],
-        products: asyncRes,
-      });
-      asyncRes.forEach((item) => {
-        Has.findOneAndUpdate({ _id: item }, { orderId: result._id }).exec();
-      });
-      //Update Has order id
+
+      // let subOrder = await SubOrder.create({
+      //   orderId: temp._id,
+      //   totalQty: totalQuantity,
+      //   products: productList,
+      // });
+
+      let result = await Order.findOneAndUpdate(
+        { _id: temp._id },
+        {
+          products: productList,
+          // subOrder: subOrder,
+        },
+        { new: true }
+      );
+
+      // asyncRes.forEach((item) => {
+      //   Has.findOneAndUpdate({ _id: item }, { orderId: result._id }).exec();
+      // });
+
       res.send(result);
     } catch (err) {
       console.log(err);
