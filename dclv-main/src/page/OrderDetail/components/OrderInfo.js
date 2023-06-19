@@ -76,9 +76,9 @@ export default function OrderInfo({products, deposit}) {
               <TableCell>STT</TableCell>
               <TableCell>Loại vải</TableCell>
               <TableCell>Mã màu</TableCell>
-              <TableCell>Đã đặt&nbsp;(m)</TableCell>
-              <TableCell>Đã giao&nbsp;(m)</TableCell>
-              <TableCell>Còn lại&nbsp;(m)</TableCell>
+              <TableCell>Đã đặt (cuộn)</TableCell>
+              <TableCell>Đã giao (cuộn)</TableCell>
+              <TableCell>Còn lại (cuộn)</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -132,10 +132,10 @@ export default function OrderInfo({products, deposit}) {
         </Grid>
         <Grid item xs={6} className={classes.alignMoneyRight}>
           <Typography component="p" className={classes.estimateMoney}>
-            {totalLength} mét
+            {totalLength} cuộn
           </Typography>
           <Typography component="p" className={classes.estimateMoney}>
-            {totalShippedLength} mét
+            {totalShippedLength} cuộn
           </Typography>
         </Grid>
       </Grid>

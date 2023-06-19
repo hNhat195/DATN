@@ -61,20 +61,23 @@ export default function OrderDetail() {
     orderStatus: [],
     products: [],
     detailBill: [],
-    subOrder: []
+    subOrder: [],
   });
 
   const handleOrderStatus = async () => {
-    console.log(detail)
-  }
+    console.log(detail);
+  };
 
   const handleCancel = async () => {
-    console.log(detail.orderStatus)
+    console.log(detail.orderStatus);
     // if(detail.orderStatus[detail.orderStatus.length - 1] == "pending") {
-    await orderApi.updateStatus(id, {"status": "cancel", "reason": "cancel by admin"})
-    detail.orderStatus.push({"name": "cancel", "reason": "cancel by admin"})
+    await orderApi.updateStatus(id, {
+      status: "cancel",
+      reason: "cancel by admin",
+    });
+    detail.orderStatus.push({ name: "cancel", reason: "cancel by admin" });
     // }
-  }
+  };
 
   // useEffect(() => {
   //   let mounted = true;
@@ -93,7 +96,6 @@ export default function OrderDetail() {
   // }, [id, detail.orderStatus]);
 
   useEffect(() => {
-    
     let mounted = true;
     const fetchOrderDetail = async () => {
       const response = await orderApi.getOne(id);
@@ -107,7 +109,7 @@ export default function OrderDetail() {
     return () => {
       mounted = false;
     };
-  }, [])
+  }, []);
 
   const handleBack = () => {
     history.push(`/order`);
@@ -148,9 +150,17 @@ export default function OrderDetail() {
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          {detail.subOrder?.map((item, idx) => {
-            return <OrderInfo products={item.products}/>
-          })}
+          {detail.subOrder?.map((item, idx) => (
+            <Grid item container>
+              <OrderInfo products={item.products} />
+              <Grid item xs={3}>
+                <button>Chuyển trạng thái</button>
+              </Grid>
+              <Grid item xs={3}>
+                <button>Hủy đơn hàng</button>
+              </Grid>
+            </Grid>
+          ))}
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.btnGroup}>
@@ -158,7 +168,8 @@ export default function OrderDetail() {
           <Button
             startIcon={<Cancel />}
             size="large"
-            className={classes.btnCancel}>
+            className={classes.btnCancel}
+          >
             <Typography variant="h6" className={classes.btnCancelTitle}>
               Hủy
             </Typography>
