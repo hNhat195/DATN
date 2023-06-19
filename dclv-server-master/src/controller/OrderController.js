@@ -123,7 +123,6 @@ module.exports = {
 
       const asyncRes = await Promise.all(
         req.body.products.map(async (item, idx) => {
-          
           let colorId = await Color.findOne({
             colorCode: item.colorCode,
           }).exec();
@@ -156,7 +155,7 @@ module.exports = {
         totalQty: totalQuantity,
         products: productList,
       });
-      
+
       let result = await Order.findOneAndUpdate(
         { _id: temp._id },
         {
@@ -237,6 +236,27 @@ module.exports = {
       .populate({
         path: "detailBill",
         populate: { path: "salesmanID", select: "name -_id" },
+      })
+      .populate({
+        path: "subOrder",
+        populate: {
+          path: "products",
+          populate: {
+            path: "fabricID",
+            populate: [
+              {
+                path: "fabricTypeId",
+                select: "name -_id",
+              },
+              {
+                path: "colorId",
+                select: "colorCode -_id",
+              },
+            ],
+            select: "quantity shipped -_id",
+          },
+        },
+        select: "-_id",
       })
       .exec(function (err, result) {
         if (err) res.json(err);

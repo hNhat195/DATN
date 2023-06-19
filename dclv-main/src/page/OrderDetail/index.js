@@ -61,6 +61,7 @@ export default function OrderDetail() {
     orderStatus: [],
     products: [],
     detailBill: [],
+    subOrder: []
   });
 
   const handleOrderStatus = async () => {
@@ -145,6 +146,11 @@ export default function OrderDetail() {
             receiverAddress={detail.receiverAddress}
             id={id}
           />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          {detail.subOrder?.map((item, idx) => {
+            return <OrderInfo products={item.products}/>
+          })}
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.btnGroup}>
