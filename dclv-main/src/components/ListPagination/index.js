@@ -11,11 +11,11 @@ export default function ListPagination({ pageSize, itemList, setItemList, itemPe
   const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
-    setItemPerPage(itemList.slice(0, pageSize));
+    setItemPerPage(itemList?.slice(0, pageSize));
   }, [itemList]);
 
   useEffect(() => {
-    setItemPerPage(itemList.slice(pagination.from, pagination.to));
+    setItemPerPage(itemList?.slice(pagination.from, pagination.to));
   }, [pagination.from, pagination.to]);
 
   useEffect(() => {

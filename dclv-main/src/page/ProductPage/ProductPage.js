@@ -8,6 +8,7 @@ import NotificationButton from "../../components/Button/NotificationButton";
 import productApi from "../../api/productApi";
 import ListTypeHeader from "./components/ListTypeHeader";
 import TypeItem from "./components/TypeItem";
+import { useHistory, useParams } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -24,6 +25,7 @@ const useStyles = makeStyles(() => ({
 }));
 function Product() {
   const classes = useStyles();
+  const {type} = useParams();
   const [product, setProduct] = useState([]);
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState({
@@ -70,6 +72,7 @@ function Product() {
 
   return (
     <div className={classes.root}>
+      <h1>{type}</h1>
       <Grid container>
         <Grid item sm={6} md={8}>
           {/* <Filter

@@ -1,11 +1,13 @@
 const { Order } = require("../models/Order");
-const { Has } = require("../models/OrderItem");
-const { Item } = require("../models/Item");
 const { FabricType } = require("../models/FabricType");
 const { Customer } = require("../models/Customer");
 const { Counter } = require("../models/Counter");
 const mongoose = require("mongoose");
 const { Bill } = require("../models/Bill");
+const { OrderItem } = require("../models/OrderItem");
+const { FabricRoll } = require("../models/FabricRoll");
+const { Color } = require("../models/Color");
+const { SubOrder } = require("../models/SubOrder");
 
 async function getNextSequenceValue(sequenceName) {
   let seq = await Counter.findOneAndUpdate(
@@ -19,19 +21,24 @@ module.exports = {
   list: async (req, res) => {
     const page = Number.parseInt(req.query.page) || 0;
     const limit = Number.parseInt(req.query.limit) || 6;
-
     Order.find()
       .populate({
         path: "products",
         populate: {
-          path: "colorCode",
-          //   populate: {
-          //     path: "typeId",
-          //     select: "name -_id",
-          //   },
-          select: "colorCode typeId name -_id",
+          path: "fabricID",
+          populate: [
+            {
+              path: "fabricTypeId",
+              select: "name -_id",
+            },
+            {
+              path: "colorId",
+              select: "colorCode -_id",
+            },
+          ],
+          select: "fabricTypeId colorId -_id",
         },
-        select: "colorCode length shippedLength -_id",
+        select: "quantity shipped -_id",
       })
       .populate({
         path: "detailBill",
@@ -56,6 +63,29 @@ module.exports = {
   create: async (req, res) => {
     try {
       const id = await getNextSequenceValue("orderId");
+      const subOrderList = [];
+      const productList = [];
+      let totalQuantity = 0;
+
+      let temp = await Order.create({
+        orderId: id,
+        orderStatus: [
+          {
+            name: "pending",
+            date: Date.now(),
+          },
+        ],
+        note: req.body.note,
+        receiverName: req.body.receiverName,
+        receiverPhone: req.body.receiverPhone,
+        receiverAddress: req.body.receiverAddress,
+        deposit: req.body.deposit,
+        clientID: mongoose.Types.ObjectId(req.body.clientID),
+        detailBill: [],
+        products: productList,
+        subOrder: subOrderList,
+      });
+
       const asyncRes = await Promise.all(
         req.body.products.map(async (item, idx) => {
           let colorId = await Color.findOne({
@@ -85,12 +115,6 @@ module.exports = {
         })
       );
 
-      // let subOrder = await SubOrder.create({
-      //   orderId: temp._id,
-      //   totalQty: totalQuantity,
-      //   products: productList,
-      // });
-
       let result = await Order.findOneAndUpdate(
         { _id: temp._id },
         {
@@ -111,21 +135,20 @@ module.exports = {
       .populate({
         path: "products",
         populate: {
-          path: "colorCode",
+          path: "fabricID",
           populate: [
             {
-              path: "typeId",
+              path: "fabricTypeId",
               select: "name -_id",
             },
             {
-              path: "marketPriceId",
-              options: { sort: { dayApplied: "desc" }, limit: 1 },
-              select: "price -_id",
+              path: "colorId",
+              select: "colorCode -_id",
             },
           ],
-          select: "colorCode typeId name -_id",
+          select: "fabricTypeId colorId -_id",
         },
-        select: "colorCode length shippedLength -_id",
+        select: "quantity shipped -_id",
       })
       .populate({
         path: "clientID",
@@ -182,28 +205,44 @@ module.exports = {
     );
   },
 
-  updateStatus: async (req, res) => {
-    const status = await Order.findOne(
-      { _id: mongoose.Types.ObjectId(req.params.id) },
-      "orderStatus"
-    ).exec();
-
-    if (status.orderStatus[status.orderStatus.length - 1].name !== "processing")
-      Order.findOneAndUpdate(
+  updateStatusCancelOrder: async (req, res) => {
+    try {
+      const newOrderStatus = await Order.findOneAndUpdate(
         { _id: mongoose.Types.ObjectId(req.params.id) },
         {
           $push: {
             orderStatus: { name: req.body.status, reason: req.body.reason },
           },
-        },
-        function (err, result) {
-          if (err) {
-            return res.json({ message: "Error" });
-          } else {
-            return res.json(result);
-          }
         }
       );
+
+      const listSubOrder = await Order.find({
+        orderId: mongoose.Types.ObjectId(req.params.id),
+      });
+
+      await Promise.all(
+        listSubOrder.map((ele) => {
+          return ele.update({
+            $push: {
+              subOrderStatus: {
+                name: req.body.status,
+                reason: req.body.reason,
+              },
+            },
+          });
+        })
+      );
+
+      return res.json({
+        message: "Cập nhật trạng thái đơn hàng thành công",
+        status: 200,
+      });
+    } catch (error) {
+      return res.json({
+        message: "Cập nhật trạng thái thất bại",
+        status: 400,
+      });
+    }
   },
 
   cancleExportBill: async (req, res) => {

@@ -18,6 +18,7 @@ const {
   getTotalOrderbyMonth,
   getOrderFabricType,
   cancleExportBill,
+  updateStatusCancelOrder,
 } = require("../controller/OrderController");
 
 const { getListFabricType } = require("../controller/FabricTypeController");
@@ -36,7 +37,7 @@ router.get("/api/getorderdaily", getOrderDaily);
 router.get("/api/getorderbymonth", getTotalOrderbyMonth);
 router.get("/api/getorderfabrictype", getOrderFabricType);
 router.put("/api/order/cancle-status/:id", cancleExportBill);
-
+router.put("api/order/:id/update_status_cancel_order", updateStatusCancelOrder);
 /*----bill route-------*/
 const {
   getListBill,

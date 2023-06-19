@@ -8,6 +8,9 @@ const { FabricRoll } = require("../models/FabricRoll");
 const { FabricType } = require("../models/FabricType");
 const { Item } = require("../models/Item");
 const { MarketPrice } = require("../models/MarketPrice");
+const { Color } = require("../models/Color")
+const ObjectId = require('mongoose').Types.ObjectId;
+
 
 const getProductList1 = async (req, res) => {
   try {
@@ -559,7 +562,7 @@ const getListColorcode = (req, res) => {
 };
 
 async function getAllColorCode(req, res) {
-  var colorMap = await Item.find({});
+  var colorMap = await Color.find({});
   return res.status(200).json(colorMap);
 }
 
@@ -592,21 +595,22 @@ async function getMaterialByColor(req, res) {
 
 async function getColorByMaterial(req, res) {
   const body = req.body;
+  const ftype = body.materialId
+  
+  const ftypeList = await FabricRoll.find({
+    fabricTypeId: ftype
+  })
+  
+  const colorList = ftypeList.map(x => x.colorId)
+  const colorListResponse = await Promise.all(colorList.map( async (x) => {
+    const item = await Color.findOne({
+      _id: x
+    }).exec();
+    return item;
+  }))
 
-  const ftype = await FabricType.findOne({ id: body.typeName });
-  let filteredList = [];
-
-  if (ftype != null) {
-    let materialId = String(ftype._id);
-
-    const colorList = await Item.find();
-
-    filteredList = colorList.filter((item) => {
-      return item.typeId == materialId;
-    });
-  }
-
-  return res.status(200).json(filteredList);
+  return res.status(200).json(colorListResponse);
+  // return res.status(200).json([]);
 }
 
 module.exports = {

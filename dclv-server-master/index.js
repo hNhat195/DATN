@@ -12,13 +12,6 @@ const port = process.env.BACK_END_PORT;
 const mongodb_url = process.env.MONGODB_URL_V2;
 
 const router = require("./src/routes/routes");
-const { InsertToStaff } = require("./src/create/CreateStaff");
-const { createColorFabric } = require("./src/create/createColor");
-const {
-  createFabricType,
-  createColor,
-  CreateFabricRoll,
-} = require("./src/create/CreateFabricRoll");
 
 const app = express();
 app.use(bodyParser.json());

@@ -9,12 +9,11 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import orderApi from "../../../api/orderApi";
 import productApi from "../../../api/productApi";
 import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
   alignRight: {
@@ -28,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "true",
   },
 }));
+
+const objectIdPattern = /^[0-9a-fA-F]{24}$/;
+
 export default function CreateForm({
   productList,
   setProductList,
@@ -41,8 +43,7 @@ export default function CreateForm({
   const [fabricLength, setFabricLength] = useState("");
   const [materialId, setMaterialId] = useState("");
   const [materialType, setMaterialType] = useState("");
-  const [materialName, setMaterialName] = useState("");
-  //const [productList, setProductList] = useState([])
+
   const history = useHistory();
   const classes = useStyles();
   const postOrder = async (postData) => {
@@ -68,40 +69,46 @@ export default function CreateForm({
   };
 
   const handleAdd = (event) => {
-    let addData = {
-      colorCode: fabricColor,
-      typeId: materialName,
-      length: Number.parseInt(fabricLength),
-    };
     if (
-      addData.colorCode == "" ||
-      addData.typeId == "" ||
-      isNaN(addData.length)
+      fabricColor == "" ||
+      fabricMaterial == "" ||
+      isNaN(Number.parseInt(fabricLength))
     ) {
       console.log("please add information");
-    } else setProductList([...productList, addData]);
+    }
 
+    let addData = {
+      colorCode: fabricColor,
+      typeId: fabricMaterial,
+      length: Number.parseInt(fabricLength),
+    };
+    setProductList([...productList, addData]);
     event.preventDefault();
   };
 
   useEffect(() => {
     const fetchMaterial = async () => {
       const response = await productApi.getAllMaterialCode();
+      console.log(response);
       setMaterialList(response);
     };
-    //console.log(materialList)
     fetchMaterial();
   }, []);
 
   const fetchColor = async () => {
+    if (objectIdPattern.test(materialId)) {
+      const response = await productApi.getColorByMaterial(materialId);
+      setColorList(response);
+    }
     // console.log(materialType)
-    const response = await productApi.getColorByMaterial(materialType);
-    return response;
   };
   useEffect(async () => {
-    const response = await fetchColor();
-    setColorList(response);
-  }, [materialType]);
+    await fetchColor();
+  }, [materialId]);
+
+  useEffect(() => {
+    console.log(productList);
+  }, [productList]);
 
   return (
     <div>
@@ -122,16 +129,14 @@ export default function CreateForm({
               onChange={async (e) => {
                 setFabricMaterial(e.target.value);
                 const mat = await materialList.find((x) => {
-                  return x.id === e.target.value;
+                  return x.name === e.target.value;
                 });
-                setMaterialName(mat.name);
                 setMaterialId(mat._id);
-                setMaterialType(e.target.value);
               }}
               value={fabricMaterial || ""}>
               {materialList.map((item, idx) => {
                 return (
-                  <MenuItem key={idx} value={item.id}>
+                  <MenuItem key={idx} value={item.name}>
                     {item.name}
                   </MenuItem>
                 );

@@ -63,6 +63,18 @@ export default function OrderDetail() {
     detailBill: [],
   });
 
+  const handleOrderStatus = async () => {
+    console.log(detail);
+  };
+
+  const handleCancel = async () => {
+    await orderApi.updateStatusCancelOrder(id, {
+      status: "cancel",
+      reason: "cancel by admin",
+    });
+    detail.orderStatus.push({ name: "cancel", reason: "cancel by admin" });
+  };
+
   useEffect(() => {
     let mounted = true;
     const fetchOrderDetail = async () => {
@@ -77,7 +89,7 @@ export default function OrderDetail() {
     return () => {
       mounted = false;
     };
-  }, [id]);
+  }, []);
 
   const handleBack = () => {
     history.push(`/order`);
@@ -90,6 +102,12 @@ export default function OrderDetail() {
           <Typography variant="h4" className={classes.titlePage}>
             {"Chi tiết đơn đặt hàng MDH" + detail.orderId}
           </Typography>
+        </Grid>
+        <Grid item xs={2}>
+          <button onClick={handleOrderStatus}>Chuyển trạng thái</button>
+        </Grid>
+        <Grid item xs={1}>
+          <button onClick={handleCancel}>Hủy đơn hàng</button>
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.root}>

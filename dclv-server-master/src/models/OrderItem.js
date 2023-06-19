@@ -10,7 +10,7 @@ const OrderItemSchema = new Schema(
       type: Schema.Types.ObjectId,
       default: null,
       required: true,
-      ref: "Fabric",
+      ref: "FabricRoll",
     },
     quantity: {
       type: Number,
@@ -25,5 +25,5 @@ const OrderItemSchema = new Schema(
   },
   { collection: "OrderItem" }
 );
-const Has = mongoose.model("OrderItem", OrderItemSchema);
-module.exports = { Has };
+const OrderItem = mongoose.model("OrderItem", OrderItemSchema);
+module.exports = { OrderItem };

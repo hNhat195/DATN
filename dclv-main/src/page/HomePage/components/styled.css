@@ -1,0 +1,60 @@
+.select-with-hover {
+  position: relative;
+  display: inline-block;
+}
+
+.selected-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background-color: white;
+  border: 1px solid lightgray;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  color: black; /* Set text color to black */
+}
+
+.selected-option:hover,
+.selected-option:focus,
+.selected-option:active {
+  background-color: lightgray;
+}
+
+.options-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+.select-with-hover:hover .options-container {
+  max-height: 1000px;
+  overflow: auto;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 1px solid lightgray;
+  border-top: none;
+  color: black; /* Set text color to black */
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.option:hover,
+.option:focus,
+.option:active {
+  background-color: lightgray;
+}

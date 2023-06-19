@@ -41,7 +41,7 @@ import axiosClient from "./axiosClient";
 const orderApi = {
   getAll: (page, limit) => {
     let url;
-    
+
     if (page && limit) url = `/order?page=${page}&limit=${limit}`;
     else url = `/order`;
     return axiosClient.get(url);
@@ -115,6 +115,10 @@ const orderApi = {
   searchByStaff: (keyword) => {
     const url = `/order/search?keyword=${keyword}`;
     return axiosClient.get(url);
+  },
+  updateStatusCancelOrder: (orderId, data) => {
+    const url = `/order/${orderId}/update_status_cancel_order`;
+    return axiosClient.put(url, data);
   },
 };
 export default orderApi;
