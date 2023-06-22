@@ -9,6 +9,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { ArrowBack, ArrowUpward, Cancel, Publish } from "@material-ui/icons";
 import DefaultButton from "../../components/Button/DefaultButton";
 import { useHistory, useParams } from "react-router-dom";
+import SubOrderPopup from "./components/SubOrderPopup";
+
 
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
@@ -118,15 +120,18 @@ export default function OrderDetail() {
   return (
     <Container maxWidth="xl" className={classes.orderDetailBox}>
       <Grid container spacing={2}>
-        <Grid item xs={9}>
+        <Grid item xs={6}>
           <Typography variant="h4" className={classes.titlePage}>
             {"Chi tiết đơn đặt hàng MDH" + detail.orderId}
           </Typography>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item>
+          <SubOrderPopup products={detail.products}></SubOrderPopup>
+        </Grid>
+        <Grid item>
           <button onClick={handleOrderStatus}>Chuyển trạng thái</button>
         </Grid>
-        <Grid item xs={1}>
+        <Grid item>
           <button onClick={handleCancel}>Hủy đơn hàng</button>
         </Grid>
       </Grid>
@@ -151,7 +156,7 @@ export default function OrderDetail() {
         </Grid>
         <Grid item xs={12} md={6}>
           {detail.subOrder?.map((item, idx) => (
-            <Grid item container>
+            <Grid item container key={idx}>
               <OrderInfo products={item.products} />
               <Grid item xs={3}>
                 <button>Chuyển trạng thái</button>

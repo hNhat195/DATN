@@ -11,6 +11,8 @@ const { FabricRoll } = require("../models/FabricRoll");
 const { Color } = require("../models/Color");
 const { SubOrder } = require("../models/SubOrder");
 
+const mailer = require("../utils/mailer")
+
 async function getNextSequenceValue(sequenceName) {
   let seq = await Counter.findOneAndUpdate(
     { counter_type: sequenceName },
@@ -169,6 +171,7 @@ module.exports = {
       //   Has.findOneAndUpdate({ _id: item }, { orderId: result._id }).exec();
       // });
       //Update Has order id
+      mailer.sendMail("phu.vu1609@hcmut.edu.vn", "Testing node mailer", `<p>Your order has been created successfully </p>`)
       res.send(result);
     } catch (err) {
       console.log(err);
