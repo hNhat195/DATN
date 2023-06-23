@@ -17,6 +17,7 @@ const FabricRollSchema = new Schema(
   },
   { collection: "FabricRoll" }
 );
+FabricRollSchema.index({ fabricTypeId: 1, colorId: 1 }, { unique: true });
 
 const FabricRoll = mongoose.model("FabricRoll", FabricRollSchema);
 

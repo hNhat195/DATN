@@ -112,9 +112,8 @@ export default function TimelineStatus(props) {
                             (idx !== lastStatusIdx &&
                               clsx(classes.past, classes.status)) ||
                             clsx(classes.pending, classes.status)
-                          }
-                        >
-                          Chờ xử lý
+                          }>
+                          Pending
                         </Typography>
                         <Typography
                           variant="subtitle1"
@@ -122,8 +121,7 @@ export default function TimelineStatus(props) {
                             (idx !== lastStatusIdx &&
                               clsx(classes.past, classes.statusDetail)) ||
                             clsx(classes.pending, classes.statusDetail)
-                          }
-                        >
+                          }>
                           Đơn hàng đã được hoàn tất một phần
                         </Typography>
                         <Typography
@@ -132,8 +130,7 @@ export default function TimelineStatus(props) {
                             (idx !== lastStatusIdx &&
                               clsx(classes.past, classes.statusDetail)) ||
                             clsx(classes.pending, classes.statusDetail)
-                          }
-                        >
+                          }>
                           Đang đợi xử lí phần còn lại
                         </Typography>
                       </Grid>
@@ -144,8 +141,7 @@ export default function TimelineStatus(props) {
                             (idx !== lastStatusIdx &&
                               clsx(classes.past, classes.status)) ||
                             clsx(classes.pending, classes.status)
-                          }
-                        >
+                          }>
                           {moment(item.date)
                             .subtract(1, "days")
                             .format("DD/MM/YYYY")}
@@ -200,12 +196,12 @@ export default function TimelineStatus(props) {
                             (item.name === "cancel" &&
                               idx === lastStatusIdx &&
                               clsx(classes.cancel, classes.status))
-                          }
-                        >
+                          }>
                           {(item.name === "pending" && "Chờ xử lý") ||
-                            (item.name === "processing" && "Đang xử lý") ||
+                            (item.name === "ready" && "Sẵn sàng giao") ||
+                            (item.name === "in-progress" && "Đang giao") ||
                             (item.name === "completed" && "Hoàn tất") ||
-                            (item.name === "cancel" && "Đã hủy")}
+                            (item.name === "canceled" && "Đã hủy")}
                         </Typography>
                         <Typography
                           variant="subtitle1"
@@ -224,15 +220,15 @@ export default function TimelineStatus(props) {
                             (item.name === "cancel" &&
                               idx === lastStatusIdx &&
                               clsx(classes.cancel, classes.statusDetail))
-                          }
-                        >
+                          }>
                           {(item.name === "pending" &&
                             "Đơn đặt hàng đang chờ được xử lí") ||
-                            (item.name === "processing" &&
-                              "Nhân viên đang xử lí đơn đặt hàng") ||
+                            (item.name === "ready" && "Đơn hàng đã sẵn sàng") ||
+                            (item.name === "in-progress" &&
+                              "Nhân viên đang giao hàng") ||
                             (item.name === "completed" &&
                               "Đơn đặt hàng đã được nhân viên xử lí xong") ||
-                            (item.name === "cancel" && "Đã hủy đơn đặt hàng")}
+                            (item.name === "canceled" && "Đã hủy đơn đặt hàng")}
                         </Typography>
                       </Grid>
                       <Grid item xs={3}>
@@ -253,8 +249,7 @@ export default function TimelineStatus(props) {
                             (item.name === "cancel" &&
                               idx === lastStatusIdx &&
                               clsx(classes.cancel, classes.status))
-                          }
-                        >
+                          }>
                           {moment(item.date)
                             .subtract(1, "days")
                             .format("DD/MM/YYYY")}

@@ -1,7 +1,7 @@
-"use strict";
+// "use strict";
 
-module.exports = function(app) {
-    let FabricRollCtrl = require("../controller/FabricRollController");
+// module.exports = function(app) {
+//     let FabricRollCtrl = require("../controller/FabricRollController");
 
-    app.route("/order/change_status").put(FabricRollCtrl.changeStatus);
-}
+//     app.route("/order/change_status").put(FabricRollCtrl.changeStatus);
+// }

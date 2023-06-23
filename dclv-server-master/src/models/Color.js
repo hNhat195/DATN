@@ -8,6 +8,7 @@ const ColorSchema = new Schema(
       type: String,
       default: "",
       required: true,
+      unique: true,
     },
   },
   { collection: "Color" }

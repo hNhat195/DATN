@@ -52,7 +52,7 @@ const useStyles = makeStyles({
     },
   },
 });
-export default function OrderInfo({products, deposit}) {
+export default function OrderInfo({ products, deposit }) {
   const classes = useStyles();
 
   let totalLength = products?.reduce(
@@ -76,17 +76,16 @@ export default function OrderInfo({products, deposit}) {
               <TableCell>STT</TableCell>
               <TableCell>Loại vải</TableCell>
               <TableCell>Mã màu</TableCell>
-              <TableCell>Đã đặt (cuộn)</TableCell>
-              <TableCell>Đã giao (cuộn)</TableCell>
-              <TableCell>Còn lại (cuộn)</TableCell>
+              <TableCell>Đã đặt&nbsp;(Cây)</TableCell>
+              <TableCell>Đã giao&nbsp;(Cây)</TableCell>
+              <TableCell>Còn lại&nbsp;(Cây)</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {products?.map((item, idx) => (
               <TableRow
                 key={idx}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                 <TableCell component="th" scope="row">
                   <Typography variant="subtitle2">{idx + 1}</Typography>
                 </TableCell>
@@ -112,7 +111,8 @@ export default function OrderInfo({products, deposit}) {
                 </TableCell>
                 <TableCell>
                   <Typography variant="subtitle2">
-                    {Number.parseInt(item.quantity) - Number.parseInt(item.shipped)}
+                    {Number.parseInt(item.quantity) -
+                      Number.parseInt(item.shipped)}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -124,37 +124,21 @@ export default function OrderInfo({products, deposit}) {
       <Grid container>
         <Grid item xs={6}>
           <Typography component="p" className={classes.estimateMoney}>
-            Tổng chiều dài đã đặt
+            Tổng số cây đã đặt
           </Typography>
           <Typography component="p" className={classes.estimateMoney}>
-            Tổng chiều dài đã giao
+            Tổng số cây đã giao
           </Typography>
         </Grid>
         <Grid item xs={6} className={classes.alignMoneyRight}>
           <Typography component="p" className={classes.estimateMoney}>
-            {totalLength} cuộn
+            {totalLength} Cây
           </Typography>
           <Typography component="p" className={classes.estimateMoney}>
-            {totalShippedLength} cuộn
+            {totalShippedLength} Cây
           </Typography>
         </Grid>
       </Grid>
     </div>
   );
 }
-
-// function createData(typeID, colorCode, shipped, remaining, unitPrice) {
-//   return { typeID, colorCode, shipped, remaining, unitPrice };
-// }
-
-// const rows = [
-//   createData("Kaki", 236, 500, 500, "100.000"),
-//   createData("Jean", 236, 500, 500, "100.000"),
-//   createData("Kate", 236, 500, 500, "100.000"),
-//   createData("Lụa", 236, 500, 500, "100.000"),
-//   createData("Bamboo", 236, 500, 500, "100.000"),
-//   createData("Cotton", 236, 500, 500, "100.000"),
-//   createData("Kaki", 236, 500, 500, "100.000"),
-//   createData("Jean", 236, 500, 500, "100.000"),
-//   createData("Kate", 236, 500, 500, "100.000"),
-// ];
