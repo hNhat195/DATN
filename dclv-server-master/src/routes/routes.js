@@ -4,73 +4,28 @@ const express = require("express");
 const router = express.Router();
 const verify = require("../auth/checkToken");
 
-const {
-  list,
-  create,
-  detail,
-  updateInfo,
-  getListProductsById,
-  updateStatus,
-  deposit,
-  getFabricTypeOrder,
-  getOrderStatus,
-  getOrderDaily,
-  getTotalOrderbyMonth,
-  getOrderFabricType,
-  cancleExportBill,
-  updateStatusCancelOrder,
-} = require("../controller/OrderController");
+const OrderController = require("../controller/OrderController");
 
 const { getListFabricType } = require("../controller/FabricTypeController");
 
 /*----order route------*/
-router.get("/api/order", list);
-router.post("/api/order/create", create);
-router.get("/api/order/:id", detail);
-router.get("/api/order/:id/products", getListProductsById);
-router.put("/api/order/update_info", updateInfo);
-router.put("/api/order/:id/update_status", updateStatus);
-router.get("/api/deposit", deposit);
-router.get("/api/getfabrictypeorder", getFabricTypeOrder);
-router.get("/api/getorderstatus", getOrderStatus);
-router.get("/api/getorderdaily", getOrderDaily);
-router.get("/api/getorderbymonth", getTotalOrderbyMonth);
-router.get("/api/getorderfabrictype", getOrderFabricType);
-router.put("/api/order/cancle-status/:id", cancleExportBill);
-router.put("api/order/:id/update_status_cancel_order", updateStatusCancelOrder);
-/*----bill route-------*/
-const {
-  getListBill,
-  createBill,
-  getListBillByOrderId,
-  getBillDetail,
-  getFabricRollBillCompleted,
-  getListBillByIds,
-  getBillComplete,
-  getBillStatus,
-  getBillFabricTypeSell,
-  // getBillCompleteMonthly
-  getListBillUncomplete,
-  getListBillComplete,
-  updateBillStatus,
-} = require("../controller/BillController");
-
-router.get("/api/bill", getListBill);
-router.get("/api/bill/list/uncomplete", getListBillUncomplete);
-router.get("/api/bill/list/complete", getListBillComplete);
-router.post("/api/bill/create", createBill);
-router.get("/api/bill/list", getListBillByIds);
-router.get("/api/bill/order/:orderid", getListBillByOrderId);
-router.get("/api/bill/detail/:id", getBillDetail);
-router.get("/api/bill/fabricrollcompleted", getFabricRollBillCompleted);
-router.get("/api/bill/completed", getBillComplete);
-router.get("/api/bill/status", getBillStatus);
-router.get("/api/bill/fabrictypesell", getBillFabricTypeSell);
-router.put("/api/bill/:id", updateBillStatus);
-// router.get("/api/bill/completedbymonth", getBillCompleteMonthly);
-
-// router.post("/api/bill/create")
-/*---------------------*/
+router.get("/api/order", OrderController.list);
+router.post("/api/order/create", OrderController.create);
+router.get("/api/order/:id", OrderController.detail);
+router.get("/api/order/:id/products", OrderController.getListProductsById);
+router.put("/api/order/update_info", OrderController.updateInfo);
+router.put("/api/order/:id/update_status", OrderController.updateStatus);
+router.get("/api/deposit", OrderController.deposit);
+router.get("/api/getfabrictypeorder", OrderController.getFabricTypeOrder);
+router.get("/api/getorderstatus", OrderController.getOrderStatus);
+router.get("/api/getorderdaily", OrderController.getOrderDaily);
+router.get("/api/getorderbymonth", OrderController.getTotalOrderbyMonth);
+router.get("/api/getorderfabrictype", OrderController.getOrderFabricType);
+router.put("/api/order/cancle-status/:id", OrderController.cancleExportBill);
+router.put(
+  "/api/order/:id/update_status_cancel_order",
+  OrderController.updateStatusCancelOrder
+);
 
 const {
   createNewCustomer,
@@ -96,24 +51,6 @@ router.post("/api/user/admin/createstaff", createNewStaff);
 //for admin
 router.get("/api/admin/liststaff", listStaff);
 router.get("/api/admin/staffInfo/:id", infoStaffById);
-
-//for product
-/*----Customer route-------*/
-// const {
-//   listCustomer,
-//   createCustomer,
-//   infoById,
-//   infoByEmail,
-//   updateCustomerInfo,
-//   updatePassword,
-// } = require("../controller/CustomerController");
-// router.get("/api/customer", listCustomer);
-// router.post("/api/customer/create", createCustomer);
-// router.get("/api/customer/:id", infoById);
-// router.get("/api/customer/:email", infoByEmail);
-// router.post("/api/customer/update_info", updateCustomerInfo);
-// router.post("/api/customer/update_password", updatePassword);
-/*---------------------*/
 
 /*-----FabricType route------*/
 router.get("/api/fabrictype", getListFabricType);

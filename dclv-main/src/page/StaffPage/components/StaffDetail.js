@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+
 import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
-import { Box, Avatar, Typography, Button } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 
 import InfoProfile from "../../../components/CardProfile/InfoProfile";
 import ProfileCardComp from "../../../components/CardProfile/ProfileCardComp";
-import InfoButton from "../../../components/Button/InfoButton";
 import staffApi from "../../../api/staffApi";
 
 const useStyles = makeStyles(() => ({

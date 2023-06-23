@@ -8,16 +8,10 @@ import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import {
-  LockOutlined,
-  PhoneAndroid,
-  AccountCircle,
-  Lock,
-} from "@material-ui/icons";
+import { LockOutlined } from "@material-ui/icons";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import {FormControl, InputLabel} from "@material-ui/core"
+import { FormControl, InputLabel } from "@material-ui/core";
 
 function Copyright() {
   return (
@@ -37,7 +31,8 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
   },
   image: {
-    backgroundImage: "url(https://webservices.wkf.fr/editorial/medias/images/actu-77374-report-d_imposition-des.jpg)",
+    backgroundImage:
+      "url(https://webservices.wkf.fr/editorial/medias/images/actu-77374-report-d_imposition-des.jpg)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -86,272 +81,217 @@ export default function SignUp() {
             Đăng kí
           </Typography>
           <form className={classes.form} noValidate autoComplete="off">
-            {/* <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              placeholder="Nhập địa chỉ Email"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <AccountCircle />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Mật khẩu"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              placeholder="Nhập mật khẩu"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Lock />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="repassword"
-              label="Nhập lại mật khẩu"
-              type="password"
-              id="repassword"
-              autoComplete="current-password"
-              placeholder="Nhập lại mật khẩu"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Lock />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="phone"
-              label="Số điện thoại"
-              type="text"
-              id="phone"
-              autoComplete="phone-number"
-              placeholder="Nhập SĐT"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <PhoneAndroid />
-                  </InputAdornment>
-                ),
-              }}
-            /> */}
             <FormControl
-                    fullWidth
-                    margin="dense"
-                    //   error={Boolean(touched.confirmPass && errors.confirmPass)}
-                    >
-                    <InputLabel
-                        htmlFor="email-customer"
-                        // error={Boolean(touched.confirmPass && errors.confirmPass)}
-                    >
-                        {/* {'Confirm Password'} */}
-                    </InputLabel>
-                    <Typography gutterBottom variant="h6" className={classes.btnColor}>
-                        Email
-                    </Typography>
-                    <TextField
-                        required
-                        id="standard-required"
-                        name="email-customer"
-                        variant="outlined"
-                        // value={values.confirmPass}
-                        // onChange={handleChange}
-                        // onBlur={handleBlur}
-                        // error={Boolean(touched.confirmPass && errors.confirmPass)}
-                        className={classes.inputPassword}
-                    />
-                    
-                    {/* <FormHelperText
+              fullWidth
+              margin="dense"
+              //   error={Boolean(touched.confirmPass && errors.confirmPass)}
+            >
+              <InputLabel
+                htmlFor="email-customer"
+                // error={Boolean(touched.confirmPass && errors.confirmPass)}
+              >
+                {/* {'Confirm Password'} */}
+              </InputLabel>
+              <Typography
+                gutterBottom
+                variant="h6"
+                className={classes.btnColor}>
+                Email
+              </Typography>
+              <TextField
+                required
+                id="standard-required"
+                name="email-customer"
+                variant="outlined"
+                // value={values.confirmPass}
+                // onChange={handleChange}
+                // onBlur={handleBlur}
+                // error={Boolean(touched.confirmPass && errors.confirmPass)}
+                className={classes.inputPassword}
+              />
+
+              {/* <FormHelperText
                         error={Boolean(touched.confirmPass && errors.confirmPass)}
                     >
                         {touched.confirmPass && errors.confirmPass
                         ? errors.confirmPass
                         : ''}
                     </FormHelperText> */}
-                    </FormControl>
-                    
+            </FormControl>
+
             <FormControl
-                    fullWidth
-                    margin="dense"
-                    //   error={Boolean(touched.newPass && errors.newPass)}
-                    >
-                    <InputLabel
-                        htmlFor="telephone-customer"
-                        // error={Boolean(touched.newPass && errors.newPass)}
-                    >
-                        {/* {'New Password'} */}
-                    </InputLabel>
-                    <Typography gutterBottom variant="h6" className={classes.btnColor}>
-                        Số điện thoại
-                    </Typography>
-                    <TextField
-                        required
-                        id="standard-required"
-                        name="telephone-customer"
-                        variant="outlined"
-                        // value={values.newPass}
-                        // onChange={handleChange}
-                        // onBlur={handleBlur}
-                        // error={Boolean(touched.newPass && errors.newPass)}
-                    />
-                    
-                    {/* <FormHelperText
+              fullWidth
+              margin="dense"
+              //   error={Boolean(touched.newPass && errors.newPass)}
+            >
+              <InputLabel
+                htmlFor="telephone-customer"
+                // error={Boolean(touched.newPass && errors.newPass)}
+              >
+                {/* {'New Password'} */}
+              </InputLabel>
+              <Typography
+                gutterBottom
+                variant="h6"
+                className={classes.btnColor}>
+                Số điện thoại
+              </Typography>
+              <TextField
+                required
+                id="standard-required"
+                name="telephone-customer"
+                variant="outlined"
+                // value={values.newPass}
+                // onChange={handleChange}
+                // onBlur={handleBlur}
+                // error={Boolean(touched.newPass && errors.newPass)}
+              />
+
+              {/* <FormHelperText
                         error={Boolean(touched.newPass && errors.newPass)}
                     >
                         {touched.newPass && errors.newPass ? errors.newPass : ''}
                     </FormHelperText> */}
             </FormControl>
 
-            <FormControl fullWidth margin="dense" style={{marginRight: "10px"}} > 
-                        <InputLabel
-                            htmlFor="nameCustomer"
-                            //error={Boolean(touched.currentPass && errors.currentPass)}
-                        >
-                        {/* {'Current Password'} */}
-                        </InputLabel>
-                        <Typography gutterBottom variant="h6" className={classes.btnColor}>
-                            Họ tên
-                        </Typography>
-                        <TextField
-                            required
-                            id="standard-required"
-                            name="nameCustomer"
-                            variant="outlined"
-                            // value={values.currentPass}
-                            // onChange={handleChange}
-                            // onBlur={handleBlur}
-                            // error={Boolean(touched.currentPass && errors.currentPass)}
-                        />
-                        {/* <FormHelperText
+            <FormControl
+              fullWidth
+              margin="dense"
+              style={{ marginRight: "10px" }}>
+              <InputLabel
+                htmlFor="nameCustomer"
+                //error={Boolean(touched.currentPass && errors.currentPass)}
+              >
+                {/* {'Current Password'} */}
+              </InputLabel>
+              <Typography
+                gutterBottom
+                variant="h6"
+                className={classes.btnColor}>
+                Họ tên
+              </Typography>
+              <TextField
+                required
+                id="standard-required"
+                name="nameCustomer"
+                variant="outlined"
+                // value={values.currentPass}
+                // onChange={handleChange}
+                // onBlur={handleBlur}
+                // error={Boolean(touched.currentPass && errors.currentPass)}
+              />
+              {/* <FormHelperText
                             error={Boolean(touched.currentPass && errors.currentPass)}
                         >
                             {touched.currentPass && errors.currentPass
                             ? errors.currentPass
                             : ''}
                         </FormHelperText> */}
-                    </FormControl>
+            </FormControl>
 
-                    <FormControl fullWidth margin="dense">
-                        <InputLabel
-                            htmlFor="address-customer"
-                            //error={Boolean(touched.currentPass && errors.currentPass)}
-                        >
-                        {/* {'Current Password'} */}
-                        </InputLabel>
-                        <Typography gutterBottom variant="h6" className={classes.btnColor}>
-                            Địa chỉ
-                        </Typography>
-                        <TextField
-                            required
-                            id="standard-required"
-                            name="address-customer"
-                            variant="outlined"
-                            // value={values.currentPass}
-                            // onChange={handleChange}
-                            // onBlur={handleBlur}
-                            // error={Boolean(touched.currentPass && errors.currentPass)}
-                        />
-                        {/* <FormHelperText
+            <FormControl fullWidth margin="dense">
+              <InputLabel
+                htmlFor="address-customer"
+                //error={Boolean(touched.currentPass && errors.currentPass)}
+              >
+                {/* {'Current Password'} */}
+              </InputLabel>
+              <Typography
+                gutterBottom
+                variant="h6"
+                className={classes.btnColor}>
+                Địa chỉ
+              </Typography>
+              <TextField
+                required
+                id="standard-required"
+                name="address-customer"
+                variant="outlined"
+                // value={values.currentPass}
+                // onChange={handleChange}
+                // onBlur={handleBlur}
+                // error={Boolean(touched.currentPass && errors.currentPass)}
+              />
+              {/* <FormHelperText
                             error={Boolean(touched.currentPass && errors.currentPass)}
                         >
                             {touched.currentPass && errors.currentPass
                             ? errors.currentPass
                             : ''}
                         </FormHelperText> */}
-                    </FormControl>
-                  
-                    <FormControl
-                    fullWidth
-                    margin="dense"
-                    //   error={Boolean(touched.newPass && errors.newPass)}
-                    >
-                    <InputLabel
-                        htmlFor="password"
-                        // error={Boolean(touched.newPass && errors.newPass)}
-                    >
-                        {/* {'New Password'} */}
-                    </InputLabel>
-                    <Typography gutterBottom variant="h6" className={classes.btnColor}>
-                        Mật khẩu
-                    </Typography>
-                    <TextField
-                        id="password"
-                        name="newPass"
-                        type="password"
-                        variant="outlined"
-                        // value={values.newPass}
-                        // onChange={handleChange}
-                        // onBlur={handleBlur}
-                        // error={Boolean(touched.newPass && errors.newPass)}
-                    />
-                    
-                    {/* <FormHelperText
+            </FormControl>
+
+            <FormControl
+              fullWidth
+              margin="dense"
+              //   error={Boolean(touched.newPass && errors.newPass)}
+            >
+              <InputLabel
+                htmlFor="password"
+                // error={Boolean(touched.newPass && errors.newPass)}
+              >
+                {/* {'New Password'} */}
+              </InputLabel>
+              <Typography
+                gutterBottom
+                variant="h6"
+                className={classes.btnColor}>
+                Mật khẩu
+              </Typography>
+              <TextField
+                id="password"
+                name="newPass"
+                type="password"
+                variant="outlined"
+                // value={values.newPass}
+                // onChange={handleChange}
+                // onBlur={handleBlur}
+                // error={Boolean(touched.newPass && errors.newPass)}
+              />
+
+              {/* <FormHelperText
                         error={Boolean(touched.newPass && errors.newPass)}
                     >
                         {touched.newPass && errors.newPass ? errors.newPass : ''}
                     </FormHelperText> */}
-                    </FormControl>
-                    <FormControl
-                    fullWidth
-                    margin="dense"
-                    //   error={Boolean(touched.confirmPass && errors.confirmPass)}
-                    >
-                    <InputLabel
-                        htmlFor="password-confirm"
-                        // error={Boolean(touched.confirmPass && errors.confirmPass)}
-                    >
-                        {/* {'Confirm Password'} */}
-                    </InputLabel>
-                    <Typography gutterBottom variant="h6" className={classes.btnColor}>
-                      Nhập lại mật khẩu
-                    </Typography>
-                    <TextField
-                        id="password-confirm"
-                        name="confirmPass"
-                        type="password"
-                        variant="outlined"
-                        // value={values.confirmPass}
-                        // onChange={handleChange}
-                        // onBlur={handleBlur}
-                        // error={Boolean(touched.confirmPass && errors.confirmPass)}
-                        className={classes.inputPassword}
-                    />
-                    
-                    {/* <FormHelperText
+            </FormControl>
+            <FormControl
+              fullWidth
+              margin="dense"
+              //   error={Boolean(touched.confirmPass && errors.confirmPass)}
+            >
+              <InputLabel
+                htmlFor="password-confirm"
+                // error={Boolean(touched.confirmPass && errors.confirmPass)}
+              >
+                {/* {'Confirm Password'} */}
+              </InputLabel>
+              <Typography
+                gutterBottom
+                variant="h6"
+                className={classes.btnColor}>
+                Nhập lại mật khẩu
+              </Typography>
+              <TextField
+                id="password-confirm"
+                name="confirmPass"
+                type="password"
+                variant="outlined"
+                // value={values.confirmPass}
+                // onChange={handleChange}
+                // onBlur={handleBlur}
+                // error={Boolean(touched.confirmPass && errors.confirmPass)}
+                className={classes.inputPassword}
+              />
+
+              {/* <FormHelperText
                         error={Boolean(touched.confirmPass && errors.confirmPass)}
                     >
                         {touched.confirmPass && errors.confirmPass
                         ? errors.confirmPass
                         : ''}
                     </FormHelperText> */}
-                    </FormControl>
+            </FormControl>
 
             <Button
               type="submit"
@@ -359,8 +299,7 @@ export default function SignUp() {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={handleSubmit}
-            >
+              onClick={handleSubmit}>
               Đăng kí
             </Button>
             <Grid container>
