@@ -9,7 +9,11 @@ const OrderSchema = new Schema(
     },
     orderStatus: [
       {
-        name: { type: String, enum: ["pending", "processing", "completed", "cancel"], default: "pending" },
+        name: {
+          type: String,
+          enum: ["pending", "ready", "in-progress", "completed", "canceled"],
+          default: "pending",
+        },
         date: { type: Date, default: Date.now() },
         reason: { type: String, default: "" },
       },
@@ -49,6 +53,9 @@ const OrderSchema = new Schema(
       default: null,
       ref: "Customer",
     },
+    totalQuantity: {
+      type: Number,
+    },
     detailBill: [
       {
         type: Schema.Types.ObjectId,
@@ -58,7 +65,13 @@ const OrderSchema = new Schema(
     products: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Has",
+        ref: "OrderItem",
+      },
+    ],
+    subOrder: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "SubOrder",
       },
     ],
   },

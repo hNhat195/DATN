@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { Bill } = require("../../models/Bill");
-const { Has } = require("../../models/Has");
+const { Has } = require("../../models/OrderItem");
 const { Order } = require("../../models/Order");
 
 async function ValidateOrder(order_id) {

@@ -1,7 +1,7 @@
 const { Bill } = require("../models/Bill");
 const { Order } = require("../models/Order");
 const { Staff } = require("../models/Staff");
-const { Has } = require("../models/Has");
+const { Has } = require("../models/OrderItem");
 const { FabricRoll } = require("../models/FabricRoll");
 const { Counter } = require("../models/Counter");
 const mongoose = require("mongoose");

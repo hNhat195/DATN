@@ -10,6 +10,7 @@ import {
   TableRow,
   Paper,
 } from "@material-ui/core";
+import { useEffect } from "react";
 
 function getNumberWithCommas(number) {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -51,16 +52,16 @@ const useStyles = makeStyles({
     },
   },
 });
-export default function OrderInfo(props) {
+export default function OrderInfo({ products, deposit }) {
   const classes = useStyles();
 
-  let totalLength = props.products?.reduce(
-    (totalLength, item) => totalLength + (item.length || 0),
+  let totalLength = products?.reduce(
+    (totalLength, item) => totalLength + (item.quantity || 0),
     0
   );
 
-  let totalShippedLength = props.products?.reduce(
-    (totalShippedLength, item) => totalShippedLength + item.shippedLength,
+  let totalShippedLength = products?.reduce(
+    (totalShippedLength, item) => totalShippedLength + item.shipped,
     0
   );
   return (
@@ -75,41 +76,43 @@ export default function OrderInfo(props) {
               <TableCell>STT</TableCell>
               <TableCell>Loại vải</TableCell>
               <TableCell>Mã màu</TableCell>
-              <TableCell>Đã đặt&nbsp;(m)</TableCell>
-              <TableCell>Đã giao&nbsp;(m)</TableCell>
-              <TableCell>Còn lại&nbsp;(m)</TableCell>
+              <TableCell>Đã đặt&nbsp;(Cây)</TableCell>
+              <TableCell>Đã giao&nbsp;(Cây)</TableCell>
+              <TableCell>Còn lại&nbsp;(Cây)</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.products?.map((item, idx) => (
+            {products?.map((item, idx) => (
               <TableRow
                 key={idx}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                 <TableCell component="th" scope="row">
                   <Typography variant="subtitle2">{idx + 1}</Typography>
                 </TableCell>
                 <TableCell component="th" scope="row">
                   <Typography variant="subtitle2">
-                    {item.colorCode.typeId.name}
+                    {item.fabricID.fabricTypeId.name}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="subtitle2">
-                    {item.colorCode.colorCode}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="subtitle2">{item.length}</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="subtitle2">
-                    {item.shippedLength}
+                    {item.fabricID.colorId.colorCode}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="subtitle2">
-                    {item.length - item.shippedLength}
+                    {Number.parseInt(item.quantity)}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="subtitle2">
+                    {Number.parseInt(item.shipped)}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="subtitle2">
+                    {Number.parseInt(item.quantity) -
+                      Number.parseInt(item.shipped)}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -121,37 +124,21 @@ export default function OrderInfo(props) {
       <Grid container>
         <Grid item xs={6}>
           <Typography component="p" className={classes.estimateMoney}>
-            Tổng chiều dài đã đặt
+            Tổng số cây đã đặt
           </Typography>
           <Typography component="p" className={classes.estimateMoney}>
-            Tổng chiều dài đã giao
+            Tổng số cây đã giao
           </Typography>
         </Grid>
         <Grid item xs={6} className={classes.alignMoneyRight}>
           <Typography component="p" className={classes.estimateMoney}>
-            {totalLength} mét
+            {totalLength} Cây
           </Typography>
           <Typography component="p" className={classes.estimateMoney}>
-            {totalShippedLength} mét
+            {totalShippedLength} Cây
           </Typography>
         </Grid>
       </Grid>
     </div>
   );
 }
-
-// function createData(typeID, colorCode, shipped, remaining, unitPrice) {
-//   return { typeID, colorCode, shipped, remaining, unitPrice };
-// }
-
-// const rows = [
-//   createData("Kaki", 236, 500, 500, "100.000"),
-//   createData("Jean", 236, 500, 500, "100.000"),
-//   createData("Kate", 236, 500, 500, "100.000"),
-//   createData("Lụa", 236, 500, 500, "100.000"),
-//   createData("Bamboo", 236, 500, 500, "100.000"),
-//   createData("Cotton", 236, 500, 500, "100.000"),
-//   createData("Kaki", 236, 500, 500, "100.000"),
-//   createData("Jean", 236, 500, 500, "100.000"),
-//   createData("Kate", 236, 500, 500, "100.000"),
-// ];

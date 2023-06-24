@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { ArrowBack, ArrowUpward, Cancel, Publish } from "@material-ui/icons";
 import DefaultButton from "../../components/Button/DefaultButton";
 import { useHistory, useParams } from "react-router-dom";
+import { OrderStatus } from "../../const/OrderStatus";
 
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
@@ -62,18 +63,23 @@ export default function OrderDetail() {
     products: [],
     detailBill: [],
   });
+  const [lastStatus, setLastStatus] = useState();
 
   const handleOrderStatus = async () => {
-    console.log(detail)
-  }
+    console.log(detail);
+  };
 
   const handleCancel = async () => {
-    console.log(detail.orderStatus)
-    // if(detail.orderStatus[detail.orderStatus.length - 1] == "pending") {
-    await orderApi.updateStatus(id, {"status": "cancel", "reason": "cancel by admin"})
-    detail.orderStatus.push({"name": "cancel", "reason": "cancel by admin"})
-    // }
-  }
+    const res = await orderApi.updateStatusCancelOrder(id, {
+      status: "cancel",
+      reason: "cancel by admin",
+    });
+    setDetail(res);
+  };
+
+  useEffect(() => {
+    setLastStatus(detail?.orderStatus[detail?.orderStatus?.length - 1]?.name);
+  }, [detail]);
 
   useEffect(() => {
     let mounted = true;
@@ -89,24 +95,7 @@ export default function OrderDetail() {
     return () => {
       mounted = false;
     };
-  }, [id, detail.orderStatus]);
-
-  useEffect(() => {
-    console.log(detail.orderStatus)
-    let mounted = true;
-    const fetchOrderDetail = async () => {
-      const response = await orderApi.getOne(id);
-
-      if (mounted) {
-        setDetail(response);
-      }
-    };
-    fetchOrderDetail();
-
-    return () => {
-      mounted = false;
-    };
-  }, [])
+  }, []);
 
   const handleBack = () => {
     history.push(`/order`);
@@ -119,12 +108,6 @@ export default function OrderDetail() {
           <Typography variant="h4" className={classes.titlePage}>
             {"Chi tiết đơn đặt hàng MDH" + detail.orderId}
           </Typography>
-        </Grid>
-        <Grid item xs={2}>
-          <button onClick={handleOrderStatus}>Chuyển trạng thái</button>
-        </Grid>
-        <Grid item xs={1}>
-          <button onClick={handleCancel}>Hủy đơn hàng</button>
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.root}>
@@ -151,6 +134,10 @@ export default function OrderDetail() {
         <Grid item>
           <Button
             startIcon={<Cancel />}
+            onClick={() => {
+              handleCancel();
+            }}
+            disabled={lastStatus === OrderStatus.CANCELED}
             size="large"
             className={classes.btnCancel}>
             <Typography variant="h6" className={classes.btnCancelTitle}>

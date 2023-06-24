@@ -94,7 +94,7 @@ export default function OrderListPage() {
             handleSearchKeywordChange={handleSearchKeywordChange}
           />
           <ListHeader />
-          {orderPerPage?.map((item, idx) => {
+          {orderPerPage.length>0 && orderPerPage?.map((item, idx) => {
             return <Order key={idx} order={item} />;
           })}
         </Container>

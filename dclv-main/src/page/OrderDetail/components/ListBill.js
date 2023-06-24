@@ -70,7 +70,7 @@ export default function ListBill(props) {
         </Grid>
       </Grid>
       <Container maxWidth="xl" className={classes.containerNoPadding}>
-        {detailBill.map((item, index) => <Bill key={index} bill={item} />)}
+        {detailBill?.length>0 && detailBill.map((item, index) => <Bill key={index} bill={item} />)}
       </Container>
     </Container>
   );

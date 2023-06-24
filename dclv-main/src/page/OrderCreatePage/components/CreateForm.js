@@ -9,12 +9,11 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import orderApi from "../../../api/orderApi";
 import productApi from "../../../api/productApi";
 import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
   alignRight: {
@@ -26,8 +25,11 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonCss: {
     maxWidth: "true",
-  }
+  },
 }));
+
+const objectIdPattern = /^[0-9a-fA-F]{24}$/;
+
 export default function CreateForm({
   productList,
   setProductList,
@@ -41,8 +43,7 @@ export default function CreateForm({
   const [fabricLength, setFabricLength] = useState("");
   const [materialId, setMaterialId] = useState("");
   const [materialType, setMaterialType] = useState("");
-  const [materialName, setMaterialName] = useState("");
-  //const [productList, setProductList] = useState([])
+
   const history = useHistory();
   const classes = useStyles();
   const postOrder = async (postData) => {
@@ -51,7 +52,7 @@ export default function CreateForm({
   };
 
   const handleSubmit = async (event) => {
-    if(productList.length > 0) {
+    if (productList.length > 0) {
       let postData = {
         note: "front end call api",
         receiverName: "Front end",
@@ -64,43 +65,50 @@ export default function CreateForm({
       await postOrder(postData);
       event.preventDefault();
       history.push(`/order`);
-    }
-    else console.log("please add product")
+    } else console.log("please add product");
   };
 
   const handleAdd = (event) => {
+    if (
+      fabricColor == "" ||
+      fabricMaterial == "" ||
+      isNaN(Number.parseInt(fabricLength))
+    ) {
+      console.log("please add information");
+    }
+
     let addData = {
       colorCode: fabricColor,
-      typeId: materialName,
+      typeId: fabricMaterial,
       length: Number.parseInt(fabricLength),
     };
-    if(addData.colorCode == '' || addData.typeId == '' || isNaN(addData.length)) {
-      console.log("please add information")
-    }
-    else  setProductList([...productList, addData]);
-
+    setProductList([...productList, addData]);
     event.preventDefault();
   };
 
   useEffect(() => {
     const fetchMaterial = async () => {
       const response = await productApi.getAllMaterialCode();
+      console.log(response);
       setMaterialList(response);
     };
-    //console.log(materialList)
     fetchMaterial();
   }, []);
 
+  const fetchColor = async () => {
+    if (objectIdPattern.test(materialId)) {
+      const response = await productApi.getColorByMaterial(materialId);
+      setColorList(response);
+    }
+    // console.log(materialType)
+  };
   useEffect(async () => {
-    const fetchColor = async () => {
-      // console.log(materialType)
-      const response = await productApi.getColorByMaterial(materialType);
-      return response;
-    };
-    const response = await fetchColor();
-    //console.log(response)
-    setColorList(response);
-  }, [materialType]);
+    await fetchColor();
+  }, [materialId]);
+
+  useEffect(() => {
+    console.log(productList);
+  }, [productList]);
 
   return (
     <div>
@@ -121,17 +129,14 @@ export default function CreateForm({
               onChange={async (e) => {
                 setFabricMaterial(e.target.value);
                 const mat = await materialList.find((x) => {
-                  return x.id === e.target.value;
+                  return x.name === e.target.value;
                 });
-                setMaterialName(mat.name);
                 setMaterialId(mat._id);
-                setMaterialType(e.target.value);
               }}
-              value={fabricMaterial || ""}
-            >
+              value={fabricMaterial || ""}>
               {materialList.map((item, idx) => {
                 return (
-                  <MenuItem key={idx} value={item.id}>
+                  <MenuItem key={idx} value={item.name}>
                     {item.name}
                   </MenuItem>
                 );
@@ -151,8 +156,7 @@ export default function CreateForm({
                 //console.log(e.target.value)
                 setFabricColor(e.target.value);
               }}
-              value={fabricColor || ""}
-            >
+              value={fabricColor || ""}>
               {colorList.map((item, idx) => {
                 return (
                   <MenuItem key={idx} value={item.colorCode}>
@@ -183,20 +187,23 @@ export default function CreateForm({
         <Grid item xs={12} md={3}></Grid>
       </Grid>
 
-      <Grid container spacing={8} >
+      <Grid container spacing={8}>
         <Grid item xs={4}>
           <Button
             variant="contained"
             type="button"
             onClick={handleAdd}
-            className={classes.buttonCss}
-          >
+            className={classes.buttonCss}>
             Thêm
           </Button>
         </Grid>
         <Grid item xs={2}></Grid>
         <Grid item xs={4}>
-          <Button variant="contained" type="button" className={classes.buttonCss} onClick={handleSubmit}>
+          <Button
+            variant="contained"
+            type="button"
+            className={classes.buttonCss}
+            onClick={handleSubmit}>
             Tạo đơn
           </Button>
         </Grid>

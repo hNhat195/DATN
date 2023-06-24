@@ -1,24 +1,9 @@
-import {
-  Button,
-  Grid,
-  Typography,
-  Container,
-  FormControl,
-  InputLabel,
-  Input,
-  FormHelperText,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Select,
-  MenuItem,
-} from "@material-ui/core";
-import { useState, useEffect } from "react";
-import orderApi from "../../api/orderApi";
+import { Grid, Typography, Container } from "@material-ui/core";
+import { useState } from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
-import { ArrowBack, ArrowUpward, Cancel, Publish } from "@material-ui/icons";
-import DefaultButton from "../../components/Button/DefaultButton";
-import { useHistory, useParams } from "react-router-dom";
+
+import { useHistory } from "react-router-dom";
 import CreateForm from "./components/CreateForm";
 import OrderTable from "./components/OrderTable";
 
@@ -66,14 +51,7 @@ const useStyles = makeStyles((theme) => ({
 export default function OrderCreatePage() {
   const classes = useStyles();
   const history = useHistory();
-  const { id } = useParams();
-  const role = localStorage.getItem("role");
 
-  const [detail, setDetail] = useState({
-    orderStatus: [],
-    products: [],
-    detailBill: [],
-  });
   const [colorList, setColorList] = useState([]);
   const [materialList, setMaterialList] = useState([]);
   const [productList, setProductList] = useState([]);
