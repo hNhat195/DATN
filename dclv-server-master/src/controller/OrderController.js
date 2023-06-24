@@ -8,9 +8,10 @@ const { OrderItem } = require("../models/OrderItem");
 const { FabricRoll } = require("../models/FabricRoll");
 const { Color } = require("../models/Color");
 const { SubOrder } = require("../models/SubOrder");
+const { SubOrderItem } = require("../models/SubOrderItem")
 const { OrderStatus, SubOrderStatus } = require("../constant/OrderStatus");
 
-const mailer = require("../utils/mailer")
+const mailer = require("../utils/mailer");
 
 async function getNextSequenceValue(sequenceName) {
   let seq = await Counter.findOneAndUpdate(
@@ -161,6 +162,28 @@ const detail = (req, res) => {
     .populate({
       path: "detailBill",
       populate: { path: "salesmanID", select: "name -_id" },
+    })
+    .populate({
+      path: "subOrder",
+      populate: {
+        path: "products",
+        populate: {
+          path: "fabricID",
+          populate: [
+            {
+              path: "fabricTypeId",
+              select: "name -_id",
+            },
+            {
+              path: "colorId",
+              select: "colorCode -_id",
+            },
+          ],
+          select: "fabricTypeId colorId -_id",
+        },
+        select: "quantity shipped -_id",
+      },
+      select: "-_id",
     })
     .exec(function (err, result) {
       if (err) res.json(err);
