@@ -10,15 +10,6 @@ const { getListCustomerId } = require("../services/UserService");
 
 async function InsertToOrder() {
   const listOrderid = await getListOrderId();
-  // console.log(listOrderid);
-  // const listProductOfOrder = await getListProductOfOrder(
-  //   "61b1cb07e439b691f6b13b31"
-  // );
-  // console.log(listProductOfOrder);
-  // const listBillIdOfOrder = await getListBillIdOfOrder(
-  //   "61b1cb07e439b691f6b13b31"
-  // );
-  // console.log(listBillIdOfOrder);
   listOrderid.forEach(async (item, index) => {
     const listProductOfOrder = await getListProductOfOrder(item);
     const listBillIdOfOrder = await getListBillOfOrder(item);
@@ -46,7 +37,7 @@ async function InsertToOrder() {
 
 async function updateProduct() {
   const listOrderId = await getListOrderId();
-  // console.log(listOrderId);
+
   listOrderId.forEach(async (item) => {
     const listHasOfOrder = await getListHasOfOrder(item);
 

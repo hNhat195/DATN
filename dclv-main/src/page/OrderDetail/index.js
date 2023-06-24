@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { ArrowBack, ArrowUpward, Cancel, Publish } from "@material-ui/icons";
 import DefaultButton from "../../components/Button/DefaultButton";
 import { useHistory, useParams } from "react-router-dom";
+import { OrderStatus } from "../../const/OrderStatus";
 
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
@@ -62,6 +63,23 @@ export default function OrderDetail() {
     products: [],
     detailBill: [],
   });
+  const [lastStatus, setLastStatus] = useState();
+
+  const handleOrderStatus = async () => {
+    console.log(detail);
+  };
+
+  const handleCancel = async () => {
+    const res = await orderApi.updateStatusCancelOrder(id, {
+      status: "cancel",
+      reason: "cancel by admin",
+    });
+    setDetail(res);
+  };
+
+  useEffect(() => {
+    setLastStatus(detail?.orderStatus[detail?.orderStatus?.length - 1]?.name);
+  }, [detail]);
 
   useEffect(() => {
     let mounted = true;
@@ -77,7 +95,7 @@ export default function OrderDetail() {
     return () => {
       mounted = false;
     };
-  }, [id]);
+  }, []);
 
   const handleBack = () => {
     history.push(`/order`);
@@ -116,6 +134,10 @@ export default function OrderDetail() {
         <Grid item>
           <Button
             startIcon={<Cancel />}
+            onClick={() => {
+              handleCancel();
+            }}
+            disabled={lastStatus === OrderStatus.CANCELED}
             size="large"
             className={classes.btnCancel}>
             <Typography variant="h6" className={classes.btnCancelTitle}>

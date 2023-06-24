@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import validate, { async } from "validate.js";
+import validate from "validate.js";
 import {
   Avatar,
   Button,
@@ -17,7 +17,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import { LockOutlined, AccountCircle, Lock } from "@material-ui/icons";
-import axios from "axios";
+
 import customerApi from "../../api/customerApi";
 import staffApi from "../../api/staffApi";
 
@@ -106,7 +106,7 @@ export default function SignIn() {
     touched: {},
     errors: {},
   });
-  const [user, setUser] = useState([]);
+
   const [alert, setAlert] = useState("");
   const [loginError, setLoginError] = useState(false);
 

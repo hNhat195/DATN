@@ -70,7 +70,7 @@ class ProductApi {
 
   getColorByMaterial = (params) => {
     const url = "product/colorbymat";
-    return axiosClient.post(url, { typeName: params });
+    return axiosClient.post(url, { materialId: params });
   };
 }
 const productApi = new ProductApi();

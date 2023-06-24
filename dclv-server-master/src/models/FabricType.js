@@ -3,17 +3,16 @@ const Schema = mongoose.Schema;
 
 const FabricTypeSchema = new Schema(
   {
-    id: { type: String, default: "", required: true },
-    name: { type: String, default: "", required: true },
+    name: { type: String, default: "", required: true, unique: true },
   },
   { collection: "FabricType" },
-  { toJSON: { virtuals: true }}
+  { toJSON: { virtuals: true } }
 );
 
 FabricTypeSchema.virtual("Item", {
   ref: "Item",
   foreignField: "typeId",
-  localField: "_id"
+  localField: "_id",
 });
 const FabricType = mongoose.model("FabricType", FabricTypeSchema);
 
