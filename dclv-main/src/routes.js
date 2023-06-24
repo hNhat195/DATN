@@ -14,9 +14,10 @@ import StaffDetail from "./page/StaffPage/components/StaffDetail";
 
 import SupportPage from "./page/SupportPage/SupportPage";
 import InfoPage from "./page/InfoPage/InfoPage";
-import OrderCreatePage from "./page/OrderCreatePage"
-import HomePage from "./page/HomePage"
-import ProductDetail from "./page/ProductDetail";
+import OrderCreatePage from "./page/OrderCreatePage";
+import HomePage from "./page/HomePage";
+import ProductDetail from "./page/SellingPages/ProductDetail";
+import HomePage2 from "./page/SellingPages/HomePage";
 
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
     component: SignIn,
   },
   { path: "/signup", exact: true, component: SignUp },
+  {
+    path: "/homepage",
+    exact: true,
+    component: HomePage2,
+  },
   {
     path: "/home",
     exact: true,

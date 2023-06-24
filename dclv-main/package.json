@@ -16,6 +16,7 @@
     "@material-ui/styles": "^4.11.5",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.3",
+    "@mui/styles": "^5.13.2",
     "@react-pdf/renderer": "^2.0.21",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -26,6 +27,7 @@
     "date-fns": "^2.13.0",
     "devextreme": "21.2.4",
     "devextreme-react": "21.2.4",
+    "dom-helpers": "^5.2.1",
     "dotenv": "^16.1.3",
     "formik": "^2.2.9",
     "history": "^4.7.2",
@@ -36,6 +38,7 @@
     "react-alice-carousel": "^2.7.1",
     "react-apexcharts": "^1.3.9",
     "react-dom": "^17.0.2",
+    "react-icons": "^4.9.0",
     "react-number-format": "^4.8.0",
     "react-perfect-scrollbar": "^1.5.8",
     "react-responsive-carousel": "^3.2.23",
@@ -52,7 +55,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3006 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -77,5 +80,10 @@
   },
   "devDependencies": {
     "@iconify/react": "^3.1.0"
-  }
+  },
+  "description": "## Đề tài:",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
