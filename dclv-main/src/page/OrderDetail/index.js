@@ -77,12 +77,16 @@ export default function OrderDetail() {
       status: "cancel",
       reason: "cancel by admin",
     });
-    setDetail(res);
+    
+    let temp = detail
+    temp.orderStatus.push(res?.data.orderStatus[res.data.orderStatus.length - 1])
+    setDetail(temp)
+    setLastStatus(res?.data.orderStatus[res?.data.orderStatus?.length - 1]?.name);
   };
 
   useEffect(() => {
-    setLastStatus(detail?.orderStatus[detail?.orderStatus?.length - 1]?.name);
-  }, [detail]);
+    
+  }, [lastStatus]);
 
   useEffect(() => {
     let mounted = true;

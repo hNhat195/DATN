@@ -89,7 +89,7 @@ export default function CreateForm({
   useEffect(() => {
     const fetchMaterial = async () => {
       const response = await productApi.getAllMaterialCode();
-      console.log(response);
+      
       setMaterialList(response);
     };
     fetchMaterial();
@@ -100,14 +100,14 @@ export default function CreateForm({
       const response = await productApi.getColorByMaterial(materialId);
       setColorList(response);
     }
-    // console.log(materialType)
+    
   };
   useEffect(async () => {
     await fetchColor();
   }, [materialId]);
 
   useEffect(() => {
-    console.log(productList);
+    
   }, [productList]);
 
   return (
@@ -153,7 +153,7 @@ export default function CreateForm({
               id="fabric-color"
               label="Color"
               onChange={(e) => {
-                //console.log(e.target.value)
+                
                 setFabricColor(e.target.value);
               }}
               value={fabricColor || ""}>

@@ -5,6 +5,7 @@ import FilterBarStaff from "./components/FilterBarStaff";
 import StaffList from "./components/StaffList";
 import StaffHeader from "./components/StaffHeader";
 import staffApi from "../../api/staffApi";
+import { Container } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   staffList: {
@@ -51,19 +52,23 @@ function StaffPage() {
   }, [filterPos, filterName]);
 
   return (
-    <div className={classes.root}>
-      <FilterBarStaff
-        filterPos={filterPos}
-        setFilterPos={setFilterPos}
-        filterName={filterName}
-        setFilterName={setFilterName}
-        setRefresh={setRefresh}
-      />
-      <StaffHeader />
-      {filteredStaffs && (
-        <StaffList className={classes.staffList} staff={filteredStaffs} />
-      )}
-    </div>
+    <>
+      <Container>
+        <div className={classes.root}>
+          <FilterBarStaff
+            filterPos={filterPos}
+            setFilterPos={setFilterPos}
+            filterName={filterName}
+            setFilterName={setFilterName}
+            setRefresh={setRefresh}
+          />
+          <StaffHeader />
+          {filteredStaffs && (
+            <StaffList className={classes.staffList} staff={filteredStaffs} />
+          )}
+        </div>
+      </Container>
+    </>
   );
 }
 

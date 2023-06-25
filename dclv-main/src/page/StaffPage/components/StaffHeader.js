@@ -32,7 +32,9 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  
+  firstColumn: {
+    paddingLeft: "10px"
+  }
 });
 
 export default function StaffHeader() {
@@ -44,7 +46,7 @@ export default function StaffHeader() {
         xs={1}
         className={clsx(classes.orderId, classes.verticalCenter)}
       >
-        <p>ID</p>
+        <p className={classes.firstColumn}>ID</p>
       </Grid>
       <Grid item xs={3} className={classes.verticalCenter}>
         <p>Tên nhân viên</p>

@@ -73,6 +73,13 @@ const useStyles = makeStyles((theme) => ({
     height: "50%",
     color: "blue",
   },
+  firstColumn: {
+    paddingLeft: "10px"
+  },
+  marginVeritcal: {
+    marginBottom: "12px",
+    marginTop: "12px"
+  }
 }));
 
 export default function StaffList(props) {
@@ -87,7 +94,7 @@ export default function StaffList(props) {
       {staff.map((item) => (
         <Grid
           container
-          className={classes.root}
+          className={clsx(classes.root, classes.marginVeritcal)}
           onClick={() => handleClick(item._id)}
           key={item._id}
         >
@@ -96,7 +103,7 @@ export default function StaffList(props) {
             xs={1}
             className={clsx(classes.orderId, classes.verticalCenter)}
           >
-            <p>{item.id}</p>
+            <p className={classes.firstColumn}>{item.id}</p>
           </Grid>
           <Grid item xs={3} className={classes.verticalCenter}>
             <p>{item.name}</p>

@@ -165,7 +165,7 @@ export default function TimelineStatus(props) {
                         (item.name === "completed" &&
                           idx === lastStatusIdx &&
                           classes.completedDot) ||
-                        (item.name === "cancel" &&
+                        (item.name === "canceled" &&
                           idx === lastStatusIdx &&
                           classes.cancelDot)
                       }
@@ -193,7 +193,7 @@ export default function TimelineStatus(props) {
                             (item.name === "completed" &&
                               idx === lastStatusIdx &&
                               clsx(classes.completed, classes.status)) ||
-                            (item.name === "cancel" &&
+                            (item.name === "canceled" &&
                               idx === lastStatusIdx &&
                               clsx(classes.cancel, classes.status))
                           }>
@@ -217,7 +217,7 @@ export default function TimelineStatus(props) {
                             (item.name === "completed" &&
                               idx === lastStatusIdx &&
                               clsx(classes.completed, classes.statusDetail)) ||
-                            (item.name === "cancel" &&
+                            (item.name === "canceled" &&
                               idx === lastStatusIdx &&
                               clsx(classes.cancel, classes.statusDetail))
                           }>
@@ -246,7 +246,7 @@ export default function TimelineStatus(props) {
                             (item.name === "completed" &&
                               idx === lastStatusIdx &&
                               clsx(classes.completed, classes.status)) ||
-                            (item.name === "cancel" &&
+                            (item.name === "canceled" &&
                               idx === lastStatusIdx &&
                               clsx(classes.cancel, classes.status))
                           }>

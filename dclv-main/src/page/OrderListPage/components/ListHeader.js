@@ -40,6 +40,9 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
   },
+  firstColumn: {
+    paddingLeft: "10px"
+  }
 });
 
 export default function ListHeader() {
@@ -51,7 +54,7 @@ export default function ListHeader() {
         xs={2}
         className={clsx(classes.orderId, classes.verticalCenter)}
       >
-        <p>Mã đơn hàng</p>
+        <p className={classes.firstColumn}>Mã đơn hàng</p>
       </Grid>
       <Grid item xs={1} className={classes.verticalCenter}>
         <p>Ngày đặt</p>

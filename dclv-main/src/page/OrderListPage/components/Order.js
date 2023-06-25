@@ -127,6 +127,9 @@ const useStyles = makeStyles((theme) => ({
       width: 0,
     },
   },
+  firstColumn: {
+    paddingLeft: "10px"
+  }
 }));
 
 export default function Order(props) {
@@ -188,7 +191,7 @@ export default function Order(props) {
         xs={2}
         className={clsx(classes.orderId, classes.verticalCenter)}
       >
-        <p>MDH{order.orderId}</p>
+        <p className={classes.firstColumn}>MDH{order.orderId}</p>
       </Grid>
       <Grid item xs={1} className={classes.verticalCenter}>
         <p>
@@ -227,7 +230,7 @@ export default function Order(props) {
                 "completed" &&
                 classes.statusComplete) ||
               (order.orderStatus[order.orderStatus.length - 1].name ===
-                "cancel" &&
+                "canceled" &&
                 classes.statusCancel)
             }
           >
@@ -241,7 +244,7 @@ export default function Order(props) {
                 "completed" &&
                 "Hoàn tất") ||
               (order.orderStatus[order.orderStatus.length - 1].name ===
-                "cancel" &&
+                "canceled" &&
                 "Đã hủy")}
           </p>
         </Grid>

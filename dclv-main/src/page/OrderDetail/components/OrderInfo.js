@@ -82,7 +82,7 @@ export default function OrderInfo({ products, deposit }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products?.map((item, idx) => (
+            {products.length>0 && products?.map((item, idx) => (
               <TableRow
                 key={idx}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
