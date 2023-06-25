@@ -9,6 +9,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { ArrowBack, ArrowUpward, Cancel, Publish } from "@material-ui/icons";
 import DefaultButton from "../../components/Button/DefaultButton";
 import { useHistory, useParams } from "react-router-dom";
+import SubOrderPopup from "./components/SubOrderPopup";
+
 import { OrderStatus } from "../../const/OrderStatus";
 
 const useStyles = makeStyles((theme) => ({
@@ -62,6 +64,7 @@ export default function OrderDetail() {
     orderStatus: [],
     products: [],
     detailBill: [],
+    subOrder: [],
   });
   const [lastStatus, setLastStatus] = useState();
 
@@ -104,7 +107,7 @@ export default function OrderDetail() {
   return (
     <Container maxWidth="xl" className={classes.orderDetailBox}>
       <Grid container spacing={2}>
-        <Grid item xs={9}>
+        <Grid item xs={6}>
           <Typography variant="h4" className={classes.titlePage}>
             {"Chi tiết đơn đặt hàng MDH" + detail.orderId}
           </Typography>
@@ -129,6 +132,19 @@ export default function OrderDetail() {
             id={id}
           />
         </Grid>
+        <Grid item xs={12} md={6}>
+          {detail.subOrder?.map((item, idx) => (
+            <Grid item container key={idx}>
+              <OrderInfo products={item.products} />
+              <Grid item xs={3}>
+                <button>Chuyển trạng thái</button>
+              </Grid>
+              <Grid item xs={3}>
+                <button>Hủy đơn hàng</button>
+              </Grid>
+            </Grid>
+          ))}
+        </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.btnGroup}>
         <Grid item>
@@ -139,7 +155,8 @@ export default function OrderDetail() {
             }}
             disabled={lastStatus === OrderStatus.CANCELED}
             size="large"
-            className={classes.btnCancel}>
+            className={classes.btnCancel}
+          >
             <Typography variant="h6" className={classes.btnCancelTitle}>
               Hủy
             </Typography>

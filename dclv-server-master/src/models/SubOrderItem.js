@@ -26,4 +26,4 @@ const SubOrderItemSchema = new Schema(
   { collection: "SubOrderItem" }
 );
 const SubOrderItem = mongoose.model("SubOrderItem", SubOrderItemSchema);
-module.exports = { OrderItem };
+module.exports = { SubOrderItem };
