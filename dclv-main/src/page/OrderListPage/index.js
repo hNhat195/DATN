@@ -94,9 +94,10 @@ export default function OrderListPage() {
             handleSearchKeywordChange={handleSearchKeywordChange}
           />
           <ListHeader />
-          {orderPerPage.length>0 && orderPerPage?.map((item, idx) => {
-            return <Order key={idx} order={item} />;
-          })}
+          {orderPerPage.length > 0 &&
+            orderPerPage?.map((item, idx) => {
+              return <Order key={idx} order={item} />;
+            })}
         </Container>
         <ListPagination
           className={classes.paginationStyled}

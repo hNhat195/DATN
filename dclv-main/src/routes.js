@@ -15,17 +15,10 @@ import StaffDetail from "./page/StaffPage/components/StaffDetail";
 import SupportPage from "./page/SupportPage/SupportPage";
 import InfoPage from "./page/InfoPage/InfoPage";
 import OrderCreatePage from "./page/OrderCreatePage";
-import HomePage from "./page/HomePage";
 import ProductDetail from "./page/SellingPages/ProductDetail";
-import HomePage2 from "./page/SellingPages/HomePage";
-
+import HomePage from "./page/SellingPages/HomePage";
+import ProductList from "./page/SellingPages/ProductList";
 const routes = [
-  {
-    path: "/",
-    exact: true,
-    component: () => <Redirect to="/signin" />,
-  },
-
   {
     path: "/signin",
     exact: true,
@@ -33,22 +26,23 @@ const routes = [
   },
   { path: "/signup", exact: true, component: SignUp },
   {
-    path: "/homepage",
-    exact: true,
-    component: HomePage2,
-  },
-  {
-    path: "/home",
+    path: "/",
     exact: true,
     component: HomePage,
   },
+  {
+    path: "/collections/:collection",
+    exact: true,
+    component: ProductList,
+  },
+
   {
     path: "/home/type/:type",
     exact: true,
     component: Product,
   },
   {
-    path: "/home/:productId",
+    path: "/products/:productId",
     exact: true,
     component: ProductDetail,
   },

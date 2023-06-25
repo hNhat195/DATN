@@ -13,19 +13,19 @@ export const menuItems = [
         submenu: [
           {
             title: "Organic Linen",
-            url: "organic-linen",
+            url: "collections/organic-linen",
           },
           {
             title: "Linen Gingham",
-            url: "linen-gingham",
+            url: "collections/linen-gingham",
           },
           {
             title: "Linen Midweight",
-            url: "linen-midweight",
+            url: "collections/linen-midweight",
           },
           {
             title: "Linen Heavyweight",
-            url: "linen-heavyweight",
+            url: "collections/linen-heavyweight",
           },
         ],
       },
@@ -35,11 +35,11 @@ export const menuItems = [
         submenu: [
           {
             title: "Cotton Denim & Chambray",
-            url: "cotton-denim-&-chambray",
+            url: "collections/cotton-denim-&-chambray",
           },
           {
             title: "Cotton Shirting",
-            url: "cotton-shirting",
+            url: "collections/cotton-shirting",
           },
         ],
       },
@@ -59,19 +59,19 @@ export const menuItems = [
         submenu: [
           {
             title: "Organic Linen",
-            url: "organic-linen",
+            url: "collections/organic-linen",
           },
           {
             title: "Linen Gingham",
-            url: "linen-gingham",
+            url: "collections/linen-gingham",
           },
           {
             title: "Linen Midweight",
-            url: "linen-midweight",
+            url: "collections/linen-midweight",
           },
           {
             title: "Linen Heavyweight",
-            url: "linen-heavyweight",
+            url: "collections/linen-heavyweight",
           },
         ],
       },
@@ -81,11 +81,11 @@ export const menuItems = [
         submenu: [
           {
             title: "Cotton Denim & Chambray",
-            url: "cotton-denim-&-chambray",
+            url: "collections/cotton-denim-&-chambray",
           },
           {
             title: "Cotton Shirting",
-            url: "cotton-shirting",
+            url: "collections/cotton-shirting",
           },
         ],
       },

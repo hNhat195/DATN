@@ -1,31 +1,13 @@
 import axiosClient from "./axiosClient";
-
-// class ProductApi {
-//   getAll = (params) => {
-//     const url = "/product1";
-//     return axiosClient.get(url, { params });
-//   };
-//   getOne = (params) => {
-//     const url = "/product/detail";
-//     return axiosClient.get(url, { params });
-//   };
-//   getListById = (data) => {
-//     const url = "/product/list";
-//     return axiosClient.post(url, data);
-//   };
-//   getChartWarehouseTrue = (params) => {
-//     const url = "/chartwarehouse";
-//     return axiosClient.get(url, { params });
-//   };
-//   getFabricTypeSell = (params) => {
-//     const url = "/getfabrictypesell";
-//     return axiosClient.get(url, { params });
-//   };
-// }
-// const productApi = new ProductApi();
-// export default productApi;
-
 class ProductApi {
+  getProductsByCollection = (collectionId) => {
+    const url = `/collections/${collectionId}`;
+    return axiosClient.get(url);
+  };
+  getProductById = (productId) => {
+    const url = `/products/${productId}`;
+    return axiosClient.get(url);
+  };
   getAll = (params) => {
     const url = "/fabric/product";
     return axiosClient.get(url, { params });

@@ -58,6 +58,7 @@ router.get("/api/fabrictype", getListFabricType);
 
 /*-----Fabric Roll route------*/
 const {
+  getProductsByCollections,
   getProductList,
   getProductList1,
   getProductById,
@@ -75,11 +76,12 @@ const {
   getColorByMaterial,
 } = require("../controller/FabricRollController");
 
+router.get("/api/collections/:id", getProductsByCollections);
+router.get("/api/products/:id", getProductById);
 router.get("/api/product", getProductList);
 router.get("/api/product1", getProductList1);
 router.post("/api/product/list", getListFabricRollWithIds);
 router.post("/api/product/fabricroll-bill", getFabricRollOfBill);
-router.get("/api/product/detail", getProductById);
 router.put("/api/product/:id", updateProductStatus);
 router.put("/api/product/item/:id", updateMarketPrice);
 router.get("/api/chartwarehouse", getChartWarehouseTrue);
