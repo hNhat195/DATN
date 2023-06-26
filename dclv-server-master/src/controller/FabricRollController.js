@@ -11,7 +11,7 @@ const { MarketPrice } = require("../models/MarketPrice");
 const { Color } = require("../models/Color");
 const ObjectId = require("mongoose").Types.ObjectId;
 
-const getProductsByCollections = async (req, res) => {
+const getProductsByCollectionId = async (req, res) => {
   await FabricRoll.find({ fabricTypeId: req.params.id })
     .exec()
     .then((products) => {
@@ -637,7 +637,7 @@ async function getColorByMaterial(req, res) {
 }
 
 module.exports = {
-  getProductsByCollections,
+  getProductsByCollectionId,
   getProductList,
   getProductList1,
   getProductById,

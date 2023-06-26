@@ -31,7 +31,7 @@ const routes = [
     component: HomePage,
   },
   {
-    path: "/collections/:collection",
+    path: "/collections/:collectionId",
     exact: true,
     component: ProductList,
   },

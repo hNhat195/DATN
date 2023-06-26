@@ -1,6 +1,6 @@
 import axiosClient from "./axiosClient";
 class ProductApi {
-  getProductsByCollection = (collectionId) => {
+  getProductsByCollectionId = (collectionId) => {
     const url = `/collections/${collectionId}`;
     return axiosClient.get(url);
   };

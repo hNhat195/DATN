@@ -1,89 +1,47 @@
-import {
-  FavoriteBorderOutlined,
-  SearchOutlined,
-  ShoppingCartOutlined,
-} from "@material-ui/icons";
-import styled from "styled-components";
+import * as React from "react";
 
-const Info = styled.div`
-  opacity: 0;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.2);
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.5s ease;
-  cursor: pointer;
-`;
+import Card from "@mui/material/Card";
 
-const Container = styled.div`
-  flex: 1;
-  margin: 5px;
-  min-width: 280px;
-  height: 350px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f5fbfd;
-  position: relative;
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
 
-  &:hover ${Info}{
-    opacity: 1;
-  }
-`;
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 
-const Circle = styled.div`
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background-color: white;
-  position: absolute;
-`;
-
-const Image = styled.img`
-  height: 75%;
-  z-index: 2;
-`;
-
-const Icon = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px;
-  transition: all 0.5s ease;
-  &:hover {
-    background-color: #e9f5f5;
-    transform: scale(1.1);
-  }
-`;
-
-const Product = ({ item }) => {
+export default function Product({ item }) {
   return (
-    <Container>
-      <Circle />
-      <Image src={item.img} />
-      <Info>
-        <Icon>
-          <ShoppingCartOutlined />
-        </Icon>
-        <Icon>
-          <SearchOutlined />
-        </Icon>
-        <Icon>
-          <FavoriteBorderOutlined />
-        </Icon>
-      </Info>
-    </Container>
+    <Card
+      sx={{
+        border: "none",
+        boxShadow: "none",
+        maxWidth: 345,
+        minWidth: 320,
+        margin: 1,
+      }}
+    >
+      <a href={`/products/${item._id}`}>
+        <CardMedia
+          sx={{ margin: 1 }}
+          component="img"
+          height="250"
+          image={item?.image[0]}
+          alt="Paella dish"
+        />
+      </a>
+      <CardContent>
+        <Typography
+          sx={{ typography: "subtitle2" }}
+          variant="body2"
+          align="center"
+        >
+          <Link href={`/products/${item._id}`} underline="none" color="inherit">
+            {item?.name || "Name of fabric"}
+          </Link>
+        </Typography>
+        <Typography variant="body2" align="center">
+          {item?.price || "250"}
+        </Typography>
+      </CardContent>
+    </Card>
   );
-};
-
-export default Product;
+}
