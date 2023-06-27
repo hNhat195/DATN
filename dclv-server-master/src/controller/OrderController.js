@@ -8,7 +8,7 @@ const { OrderItem } = require("../models/OrderItem");
 const { FabricRoll } = require("../models/FabricRoll");
 const { Color } = require("../models/Color");
 const { SubOrder } = require("../models/SubOrder");
-const { SubOrderItem } = require("../models/SubOrderItem")
+const { SubOrderItem } = require("../models/SubOrderItem");
 const { OrderStatus, SubOrderStatus } = require("../constant/OrderStatus");
 
 const mailer = require("../utils/mailer");
@@ -191,6 +191,76 @@ const detail = (req, res) => {
         res.json(result);
       }
     });
+};
+
+const subOrderCreate = async (req, res) => {
+  try {
+    const productList = [];
+    let totalQuantity = 0;
+
+    let temp = await SubOrder.create({
+      orderId: mongoose.Types.ObjectId(req.body.orderId),
+      note: req.body.note,
+      products: productList,
+      totalQty: totalQuantity,
+      subOrderStatus: [{ name: "ready", date: Date.now(), reason: "" }],
+    });
+
+    await Promise.all(
+      req.body.products.map(async (item, idx) => {
+        let colorId = await Color.findOne({
+          colorCode: item.colorCode,
+        }).exec();
+
+        let matId = await FabricType.findOne({
+          name: item.typeId,
+        }).exec();
+        totalQuantity += item.quantity;
+
+        let roll = await FabricRoll.findOne({
+          fabricTypeId: matId,
+          colorId: colorId,
+        });
+
+        let a = await SubOrderItem.create({
+          subOrderId: temp._id,
+          fabricID: roll._id,
+          quantity: item.quantity,
+          shipped: 0,
+        });
+
+        productList.push(a);
+
+        return roll._id;
+      })
+    );
+
+    let result = await SubOrder.findOneAndUpdate(
+      { _id: temp._id },
+      {
+        products: productList,
+        totalQty: totalQuantity,
+      },
+      { new: true }
+    );
+    
+    await Order.findOneAndUpdate(
+      { _id: mongoose.Types.ObjectId(req.body.orderId) },
+      {
+        $push: {
+          subOrder: result._id,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
+    res.send({ status: 200, result });
+  } catch (err) {
+    console.log(err);
+    res.json({ status: 400, message: err });
+  }
 };
 
 const getListProductsById = (req, res) => {
@@ -656,4 +726,5 @@ module.exports = {
   getOrderDaily,
   getOrderFabricType,
   updateStatus,
+  subOrderCreate,
 };

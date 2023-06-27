@@ -12,6 +12,10 @@ const orderApi = {
     const url = "/order/create";
     return axiosClient.post(url, data);
   },
+  createSubOrder: (data) => {
+    const url = "/order/sub-order-create"
+    return axiosClient.post(url, data);
+  },
   getOne: (orderId) => {
     const url = `/order/${orderId}`;
     return axiosClient.get(url);

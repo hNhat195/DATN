@@ -77,16 +77,18 @@ export default function OrderDetail() {
       status: "cancel",
       reason: "cancel by admin",
     });
-    
-    let temp = detail
-    temp.orderStatus.push(res?.data.orderStatus[res.data.orderStatus.length - 1])
-    setDetail(temp)
-    setLastStatus(res?.data.orderStatus[res?.data.orderStatus?.length - 1]?.name);
+
+    let temp = detail;
+    temp.orderStatus.push(
+      res?.data.orderStatus[res.data.orderStatus.length - 1]
+    );
+    setDetail(temp);
+    setLastStatus(
+      res?.data.orderStatus[res?.data.orderStatus?.length - 1]?.name
+    );
   };
 
-  useEffect(() => {
-    
-  }, [lastStatus]);
+  useEffect(() => {}, [lastStatus, detail.subOrder]);
 
   useEffect(() => {
     let mounted = true;
@@ -104,6 +106,10 @@ export default function OrderDetail() {
     };
   }, []);
 
+  useEffect(() => {
+    console.log(detail)
+  }, [detail])
+
   const handleBack = () => {
     history.push(`/order`);
   };
@@ -115,6 +121,13 @@ export default function OrderDetail() {
           <Typography variant="h4" className={classes.titlePage}>
             {"Chi tiết đơn đặt hàng MDH" + detail.orderId}
           </Typography>
+        </Grid>
+        <Grid>
+          <SubOrderPopup
+            orderId={id}
+            products={detail.products}
+            subOrder={detail.subOrder}
+          ></SubOrderPopup>
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.root}>
@@ -136,9 +149,10 @@ export default function OrderDetail() {
             id={id}
           />
         </Grid>
-        <Grid item xs={12} md={6}>
-          {detail.subOrder?.map((item, idx) => (
-            <Grid item container key={idx}>
+
+        {detail.subOrder?.map((item, idx) => (
+          <Grid item container key={idx} xs={12} md={12}>
+            <Grid item container xs={12} md={6}>
               <OrderInfo products={item.products} />
               <Grid item xs={3}>
                 <button>Chuyển trạng thái</button>
@@ -147,8 +161,11 @@ export default function OrderDetail() {
                 <button>Hủy đơn hàng</button>
               </Grid>
             </Grid>
-          ))}
-        </Grid>
+            <Grid>
+              <TimelineStatus statusList={item.subOrderStatus} />
+            </Grid>
+          </Grid>
+        ))}
       </Grid>
       <Grid container spacing={2} className={classes.btnGroup}>
         <Grid item>

@@ -20,6 +20,7 @@ import {
 } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import orderApi from "../../../api/orderApi";
 
 const useStyles = makeStyles({
   orderInfoBox: {
@@ -66,42 +67,98 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SubOrderPopup({ products }) {
+export default function SubOrderPopup({ orderId, products, subOrder }) {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
   const [subProductsList, setSubProductsList] = useState();
-  
+
   const handleClickOpen = () => {
+    console.log(subOrder);
+    let tempArr = [];
+    const copiedProducts = products.map((item) => ({ ...item, quantity: 0 }));
+    for (let i = 0; i < products.length; i++) {
+      let temp = copiedProducts[i];
+
+      temp["divided"] = 0;
+      for (let j = 0; j < subOrder.length; j++) {
+        for (let k = 0; k < subOrder[j].products.length; k++) {
+          if (
+            temp?.fabricID?.fabricTypeId?.name ==
+              subOrder[j]?.products[k].fabricID?.fabricTypeId?.name &&
+            temp?.fabricID?.colorId?.colorCode ==
+              subOrder[j]?.products[k].fabricID?.colorId?.colorCode &&
+            subOrder[j].subOrderStatus.length > 0 &&
+            subOrder[j].subOrderStatus[subOrder[j].subOrderStatus.length - 1]
+              .name != "canceled"
+          ) {
+            temp["divided"] += subOrder[j].products[k].quantity;
+          }
+        }
+      }
+      tempArr.push(temp);
+    }
+    console.log(tempArr);
+    setSubProductsList(tempArr);
+    //   const hashTable = {};
+    // array2.forEach((obj) => {
+    //   hashTable[obj.id] = obj;
+    // });
+
+    // // Compare the objects in array1 to the objects in the hash table
+    // const result = [];
+    // array1.forEach((obj) => {
+    //   const matchedObj = hashTable[obj.id];
+    //   if (matchedObj) {
+    //     result.push({ obj1: obj, obj2: matchedObj });
+    //   }
+    // });
+
+    // return result;
     setOpen(true);
-    console.log(products);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleCreate = () => {
-    setOpen(false);
-  };
-
-  const handleQuantity = (e) => {
-    console.log(e.target.value);
-  };
-
-  useEffect(() => {
-    let tempArr = []
-    for(let i=0; i<products.length;i++) {
-        let temp = products[i];
-        temp.quantity = 0
-        tempArr.push(temp)
+  const handleCreate = async () => {
+    const tempArr = [];
+    let checkQuantity = true;
+    for (let i = 0; i < products.length; i++) {
+      if (
+        subProductsList[i].quantity >
+          products[i].quantity - subProductsList[i].divided ||
+        subProductsList[i].quantity < 0
+      ) {
+        checkQuantity = false;
+        break;
+      }
+      const tempObj = {
+        colorCode: products[i].fabricID.colorId.colorCode,
+        typeId: products[i].fabricID.fabricTypeId.name,
+        quantity: subProductsList[i].quantity,
+      };
+      tempArr.push(tempObj);
     }
-    setSubProductsList(tempArr)
-  }, [])
+    if (checkQuantity) {
+      const postData = {
+        orderId: orderId,
+        note: "sub order",
+        products: tempArr,
+      };
+      console.log("tao sub order thanh cong");
+      const response = await orderApi.createSubOrder(postData);
+      subOrder.push(response);
+      setOpen(false);
+    } else console.log("tao sub order that bai");
+  };
 
-  useEffect(() => {
-    console.log(subProductsList)
-  }, [subProductsList])
+  const handleQuantity = (e, idx) => {
+    let tempArr = subProductsList;
+    tempArr[idx].quantity = Number.parseInt(e.target.value);
+    setSubProductsList(tempArr);
+  };
 
   return (
     <span>
@@ -137,14 +194,14 @@ export default function SubOrderPopup({ products }) {
                   <TableCell>STT</TableCell>
                   <TableCell>Loại vải</TableCell>
                   <TableCell>Mã màu</TableCell>
-                  <TableCell>Đã đặt (cuộn)</TableCell>
-                  <TableCell>Đã chia (cuộn)</TableCell>
-                  <TableCell>Còn lại (cuộn)</TableCell>
+                  <TableCell>Đã đặt (Cây)</TableCell>
+                  <TableCell>Đã chia (Cây)</TableCell>
+                  <TableCell>Đã giao (Cây)</TableCell>
                   <TableCell>Nhập số lượng</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {products?.map((item, idx) => (
+                {subProductsList?.map((item, idx) => (
                   <TableRow
                     key={idx}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -164,25 +221,24 @@ export default function SubOrderPopup({ products }) {
                     </TableCell>
                     <TableCell>
                       <Typography variant="subtitle2">
-                        {Number.parseInt(item.quantity)}
+                        {Number.parseInt(products[idx].quantity)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography variant="subtitle2">
-                        {Number.parseInt(item.shipped)}
+                        {Number.parseInt(item.divided)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography variant="subtitle2">
-                        {Number.parseInt(item.quantity) -
-                          Number.parseInt(item.shipped)}
+                        {Number.parseInt(products[idx].shipped)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <input
                         type="number"
                         defaultValue={item.quantity}
-                        onChange={(e) => handleQuantity(e)}
+                        onChange={(e) => handleQuantity(e, idx)}
                         min="0"
                         step="1"
                         className={classes.lengthField}

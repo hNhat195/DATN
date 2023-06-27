@@ -26,6 +26,7 @@ router.put(
   "/api/order/:id/update_status_cancel_order",
   OrderController.updateStatusCancelOrder
 );
+router.post("/api/order/sub-order-create", OrderController.subOrderCreate);
 
 const {
   createNewCustomer,
