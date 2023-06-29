@@ -13,7 +13,7 @@ const orderApi = {
     return axiosClient.post(url, data);
   },
   createSubOrder: (data) => {
-    const url = "/order/sub-order-create"
+    const url = "/order/create-sub-order"
     return axiosClient.post(url, data);
   },
   getOne: (orderId) => {
@@ -54,6 +54,16 @@ const orderApi = {
   cancelStatus: (orderId) => {
     const url = `/order/${orderId}/cancelStatus`;
     return axiosClient.put(url);
+  },
+
+  cancelSubOrder: (subOrderId, data) => {
+    const url = `/order/cancel-sub-order/${subOrderId}/`;
+    return axiosClient.put(url, data);
+  },
+
+  updateSubOrderStatus: (subOrderId, data) => {
+    const url = `/order/update-sub-order-status/${subOrderId}/`;
+    return axiosClient.put(url, data);
   },
 
   getOrderIdByCustomer: (id) => {

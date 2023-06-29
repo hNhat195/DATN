@@ -183,7 +183,7 @@ const detail = (req, res) => {
         },
         select: "quantity shipped -_id",
       },
-      select: "-_id",
+      select: "",
     })
     .exec(function (err, result) {
       if (err) res.json(err);
@@ -193,7 +193,7 @@ const detail = (req, res) => {
     });
 };
 
-const subOrderCreate = async (req, res) => {
+const createSubOrder = async (req, res) => {
   try {
     const productList = [];
     let totalQuantity = 0;
@@ -243,7 +243,7 @@ const subOrderCreate = async (req, res) => {
       },
       { new: true }
     );
-    
+
     await Order.findOneAndUpdate(
       { _id: mongoose.Types.ObjectId(req.body.orderId) },
       {
@@ -341,6 +341,54 @@ const updateStatusCancelOrder = async (req, res) => {
   } catch (error) {
     return res.json({
       message: "Cập nhật trạng thái thất bại",
+      status: 400,
+    });
+  }
+};
+
+const cancelSubOrder = async (req, res) => {
+  try {
+    const newSubOrderStatus = await SubOrder.findOne({
+      _id: mongoose.Types.ObjectId(req.params.id),
+    }).exec();
+    const latestStatus =
+      newSubOrderStatus.subOrderStatus[
+        newSubOrderStatus.subOrderStatus.length - 1
+      ].name;
+    console.log(latestStatus)
+    if (latestStatus == SubOrderStatus.READY || latestStatus == SubOrderStatus.COMPLETED) {
+      const updatedStatus = await SubOrder.findOneAndUpdate(
+        { _id: mongoose.Types.ObjectId(req.params.id) },
+        {
+          $push: {
+            subOrderStatus: {
+              name: OrderStatus.CANCELED,
+              reason: req.body.reason,
+            },
+          },
+        },
+        {
+          new: true,
+        }
+      );
+      console.log("Hủy sub order thành công, " + req.params.id);
+      return res.json({
+        message: "Hủy sub order thành công",
+        status: 200,
+        data: updatedStatus,
+      });
+    }
+    else {
+      console.log("Không thể hủy sub order này")
+      return res.json({
+        message: "Không thể hủy sub order này",
+        status: 400,
+      });
+    }
+  } catch (error) {
+    console.log("Hủy sub order thất bại")
+    return res.json({
+      message: "Hủy sub order thất bại",
       status: 400,
     });
   }
@@ -550,6 +598,65 @@ const updateStatus = async (req, res) => {
   }
 };
 
+const updateSubOrderStatus = async (req, res) => {
+  const status = await SubOrder.findOne(
+    { _id: mongoose.Types.ObjectId(req.params.id) },
+    "subOrderStatus"
+  ).exec();
+  const lastStatus =
+    status.subOrderStatus[status.subOrderStatus.length - 1].name;
+  switch (lastStatus) {
+    case SubOrderStatus.READY:
+      SubOrder.findOneAndUpdate(
+        { _id: mongoose.Types.ObjectId(req.params.id) },
+        {
+          $push: {
+            subOrderStatus: {
+              name: SubOrderStatus.IN_PROGRESS,
+              reason: req.body.reason || "",
+            },
+          },
+        },
+        {
+          new: true,
+        },
+        function (err, result) {
+          if (err) {
+            return res.json({ message: "Error" });
+          } else {
+            return res.json(result);
+          }
+        }
+      );
+      break;
+    case SubOrderStatus.IN_PROGRESS:
+      SubOrder.findOneAndUpdate(
+        { _id: mongoose.Types.ObjectId(req.params.id) },
+        {
+          $push: {
+            subOrderStatus: {
+              name: SubOrderStatus.COMPLETED,
+              reason: req.body.reason || "",
+            },
+          },
+        },
+        {
+          new: true,
+        },
+        function (err, result) {
+          if (err) {
+            return res.json({ message: "Error" });
+          } else {
+            return res.json(result);
+          }
+        }
+      );
+      break;
+    default:
+      break;
+  }
+};
+
 const getFabricTypeOrder = (req, res) => {
   Order.find()
     .select("products")
@@ -726,5 +833,7 @@ module.exports = {
   getOrderDaily,
   getOrderFabricType,
   updateStatus,
-  subOrderCreate,
+  createSubOrder,
+  cancelSubOrder,
+  updateSubOrderStatus,
 };

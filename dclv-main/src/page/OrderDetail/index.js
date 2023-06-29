@@ -88,6 +88,25 @@ export default function OrderDetail() {
     );
   };
 
+  const handleCancelSubOrder = async (e, subOrder, idx) => {
+    const res = await orderApi.cancelSubOrder(subOrder._id, {
+      status: "cancel",
+      reason: "cancel by admin",
+    });
+    let temp = detail;
+    temp.subOrder[idx] = res;
+    setDetail(temp);
+  };
+
+  const handleUpdateSubOrderStatus = async (e, subOrderId, idx) => {
+    const res = await orderApi.updateSubOrderStatus(subOrderId, {
+      reason: "cancel by admin",
+    });
+    let temp = detail;
+    temp.subOrder[idx] = res;
+    setDetail(temp);
+  };
+
   useEffect(() => {}, [lastStatus, detail.subOrder]);
 
   useEffect(() => {
@@ -107,8 +126,8 @@ export default function OrderDetail() {
   }, []);
 
   useEffect(() => {
-    console.log(detail)
-  }, [detail])
+    console.log(detail);
+  }, [detail]);
 
   const handleBack = () => {
     history.push(`/order`);
@@ -155,10 +174,16 @@ export default function OrderDetail() {
             <Grid item container xs={12} md={6}>
               <OrderInfo products={item.products} />
               <Grid item xs={3}>
-                <button>Chuyển trạng thái</button>
+                <button
+                  onClick={(e) => handleUpdateSubOrderStatus(e, item._id, idx)}
+                >
+                  Chuyển trạng thái
+                </button>
               </Grid>
               <Grid item xs={3}>
-                <button>Hủy đơn hàng</button>
+                <button onClick={(e) => handleCancelSubOrder(e, item, idx)}>
+                  Hủy đơn hàng
+                </button>
               </Grid>
             </Grid>
             <Grid>

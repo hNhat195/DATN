@@ -16,7 +16,7 @@ module.exports = {
 
   SubOrderStatus: {
     READY: "ready",
-    IN_TRANSIT: "in-transit",
+    IN_PROGRESS: "in-progress",
     COMPLETED: "completed",
     CANCELED: "canceled",
   },
