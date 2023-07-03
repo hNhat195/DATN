@@ -103,4 +103,5 @@ module.exports = {
   createColor,
   CreateFabricRoll,
   upsertFabricRoll,
+  createSlugForFabricRoll,
 };
