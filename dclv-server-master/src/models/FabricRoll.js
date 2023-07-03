@@ -18,6 +18,7 @@ const FabricRollSchema = new Schema(
     price: { type: Number, require: true },
     image: [{ type: String, default: "" }],
     descriptions: { type: String, default: "" },
+    slug: { type: String, require: true },
   },
   { collection: "FabricRoll" }
 );
