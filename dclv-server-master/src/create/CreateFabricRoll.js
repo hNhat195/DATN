@@ -98,10 +98,39 @@ const createSlugForFabricRoll = async () => {
   }
 };
 
+const findKeyword = (string, keywords) => {
+  for (let i = 0; i < keywords.length; i++) {
+    if (string.includes(keywords[i])) {
+      return keywords[i];
+    }
+  }
+  return "silk";
+};
+
+const upsertMaterialAndSlugForFabricType = async () => {
+  const currentMaterial = ["linen", "merino", "silk"];
+  try {
+    const fabricTypes = await FabricType.find({});
+    console.log(fabricTypes, "fabricTypesfabricTypesfabricTypes");
+    for (const fabricType of fabricTypes) {
+      fabricType.slug = convertToSlug(fabricType.name);
+      fabricType.material = findKeyword(
+        fabricType.name.toLowerCase(),
+        currentMaterial
+      );
+      await fabricType.save();
+    }
+    console.log("Field updated for all fabricTypes.");
+  } catch (error) {
+    console.error("Error updating field:", error);
+  }
+};
+
 module.exports = {
   createFabricType,
   createColor,
   CreateFabricRoll,
   upsertFabricRoll,
   createSlugForFabricRoll,
+  upsertMaterialAndSlugForFabricType,
 };
