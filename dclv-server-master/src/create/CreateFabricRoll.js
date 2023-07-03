@@ -45,4 +45,39 @@ const CreateFabricRoll = async () => {
   // console.log(F);
   // FabricRoll.insertMany(F);
 };
-module.exports = { createFabricType, createColor, CreateFabricRoll };
+
+const upsertFabricRoll = async () => {
+  fabricList1
+    .concat(fabricList2)
+    .concat(fabricList3)
+    .forEach(async (fabric, index) => {
+      const color = await Color.findOne({ colorCode: fabric.color });
+      const fabricType = await FabricType.findOne({ name: fabric.material });
+
+      FabricRoll.findOneAndUpdate(
+        { fabricTypeId: fabricType._id, colorId: color._id },
+        {
+          $set: {
+            name: fabric.product_name,
+            descriptions: fabric.description,
+            color: fabric.color,
+            fabricType: fabric.material,
+          },
+        },
+        { new: true }
+      )
+        .then((updatedRoll) => {
+          console.log(updatedRoll);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+};
+
+module.exports = {
+  createFabricType,
+  createColor,
+  CreateFabricRoll,
+  upsertFabricRoll,
+};
