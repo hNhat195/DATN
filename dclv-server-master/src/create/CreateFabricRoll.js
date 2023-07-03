@@ -75,6 +75,29 @@ const upsertFabricRoll = async () => {
     });
 };
 
+function convertToSlug(text) {
+  return text
+    .trim() // Remove leading and trailing spaces
+    .toLowerCase() // Convert to lowercase
+    .replace(/[^a-z0-9\s-]/g, "") // Remove special characters except spaces and hyphens
+    .replace(/\s+/g, "-") // Replace spaces with hyphens
+    .replace(/-+/g, "-"); // Replace consecutive hyphens with a single hyphen
+}
+
+const createSlugForFabricRoll = async () => {
+  try {
+    const fabrics = await FabricRoll.find({});
+    for (const fabric of fabrics) {
+      fabric.slug = convertToSlug(fabric.name);
+
+      await fabric.save();
+    }
+    console.log("Field updated for all fabrics.");
+  } catch (error) {
+    console.error("Error updating field:", error);
+  }
+};
+
 module.exports = {
   createFabricType,
   createColor,
