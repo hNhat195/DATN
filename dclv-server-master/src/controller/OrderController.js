@@ -355,8 +355,11 @@ const cancelSubOrder = async (req, res) => {
       newSubOrderStatus.subOrderStatus[
         newSubOrderStatus.subOrderStatus.length - 1
       ].name;
-    console.log(latestStatus)
-    if (latestStatus == SubOrderStatus.READY || latestStatus == SubOrderStatus.COMPLETED) {
+
+    if (
+      latestStatus == SubOrderStatus.READY ||
+      latestStatus == SubOrderStatus.IN_PROGRESS
+    ) {
       const updatedStatus = await SubOrder.findOneAndUpdate(
         { _id: mongoose.Types.ObjectId(req.params.id) },
         {
@@ -371,22 +374,19 @@ const cancelSubOrder = async (req, res) => {
           new: true,
         }
       );
-      console.log("Hủy sub order thành công, " + req.params.id);
+
       return res.json({
         message: "Hủy sub order thành công",
         status: 200,
         data: updatedStatus,
       });
-    }
-    else {
-      console.log("Không thể hủy sub order này")
+    } else {
       return res.json({
         message: "Không thể hủy sub order này",
         status: 400,
       });
     }
   } catch (error) {
-    console.log("Hủy sub order thất bại")
     return res.json({
       message: "Hủy sub order thất bại",
       status: 400,
@@ -651,6 +651,19 @@ const updateSubOrderStatus = async (req, res) => {
           }
         }
       );
+      await SubOrderItem.updateMany(
+        { subOrderId: mongoose.Types.ObjectId(req.params.id) },
+        [
+          {
+            $set: {
+              shipped: {
+                $toInt: "$quantity"
+              }
+            }
+          }
+        ]
+      );
+
       break;
     default:
       break;

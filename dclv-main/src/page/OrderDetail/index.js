@@ -12,6 +12,8 @@ import { useHistory, useParams } from "react-router-dom";
 import SubOrderPopup from "./components/SubOrderPopup";
 
 import { OrderStatus } from "../../const/OrderStatus";
+import ChangeStatusPopup from "./components/ChangeStatusPopup";
+import SubOrderList from "./components/SubOrderList";
 
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
@@ -170,26 +172,28 @@ export default function OrderDetail() {
         </Grid>
 
         {detail.subOrder?.map((item, idx) => (
-          <Grid item container key={idx} xs={12} md={12}>
-            <Grid item container xs={12} md={6}>
-              <OrderInfo products={item.products} />
-              <Grid item xs={3}>
-                <button
-                  onClick={(e) => handleUpdateSubOrderStatus(e, item._id, idx)}
-                >
-                  Chuyển trạng thái
-                </button>
-              </Grid>
-              <Grid item xs={3}>
-                <button onClick={(e) => handleCancelSubOrder(e, item, idx)}>
-                  Hủy đơn hàng
-                </button>
-              </Grid>
-            </Grid>
-            <Grid>
-              <TimelineStatus statusList={item.subOrderStatus} />
-            </Grid>
-          </Grid>
+          // <Grid item container key={idx} xs={12} md={12}>
+          //   <Grid item container xs={12} md={6}>
+          //     <OrderInfo products={item.products} />
+          //     <Grid item xs={3}>
+          //       {/* <button
+          //         onClick={(e) => handleUpdateSubOrderStatus(e, item._id, idx)}
+          //       >
+          //         Chuyển trạng thái
+          //       </button> */}
+          //       <ChangeStatusPopup subOrder={item} idx={idx} detail={detail} setDetail={setDetail}></ChangeStatusPopup>
+          //     </Grid>
+          //     <Grid item xs={3}>
+          //       <button onClick={(e) => handleCancelSubOrder(e, item, idx)}>
+          //         Hủy đơn hàng
+          //       </button>
+          //     </Grid>
+          //   </Grid>
+          //   <Grid>
+          //     <TimelineStatus statusList={item.subOrderStatus} />
+          //   </Grid>
+          // </Grid>
+          <SubOrderList item={item} idx={idx} detail={detail} setDetail={setDetail}></SubOrderList>
         ))}
       </Grid>
       <Grid container spacing={2} className={classes.btnGroup}>

@@ -8,12 +8,16 @@ import {
   Select,
   MenuItem,
 } from "@material-ui/core";
+import MaterialIcon from "@material-ui/icons/Brush";
+import ColorIcon from "@material-ui/icons/Palette";
+import QuantityIcon from "@material-ui/icons/AddBox";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
 import orderApi from "../../../api/orderApi";
 import productApi from "../../../api/productApi";
 import { makeStyles } from "@material-ui/core/styles";
+import "./styled.css";
 
 const useStyles = makeStyles((theme) => ({
   alignRight: {
@@ -42,7 +46,6 @@ export default function CreateForm({
   const [fabricMaterial, setFabricMaterial] = useState("");
   const [fabricLength, setFabricLength] = useState("");
   const [materialId, setMaterialId] = useState("");
-  const [materialType, setMaterialType] = useState("");
 
   const history = useHistory();
   const classes = useStyles();
@@ -75,14 +78,28 @@ export default function CreateForm({
       isNaN(Number.parseInt(fabricLength))
     ) {
       console.log("please add information");
-    }
-    else {
+    } else {
       let addData = {
         colorCode: fabricColor,
         typeId: fabricMaterial,
         length: Number.parseInt(fabricLength),
       };
-      setProductList([...productList, addData]);
+      let checkDuplicate = false;
+      let i=0
+      for(; i<productList.length; i++) {
+        if(addData.colorCode == productList[i].colorCode && addData.typeId == productList[i].typeId) {
+          checkDuplicate = true;
+          break;
+        }
+      }
+
+      if(checkDuplicate) {
+        console.log("duplicate")
+
+      }
+      else {
+        setProductList([...productList, addData]);
+      }
       event.preventDefault();
     }
   };
@@ -90,7 +107,7 @@ export default function CreateForm({
   useEffect(() => {
     const fetchMaterial = async () => {
       const response = await productApi.getAllMaterialCode();
-      
+
       setMaterialList(response);
     };
     fetchMaterial();
@@ -101,32 +118,31 @@ export default function CreateForm({
       const response = await productApi.getColorByMaterial(materialId);
       setColorList(response);
     }
-    
   };
   useEffect(async () => {
     await fetchColor();
   }, [materialId]);
 
   useEffect(() => {
-    
+    console.log(productList)
+    console.log("rerender")
   }, [productList]);
 
   return (
-    <div>
-      <Typography variant="h6" gutterBottom>
-        Tạo đơn hàng
-      </Typography>
-
-      <Grid container spacing={3} xs={12}>
-        <Grid item xs={12} md={9}></Grid>
-        <Grid item xs={12} md={3}></Grid>
-        <Grid item xs={12} md={9}>
-          <FormControl fullWidth={true}>
+    <div className="order-container">
+      <h2 className="order-title">Tạo một đơn hàng</h2>
+      <form onSubmit={handleSubmit} className="order-form">
+        <div className="order-field">
+          <div className="order-icon">
+            <MaterialIcon />
+          </div>
+          <FormControl>
             <InputLabel id="fabric-material">Chất liệu</InputLabel>
             <Select
               labelId="fabric-material"
               id="fabric-material"
               label="Material"
+              className="order-select"
               onChange={async (e) => {
                 setFabricMaterial(e.target.value);
                 const mat = await materialList.find((x) => {
@@ -144,15 +160,18 @@ export default function CreateForm({
               })}
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item xs={12} md={3}></Grid>
-        <Grid item xs={12} md={9}>
-          <FormControl fullWidth={true}>
+        </div>
+        <div className="order-field">
+          <div className="order-icon">
+            <ColorIcon />
+          </div>
+          <FormControl>
             <InputLabel id="fabric-color">Mã màu</InputLabel>
             <Select
               labelId="fabric-color"
               id="fabric-color"
               label="Color"
+              className="order-select"
               onChange={(e) => {
                 
                 setFabricColor(e.target.value);
@@ -167,10 +186,12 @@ export default function CreateForm({
               })}
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item xs={12} md={3}></Grid>
-        <Grid item xs={12} md={9}>
-          <TextField
+        </div>
+        <div className="order-field">
+          <div className="order-icon">
+            <QuantityIcon />
+          </div>
+          {/* <TextField
             required
             id="fabric-length"
             name="fabric-length"
@@ -179,36 +200,34 @@ export default function CreateForm({
             autoComplete="fabric length"
             variant="standard"
             type="number"
+            className="order-select"
             inputProps={{ min: 0, step: 1 }}
             onChange={(e) => {
               setFabricLength(e.target.value);
             }}
+          /> */}
+          <input
+            type="number"
+            required
+            pattern="[0-9]+"
+            onChange={(e) => {
+              setFabricLength(e.target.value);
+            }}
+            className="order-input"
+            placeholder="Số lượng"
           />
-        </Grid>
-        <Grid item xs={12} md={3}></Grid>
-      </Grid>
-
-      <Grid container spacing={8}>
-        <Grid item xs={4}>
-          <Button
+        </div>
+        <Button
             variant="contained"
             type="button"
             onClick={handleAdd}
-            className={classes.buttonCss}>
+            className="order-button">
             Thêm
           </Button>
-        </Grid>
-        <Grid item xs={2}></Grid>
-        <Grid item xs={4}>
-          <Button
-            variant="contained"
-            type="button"
-            className={classes.buttonCss}
-            onClick={handleSubmit}>
-            Tạo đơn
-          </Button>
-        </Grid>
-      </Grid>
+        <button onClick={handleSubmit} className="order-button">
+          Submit
+        </button>
+      </form>
     </div>
   );
 }

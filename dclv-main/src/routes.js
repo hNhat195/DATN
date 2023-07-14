@@ -17,6 +17,7 @@ import InfoPage from "./page/InfoPage/InfoPage";
 import OrderCreatePage from "./page/OrderCreatePage"
 import HomePage from "./page/HomePage"
 import ProductDetail from "./page/ProductDetail";
+import HomeCreateOrder from "./page/HomeCreateOrder";
 
 const routes = [
   {
@@ -42,9 +43,9 @@ const routes = [
     component: Product,
   },
   {
-    path: "/home/:productId",
+    path: "/home/create-order",
     exact: true,
-    component: ProductDetail,
+    component: HomeCreateOrder,
   },
   {
     path: "*",

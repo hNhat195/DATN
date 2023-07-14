@@ -1,0 +1,127 @@
+.order-container {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    height: 100vh;
+}
+
+.order-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.order-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 400px;
+    height: 500px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.order-field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.order-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+    background-color: #FCAEAE;
+    color: #FFEADD;
+    border-radius: 50%;
+}
+
+.order-select {
+    width: 300px;
+    height: 30px;
+    /* margin-left: 10px; */
+    padding: 5px;
+    border: none;
+    border-radius: 4px;
+    /* background-color: #f2f2f2; */
+    color: #333;
+    font-size: 14px;
+}
+
+.order-input {
+    width: 290px;
+    height: 30px;
+    margin-left: 10px;
+    padding: 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f2f2f2;
+    color: #333;
+    font-size: 14px;
+}
+
+.order-button {
+    width: 100px;
+    height: 30px;
+    margin-top: 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.order-button:hover {
+    background-color: #3e8e41;
+}
+
+.order-table {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+table {
+    width: 700px;
+	border-collapse: collapse;
+    font-family: Tahoma, Geneva, sans-serif;
+}
+table td {
+	padding: 15px;
+}
+table thead td {
+	background-color: #fcedb3;
+	color: #54585d;
+	font-weight: bold;
+	font-size: 14px;
+	/* border: 1px solid #54585d; */
+    
+    border-bottom: 1px solid #54585d;
+}
+table tbody td {
+	color: #636363;
+	/* border: 1px solid #54585d; */
+    border-top: 1px solid #54585d;
+    
+}
+table tbody tr {
+	background-color: #f9fafb;
+}
+table tbody tr:nth-child(odd) {
+	background-color: #ffffff;
+}
+.border-right {
+    border-right: 1px solid #54585d;
+}
+.table-title {
+    font-size: 24px;
+    text-align: center;
+    
+}

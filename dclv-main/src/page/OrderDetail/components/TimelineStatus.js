@@ -11,6 +11,7 @@ import {
 import { Typography, Container, Grid } from "@material-ui/core";
 import clsx from "clsx";
 import moment from "moment";
+import { useState, useEffect } from "react";
 
 const useStyles = makeStyles({
   timelineStyle: {
@@ -83,6 +84,9 @@ const TimelineItem = withStyles({
 export default function TimelineStatus(props) {
   const classes = useStyles();
   const lastStatusIdx = props.statusList?.length - 1;
+
+  useEffect(() => {}, [props])
+
   return (
     <Container className={classes.timelineStyle}>
       <Typography variant="h5" className={classes.title}>
@@ -184,10 +188,10 @@ export default function TimelineStatus(props) {
                           className={
                             (idx !== lastStatusIdx &&
                               clsx(classes.past, classes.status)) ||
-                            (item.name === "pending" &&
+                            ((item.name === "pending" || item.name === "ready") &&
                               idx === lastStatusIdx &&
                               clsx(classes.pending, classes.status)) ||
-                            (item.name === "processing" &&
+                            ((item.name === "processing" || item.name === "in-progress") &&
                               idx === lastStatusIdx &&
                               clsx(classes.processing, classes.status)) ||
                             (item.name === "completed" &&
