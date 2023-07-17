@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 const FabricTypeSchema = new Schema(
   {
     name: { type: String, default: "", required: true, unique: true },
+    material: { type: String, default: "", required: true },
+    slug: { type: String, required: true, unique: true },
   },
   { collection: "FabricType" },
   { toJSON: { virtuals: true } }

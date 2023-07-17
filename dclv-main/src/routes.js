@@ -14,18 +14,11 @@ import StaffDetail from "./page/StaffPage/components/StaffDetail";
 
 import SupportPage from "./page/SupportPage/SupportPage";
 import InfoPage from "./page/InfoPage/InfoPage";
-import OrderCreatePage from "./page/OrderCreatePage"
-import HomePage from "./page/HomePage"
-import ProductDetail from "./page/ProductDetail";
-import HomeCreateOrder from "./page/HomeCreateOrder";
-
+import OrderCreatePage from "./page/OrderCreatePage";
+import ProductDetail from "./page/SellingPages/ProductDetail";
+import HomePage from "./page/SellingPages/HomePage";
+import ProductList from "./page/SellingPages/ProductList";
 const routes = [
-  {
-    path: "/",
-    exact: true,
-    component: () => <Redirect to="/signin" />,
-  },
-
   {
     path: "/signin",
     exact: true,
@@ -33,17 +26,23 @@ const routes = [
   },
   { path: "/signup", exact: true, component: SignUp },
   {
-    path: "/home",
+    path: "/",
     exact: true,
     component: HomePage,
   },
+  {
+    path: "/collections/:collectionId",
+    exact: true,
+    component: ProductList,
+  },
+
   {
     path: "/home/type/:type",
     exact: true,
     component: Product,
   },
   {
-    path: "/home/create-order",
+    path: "/products/:productId",
     exact: true,
     component: HomeCreateOrder,
   },

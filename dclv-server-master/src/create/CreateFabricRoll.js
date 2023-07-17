@@ -45,4 +45,92 @@ const CreateFabricRoll = async () => {
   // console.log(F);
   // FabricRoll.insertMany(F);
 };
-module.exports = { createFabricType, createColor, CreateFabricRoll };
+
+const upsertFabricRoll = async () => {
+  fabricList1
+    .concat(fabricList2)
+    .concat(fabricList3)
+    .forEach(async (fabric, index) => {
+      const color = await Color.findOne({ colorCode: fabric.color });
+      const fabricType = await FabricType.findOne({ name: fabric.material });
+
+      FabricRoll.findOneAndUpdate(
+        { fabricTypeId: fabricType._id, colorId: color._id },
+        {
+          $set: {
+            name: fabric.product_name,
+            descriptions: fabric.description,
+            color: fabric.color,
+            fabricType: fabric.material,
+          },
+        },
+        { new: true }
+      )
+        .then((updatedRoll) => {
+          console.log(updatedRoll);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+};
+
+function convertToSlug(text) {
+  return text
+    .trim() // Remove leading and trailing spaces
+    .toLowerCase() // Convert to lowercase
+    .replace(/[^a-z0-9\s-]/g, "") // Remove special characters except spaces and hyphens
+    .replace(/\s+/g, "-") // Replace spaces with hyphens
+    .replace(/-+/g, "-"); // Replace consecutive hyphens with a single hyphen
+}
+
+const createSlugForFabricRoll = async () => {
+  try {
+    const fabrics = await FabricRoll.find({});
+    for (const fabric of fabrics) {
+      fabric.slug = convertToSlug(fabric.name);
+
+      await fabric.save();
+    }
+    console.log("Field updated for all fabrics.");
+  } catch (error) {
+    console.error("Error updating field:", error);
+  }
+};
+
+const findKeyword = (string, keywords) => {
+  for (let i = 0; i < keywords.length; i++) {
+    if (string.includes(keywords[i])) {
+      return keywords[i];
+    }
+  }
+  return "silk";
+};
+
+const upsertMaterialAndSlugForFabricType = async () => {
+  const currentMaterial = ["linen", "merino", "silk"];
+  try {
+    const fabricTypes = await FabricType.find({});
+    console.log(fabricTypes, "fabricTypesfabricTypesfabricTypes");
+    for (const fabricType of fabricTypes) {
+      fabricType.slug = convertToSlug(fabricType.name);
+      fabricType.material = findKeyword(
+        fabricType.name.toLowerCase(),
+        currentMaterial
+      );
+      await fabricType.save();
+    }
+    console.log("Field updated for all fabricTypes.");
+  } catch (error) {
+    console.error("Error updating field:", error);
+  }
+};
+
+module.exports = {
+  createFabricType,
+  createColor,
+  CreateFabricRoll,
+  upsertFabricRoll,
+  createSlugForFabricRoll,
+  upsertMaterialAndSlugForFabricType,
+};
