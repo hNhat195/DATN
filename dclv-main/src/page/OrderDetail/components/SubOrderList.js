@@ -12,6 +12,9 @@ export default function SubOrderList({ item, idx, detail, setDetail }) {
     const [latestStatus, setLastStatus] = useState(item.subOrderStatus[item.subOrderStatus.length - 1].name)
     const [disabledChange, setDisabledChange] = useState(false)
     useEffect(() => {
+        console.log(item)
+    }, [])
+    useEffect(() => {
         if (latestStatus == 'completed' || latestStatus == 'canceled') {
             setDisabledChange(true)
         }

@@ -141,17 +141,7 @@ const detail = (req, res) => {
       path: "products",
       populate: {
         path: "fabricID",
-        populate: [
-          {
-            path: "fabricTypeId",
-            select: "name -_id",
-          },
-          {
-            path: "colorId",
-            select: "colorCode -_id",
-          },
-        ],
-        select: "fabricTypeId colorId -_id",
+        select: "fabricType color price -_id",
       },
       select: "quantity shipped -_id",
     })
@@ -169,17 +159,7 @@ const detail = (req, res) => {
         path: "products",
         populate: {
           path: "fabricID",
-          populate: [
-            {
-              path: "fabricTypeId",
-              select: "name -_id",
-            },
-            {
-              path: "colorId",
-              select: "colorCode -_id",
-            },
-          ],
-          select: "fabricTypeId colorId -_id",
+          select: "fabricType color price -_id",
         },
         select: "quantity shipped -_id",
       },
@@ -663,7 +643,30 @@ const updateSubOrderStatus = async (req, res) => {
           }
         ]
       );
+      const subOrderItemList = await SubOrderItem.find(
+        { subOrderId: mongoose.Types.ObjectId(req.params.id) },
+      )
+      const fabricIdList = subOrderItemList.map((item) => item.fabricID)
+      const quantityList = subOrderItemList.map((item) => item.quantity)
 
+      const foundSubOrder = await SubOrder.findOne(
+        { _id: mongoose.Types.ObjectId(req.params.id) },
+      )
+      const orderId = foundSubOrder.orderId
+
+      for (let i = 0; i < fabricIdList.length; i++) {
+        await OrderItem.findOneAndUpdate(
+          {
+            orderId: orderId,
+            fabricID: fabricIdList[i]
+          },
+          {
+            $inc: { shipped: quantityList[i] }
+          },
+          { new: true }
+        )
+      }
+      console.log("update shipped products in order success")
       break;
     default:
       break;
@@ -831,6 +834,23 @@ const getOrderFabricType = async (req, res) => {
   }
 };
 
+const testUpdateSubOrder = async (req, res) => {
+  try {
+    const subOrderItemList = await SubOrderItem.find(
+      { subOrderId: mongoose.Types.ObjectId(req.params.id) },
+    )
+
+    const fabricIdList = subOrderItemList.map((item) => item.fabricID)
+    const quantityList = subOrderItemList.map((item) => item.quantity)
+    console.log(fabricIdList)
+    console.log(quantityList)
+    res.status(200).json(subOrderItemList);
+
+  } catch (err) {
+    res.status(500).json({ err });
+  }
+}
+
 module.exports = {
   getTotalOrderbyMonth,
   deposit,
@@ -849,4 +869,5 @@ module.exports = {
   createSubOrder,
   cancelSubOrder,
   updateSubOrderStatus,
+  testUpdateSubOrder
 };

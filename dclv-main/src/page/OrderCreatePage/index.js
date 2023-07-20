@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import CreateForm from "./components/CreateForm";
 import OrderTable from "./components/OrderTable";
 
+
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
     direction: "row",
@@ -62,6 +63,7 @@ export default function OrderCreatePage() {
 
   return (
     <Container maxWidth="xl" className={classes.orderDetailBox}>
+      
       <Grid container spacing={2}>
         <Grid item xs={9}>
           <Typography variant="h4" className={classes.titlePage}></Typography>
@@ -87,6 +89,7 @@ export default function OrderCreatePage() {
           />
         </Grid>
       </Grid>
+      
     </Container>
   );
 }

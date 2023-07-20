@@ -8,16 +8,12 @@ import {
   Select,
   MenuItem,
 } from "@material-ui/core";
-import MaterialIcon from "@material-ui/icons/Brush";
-import ColorIcon from "@material-ui/icons/Palette";
-import QuantityIcon from "@material-ui/icons/AddBox";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-
+import clsx from "clsx";
 import orderApi from "../../../api/orderApi";
 import productApi from "../../../api/productApi";
 import { makeStyles } from "@material-ui/core/styles";
-import "./styled.css";
 
 const useStyles = makeStyles((theme) => ({
   alignRight: {
@@ -30,6 +26,24 @@ const useStyles = makeStyles((theme) => ({
   buttonCss: {
     maxWidth: "true",
   },
+  changeButton: {
+    '&:hover': {
+      color: 'rgb(252, 186, 3)',
+    },
+  },
+  deleteButton: {
+    '&:hover': {
+      color: 'rgb(245, 66, 51)',
+    },
+  },
+  acceptButton: {
+    '&:hover': {
+      color: 'rgb(11, 214, 38)',
+    },
+  },
+  paddingGrid: {
+    paddingTop: "20px"
+  }
 }));
 
 const objectIdPattern = /^[0-9a-fA-F]{24}$/;
@@ -46,6 +60,7 @@ export default function CreateForm({
   const [fabricMaterial, setFabricMaterial] = useState("");
   const [fabricLength, setFabricLength] = useState("");
   const [materialId, setMaterialId] = useState("");
+  const [materialType, setMaterialType] = useState("");
 
   const history = useHistory();
   const classes = useStyles();
@@ -107,7 +122,7 @@ export default function CreateForm({
   useEffect(() => {
     const fetchMaterial = async () => {
       const response = await productApi.getAllMaterialCode();
-
+      
       setMaterialList(response);
     };
     fetchMaterial();
@@ -118,31 +133,32 @@ export default function CreateForm({
       const response = await productApi.getColorByMaterial(materialId);
       setColorList(response);
     }
+    
   };
   useEffect(async () => {
     await fetchColor();
   }, [materialId]);
 
   useEffect(() => {
-    console.log(productList)
-    console.log("rerender")
+    
   }, [productList]);
 
   return (
-    <div className="order-container">
-      <h2 className="order-title">Tạo một đơn hàng</h2>
-      <form onSubmit={handleSubmit} className="order-form">
-        <div className="order-field">
-          <div className="order-icon">
-            <MaterialIcon />
-          </div>
-          <FormControl>
+    <div>
+      <Typography variant="h4" gutterBottom>
+        Tạo đơn hàng
+      </Typography>
+
+      <Grid container spacing={3} xs={12}>
+        <Grid item xs={12} md={9}></Grid>
+        <Grid item xs={12} md={3}></Grid>
+        <Grid item xs={12} md={9}>
+          <FormControl fullWidth={true}>
             <InputLabel id="fabric-material">Chất liệu</InputLabel>
             <Select
               labelId="fabric-material"
               id="fabric-material"
               label="Material"
-              className="order-select"
               onChange={async (e) => {
                 setFabricMaterial(e.target.value);
                 const mat = await materialList.find((x) => {
@@ -160,18 +176,15 @@ export default function CreateForm({
               })}
             </Select>
           </FormControl>
-        </div>
-        <div className="order-field">
-          <div className="order-icon">
-            <ColorIcon />
-          </div>
-          <FormControl>
+        </Grid>
+        <Grid item xs={12} md={3}></Grid>
+        <Grid item xs={12} md={9}>
+          <FormControl fullWidth={true}>
             <InputLabel id="fabric-color">Mã màu</InputLabel>
             <Select
               labelId="fabric-color"
               id="fabric-color"
               label="Color"
-              className="order-select"
               onChange={(e) => {
                 
                 setFabricColor(e.target.value);
@@ -186,12 +199,10 @@ export default function CreateForm({
               })}
             </Select>
           </FormControl>
-        </div>
-        <div className="order-field">
-          <div className="order-icon">
-            <QuantityIcon />
-          </div>
-          {/* <TextField
+        </Grid>
+        <Grid item xs={12} md={3}></Grid>
+        <Grid item xs={12} md={9}>
+          <TextField
             required
             id="fabric-length"
             name="fabric-length"
@@ -200,34 +211,36 @@ export default function CreateForm({
             autoComplete="fabric length"
             variant="standard"
             type="number"
-            className="order-select"
             inputProps={{ min: 0, step: 1 }}
             onChange={(e) => {
               setFabricLength(e.target.value);
             }}
-          /> */}
-          <input
-            type="number"
-            required
-            pattern="[0-9]+"
-            onChange={(e) => {
-              setFabricLength(e.target.value);
-            }}
-            className="order-input"
-            placeholder="Số lượng"
           />
-        </div>
-        <Button
-            variant="contained"
+        </Grid>
+        <Grid item xs={12} md={3}></Grid>
+      </Grid>
+
+      <Grid container spacing={8} className={classes.paddingGrid}>
+        <Grid item xs={4}>
+          <Button
+            variant="outlined"
             type="button"
             onClick={handleAdd}
-            className="order-button">
+            className={clsx(classes.buttonCss, classes.changeButton)}>
             Thêm
           </Button>
-        <button onClick={handleSubmit} className="order-button">
-          Submit
-        </button>
-      </form>
+        </Grid>
+        <Grid item xs={1}></Grid>
+        <Grid item xs={4}>
+          <Button
+            variant="outlined"
+            type="button"
+            className={clsx(classes.buttonCss, classes.acceptButton)}
+            onClick={handleSubmit}>
+            Tạo đơn
+          </Button>
+        </Grid>
+      </Grid>
     </div>
   );
 }

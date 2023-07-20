@@ -18,6 +18,7 @@ import OrderCreatePage from "./page/OrderCreatePage";
 import ProductDetail from "./page/SellingPages/ProductDetail";
 import HomePage from "./page/SellingPages/HomePage";
 import ProductList from "./page/SellingPages/ProductList";
+import HomeCreateOrder from "./page/HomeCreateOrder";
 const routes = [
   {
     path: "/signin",
@@ -43,6 +44,11 @@ const routes = [
   },
   {
     path: "/products/:productId",
+    exact: true,
+    component: HomeCreateOrder,
+  },
+  {
+    path: "/home/create-order",
     exact: true,
     component: HomeCreateOrder,
   },

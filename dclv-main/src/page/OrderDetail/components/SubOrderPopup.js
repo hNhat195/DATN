@@ -74,31 +74,38 @@ export default function SubOrderPopup({ orderId, products, subOrder }) {
   const [subProductsList, setSubProductsList] = useState();
 
   const handleClickOpen = () => {
-    console.log(subOrder);
+    // console.log(subOrder);
     let tempArr = [];
     const copiedProducts = products.map((item) => ({ ...item, quantity: 0 }));
     for (let i = 0; i < products.length; i++) {
+
       let temp = copiedProducts[i];
 
       temp["divided"] = 0;
+
       for (let j = 0; j < subOrder.length; j++) {
         for (let k = 0; k < subOrder[j].products.length; k++) {
+          
           if (
-            temp?.fabricID?.fabricTypeId?.name ==
-              subOrder[j]?.products[k].fabricID?.fabricTypeId?.name &&
-            temp?.fabricID?.colorId?.colorCode ==
-              subOrder[j]?.products[k].fabricID?.colorId?.colorCode &&
+            temp?.fabricID?.fabricType ==
+            subOrder[j]?.products[k].fabricID?.fabricType &&
+            temp?.fabricID?.color ==
+            subOrder[j]?.products[k].fabricID?.color &&
             subOrder[j].subOrderStatus.length > 0 &&
             subOrder[j].subOrderStatus[subOrder[j].subOrderStatus.length - 1]
               .name != "canceled"
           ) {
+            
             temp["divided"] += subOrder[j].products[k].quantity;
+          }
+          else {
+            
           }
         }
       }
       tempArr.push(temp);
     }
-    console.log(tempArr);
+    // console.log(tempArr);
     setSubProductsList(tempArr);
     //   const hashTable = {};
     // array2.forEach((obj) => {
@@ -128,15 +135,15 @@ export default function SubOrderPopup({ orderId, products, subOrder }) {
     for (let i = 0; i < products.length; i++) {
       if (
         subProductsList[i].quantity >
-          products[i].quantity - subProductsList[i].divided ||
+        products[i].quantity - subProductsList[i].divided ||
         subProductsList[i].quantity < 0
       ) {
         checkQuantity = false;
         break;
       }
       const tempObj = {
-        colorCode: products[i].fabricID.colorId.colorCode,
-        typeId: products[i].fabricID.fabricTypeId.name,
+        colorCode: products[i].fabricID.color,
+        typeId: products[i].fabricID.fabricType,
         quantity: subProductsList[i].quantity,
       };
       tempArr.push(tempObj);
@@ -211,12 +218,12 @@ export default function SubOrderPopup({ orderId, products, subOrder }) {
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <Typography variant="subtitle2">
-                        {item.fabricID.fabricTypeId.name}
+                        {item.fabricID.fabricType}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography variant="subtitle2">
-                        {item.fabricID.colorId.colorCode}
+                        {item.fabricID.color}
                       </Typography>
                     </TableCell>
                     <TableCell>

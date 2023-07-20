@@ -75,14 +75,28 @@ export default function CreateForm({
       isNaN(Number.parseInt(fabricLength))
     ) {
       console.log("please add information");
-    }
-    else {
+    } else {
       let addData = {
         colorCode: fabricColor,
         typeId: fabricMaterial,
         length: Number.parseInt(fabricLength),
       };
-      setProductList([...productList, addData]);
+      let checkDuplicate = false;
+      let i=0
+      for(; i<productList.length; i++) {
+        if(addData.colorCode == productList[i].colorCode && addData.typeId == productList[i].typeId) {
+          checkDuplicate = true;
+          break;
+        }
+      }
+
+      if(checkDuplicate) {
+        console.log("duplicate")
+
+      }
+      else {
+        setProductList([...productList, addData]);
+      }
       event.preventDefault();
     }
   };

@@ -1,11 +1,15 @@
 import { Grid, Typography, Container } from "@material-ui/core";
 import { useState } from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, styled } from "@material-ui/core/styles";
 
 import { useHistory } from "react-router-dom";
 import CreateForm from "./components/CreateForm";
 import OrderTable from "./components/OrderTable";
+import Announcement from "../../components/SellingPages/Announcement";
+import Navbar from "../../components/SellingPages/Navbar";
+import Navbar2 from "../../components/SellingPages/DropdownBar/Navbar.js";
+import Footer from "../../components/SellingPages/Footer";
 
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
@@ -44,8 +48,15 @@ const useStyles = makeStyles((theme) => ({
     ...theme.typography.buttonPrimary,
   },
   orderDetailBox: {
-    padding: "10px",
+
   },
+  parent: {
+    height: "800px",
+  },
+  contentContainer: {
+    height: "70%",
+    paddingTop: "30px"
+  }
 }));
 
 export default function HomeCreateOrder() {
@@ -61,15 +72,20 @@ export default function HomeCreateOrder() {
   };
 
   return (
-    <Container maxWidth="xl" className={classes.orderDetailBox}>
-      <Grid container spacing={2}>
-        <Grid item xs={9}>
-          <Typography variant="h4" className={classes.titlePage}></Typography>
+    <div className={classes.parent}>
+      <Announcement></Announcement>
+      <Navbar></Navbar>
+      <Navbar2></Navbar2>
+      <div className={classes.contentContainer}>
+        <Grid container spacing={2}>
+          <Grid item xs={9}>
+            <Typography variant="h4" className={classes.titlePage}></Typography>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid container spacing={2} className={classes.root}>
-        <Grid item xs={12} md={6}>
-          <Grid item xs={12} md={12}>
+        <Grid container spacing={2} className={classes.root}>
+          <Grid item md={1}>
+          </Grid>
+          <Grid item xs={12} md={4}>
             <CreateForm
               productList={productList}
               setProductList={setProductList}
@@ -79,14 +95,17 @@ export default function HomeCreateOrder() {
               setMaterialList={setMaterialList}
             />
           </Grid>
+          <Grid item xs={12} md={6}>
+            <OrderTable
+              productList={productList}
+              setProductList={setProductList}
+            />
+          </Grid>
+          <Grid item md={1}>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <OrderTable
-            productList={productList}
-            setProductList={setProductList}
-          />
-        </Grid>
-      </Grid>
-    </Container>
+      </div>
+      <Footer></Footer>
+    </div>
   );
 }

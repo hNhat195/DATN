@@ -160,10 +160,10 @@ export default function TimelineStatus(props) {
                     <TimelineDot
                       className={
                         (idx !== lastStatusIdx && classes.pastDot) ||
-                        (item.name === "pending" &&
+                        ((item.name === "pending" || item.name === "ready") &&
                           idx === lastStatusIdx &&
                           classes.pendingDot) ||
-                        (item.name === "processing" &&
+                        ((item.name === "processing" || item.name === "in-progress") &&
                           idx === lastStatusIdx &&
                           classes.processingDot) ||
                         (item.name === "completed" &&
@@ -212,10 +212,10 @@ export default function TimelineStatus(props) {
                           className={
                             (idx !== lastStatusIdx &&
                               clsx(classes.past, classes.statusDetail)) ||
-                            (item.name === "pending" &&
+                            ((item.name === "pending" || item.name === "ready") &&
                               idx === lastStatusIdx &&
                               clsx(classes.pending, classes.statusDetail)) ||
-                            (item.name === "processing" &&
+                            ((item.name === "processing" || item.name === "in-progress") &&
                               idx === lastStatusIdx &&
                               clsx(classes.processing, classes.statusDetail)) ||
                             (item.name === "completed" &&
@@ -241,10 +241,10 @@ export default function TimelineStatus(props) {
                           className={
                             (idx !== lastStatusIdx &&
                               clsx(classes.past, classes.status)) ||
-                            (item.name === "pending" &&
+                            ((item.name === "pending" || item.name === "ready") &&
                               idx === lastStatusIdx &&
                               clsx(classes.pending, classes.status)) ||
-                            (item.name === "processing" &&
+                            ((item.name === "processing" || item.name === "in-progress") &&
                               idx === lastStatusIdx &&
                               clsx(classes.processing, classes.status)) ||
                             (item.name === "completed" &&

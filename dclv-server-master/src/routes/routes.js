@@ -32,6 +32,10 @@ router.put(
   "/api/order/update-sub-order-status/:id",
   OrderController.updateSubOrderStatus
 );
+router.put(
+  "/api/order/test/:id",
+  OrderController.testUpdateSubOrder
+);
 
 const {
   createNewCustomer,

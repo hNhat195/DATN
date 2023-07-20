@@ -88,22 +88,25 @@ export default function OrderTableItem({
     console.log(fabricLength)
   }, [fabricLength])
   return (
-    <tr>
-			<td width="350px" className="border-right">{row?.typeId}</td>
-			<td width="150px" className="border-right">{row?.colorCode}</td>
-			<td width="50px" className="border-right"><input
+    <TableRow>
+      <TableCell width="200px">
+        {row?.typeId}
+      </TableCell>
+      <TableCell width="150px" align="left">{row?.colorCode}</TableCell>
+      <TableCell width="80px" align="left">
+        <input
           type="number"
           defaultValue={fabricLength}
           disabled={!isEdit}
           onChange={(e) => handleChange(e)}
           ref={inputRef}
           autoFocus
-          min="0"
-          step="1"
+          min="0" step="1"
           className={classes.lengthField}
         />
-        </td>
-        <td width="150px">{isEdit ? (
+      </TableCell>
+      <TableCell width="170px">
+        {isEdit ? (
           <Button
             variant="outline"
             onClick={() => handleSave()}
@@ -122,13 +125,14 @@ export default function OrderTableItem({
             <BorderColorIcon />
           </Button>
         )}
-        
+
         <DeletePopup
           productList={productList}
           setProductList={setProductList}
           index={index}
           className={clsx(classes.cssButton)}
-        /></td>
-		</tr>
+        />
+      </TableCell>
+    </TableRow>
   );
 }

@@ -82,21 +82,21 @@ export default function OrderInfo({ products, deposit }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.length>0 && products?.map((item, idx) => (
+            {products?.length>0 && products?.map((item, idx) => (
               <TableRow
                 key={idx}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                <TableCell component="th" scope="row">
+                <TableCell>
                   <Typography variant="subtitle2">{idx + 1}</Typography>
                 </TableCell>
-                <TableCell component="th" scope="row">
+                <TableCell>
                   <Typography variant="subtitle2">
-                    {item.fabricID.fabricTypeId.name}
+                    {item.fabricID.fabricType}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="subtitle2">
-                    {item.fabricID.colorId.colorCode}
+                    {item.fabricID.color}
                   </Typography>
                 </TableCell>
                 <TableCell>
