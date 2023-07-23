@@ -121,7 +121,7 @@ const Button = styled.button`
 `;
 
 const Product = () => {
-  const { productId } = useParams();
+  const { productSlug } = useParams();
   const [loading, setLoading] = useState(true);
   const [fabric, setFabric] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -129,7 +129,7 @@ const Product = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const fabric = await productApi.getProductById(productId);
+        const fabric = await productApi.getProductBySlug(productSlug);
         if (fabric) {
           setFabric(fabric);
           setSelectedImage(fabric.image[0]);
@@ -143,7 +143,7 @@ const Product = () => {
       }
     };
 
-    if (productId) {
+    if (productSlug) {
       fetchProduct();
     }
   }, []);
@@ -181,7 +181,7 @@ const Product = () => {
         </ImgContainer>
         <InfoContainer>
           <Title>{fabric?.name}</Title>
-          <Desc>{fabric?.description}</Desc>
+          <Desc>{fabric?.descriptions}</Desc>
           <Price>$ {fabric?.price}</Price>
           <FilterContainer>
             <Filter>

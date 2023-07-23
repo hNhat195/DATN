@@ -42,7 +42,7 @@ const routes = [
     component: Product,
   },
   {
-    path: "/products/:productId",
+    path: "/product/:productSlug",
     exact: true,
     component: ProductDetail,
   },

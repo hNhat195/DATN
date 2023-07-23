@@ -4,8 +4,14 @@ class ProductApi {
     const url = `/collections/${materialSlug}`;
     return axiosClient.get(url);
   };
+
+  getProductBySlug = (productSlug) => {
+    const url = `/product/${productSlug}`;
+    return axiosClient.get(url);
+  };
+
   getProductById = (productId) => {
-    const url = `/products/${productId}`;
+    const url = `/product/${productId}`;
     return axiosClient.get(url);
   };
   getAll = (params) => {

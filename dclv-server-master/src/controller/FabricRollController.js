@@ -43,6 +43,17 @@ const getProductsByCollectionId = async (req, res) => {
     });
 };
 
+const getProductBySlug = async (req, res) => {
+  await FabricRoll.findOne({ slug: req.params.slug })
+    .exec()
+    .then((product) => {
+      res.status(200).json(product);
+    })
+    .catch((error) => {
+      res.status(500).json(error);
+    });
+};
+
 const getProductById = async (req, res) => {
   await FabricRoll.findById(req.params.id)
     .exec()
@@ -676,4 +687,5 @@ module.exports = {
   getMaterialByColor,
   getColorByMaterial,
   getProductsByMaterialSlug,
+  getProductBySlug,
 };
