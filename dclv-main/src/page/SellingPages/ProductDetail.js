@@ -5,6 +5,8 @@ import styled from "styled-components";
 import Announcement from "../../components/SellingPages/Announcement";
 import Footer from "../../components/SellingPages/Footer";
 import Navbar from "../../components/SellingPages/Navbar";
+import Navbar2 from "../../components/SellingPages/DropdownBar/Navbar.js";
+
 import Newsletter from "../../components/SellingPages/Newsletter";
 import { mobile } from "../../responsive";
 import { Carousel } from "react-responsive-carousel";
@@ -158,8 +160,9 @@ const Product = () => {
 
   return (
     <Container>
-      <Navbar />
       <Announcement />
+      <Navbar />
+      <Navbar2 />
       <Wrapper>
         <ImgContainer>
           <div className="thumbnail-images">

@@ -19,7 +19,7 @@ export default function Product({ item }) {
         margin: 1,
       }}
     >
-      <a href={`/products/${item._id}`}>
+      <a href={`/product/${item.slug}`}>
         <CardMedia
           sx={{ margin: 1 }}
           component="img"
@@ -34,7 +34,7 @@ export default function Product({ item }) {
           variant="body2"
           align="center"
         >
-          <Link href={`/products/${item._id}`} underline="none" color="inherit">
+          <Link href={`/product/${item.slug}`} underline="none" color="inherit">
             {item?.name || "Name of fabric"}
           </Link>
         </Typography>
