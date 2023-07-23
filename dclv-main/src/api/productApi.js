@@ -1,7 +1,7 @@
 import axiosClient from "./axiosClient";
 class ProductApi {
-  getProductsByCollectionId = (collectionId) => {
-    const url = `/collections/${collectionId}`;
+  getProductsByMaterialSlug = (materialSlug) => {
+    const url = `/collections/${materialSlug}`;
     return axiosClient.get(url);
   };
   getProductById = (productId) => {

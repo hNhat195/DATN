@@ -11,6 +11,27 @@ const { MarketPrice } = require("../models/MarketPrice");
 const { Color } = require("../models/Color");
 const ObjectId = require("mongoose").Types.ObjectId;
 
+const getProductsByMaterialSlug = async (req, res) => {
+  try {
+    // Find the Type with the given name
+    const types = await FabricType.find({
+      material: req.params.materialSlug,
+    });
+    if (!types) {
+      res.status(500).json("Material not found!");
+    }
+    const typeIds = types.map((type) => type._id);
+    // Find all products that have the found type's _id as their typeid
+    const products = await FabricRoll.find({
+      fabricTypeId: { $in: typeIds },
+    });
+
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 const getProductsByCollectionId = async (req, res) => {
   await FabricRoll.find({ fabricTypeId: req.params.id })
     .exec()
@@ -654,4 +675,5 @@ module.exports = {
   getAllMaterialCode,
   getMaterialByColor,
   getColorByMaterial,
+  getProductsByMaterialSlug,
 };

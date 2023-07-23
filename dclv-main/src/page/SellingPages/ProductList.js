@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Announcement from "../../components/SellingPages/Announcement";
-import Categories from "../../components/SellingPages/Categories";
+
 import Footer from "../../components/SellingPages/Footer";
 import Navbar from "../../components/SellingPages/Navbar";
 import Newsletter from "../../components/SellingPages/Newsletter";
 import Products from "../../components/SellingPages/Products";
-import Slider from "../../components/SellingPages/Slider";
+
 import Navbar2 from "../../components/SellingPages/DropdownBar/Navbar.js";
+import SideBar from "../../components/SellingPages/SideBar";
 import productApi from "../../api/productApi";
-import { FormatQuote } from "@material-ui/icons";
+import "./styles.css";
 
 const ProductList = () => {
-  const { collectionId } = useParams();
+  const { materialSlug } = useParams();
   const [loading, setLoading] = useState(true);
   const [fabrics, setFabrics] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const fabrics = await productApi.getProductsByCollectionId(
-          collectionId
+        const fabrics = await productApi.getProductsByMaterialSlug(
+          materialSlug
         );
         if (fabrics) {
           setFabrics(fabrics);
@@ -33,7 +34,7 @@ const ProductList = () => {
       }
     };
 
-    if (collectionId) {
+    if (materialSlug) {
       fetchProducts();
     }
   }, []);
@@ -46,13 +47,34 @@ const ProductList = () => {
     return <p>Failed to fetch product.</p>;
   }
 
+  const cuisines = [
+    { id: 1, checked: false, label: "American" },
+    { id: 2, checked: false, label: "Chinese" },
+    { id: 3, checked: false, label: "Italian" },
+  ];
+
   return (
     <div>
       <div>
         <Announcement />
         <Navbar />
         <Navbar2 />
-        <Products products={fabrics} />
+        <div className="home_panelList-wrap">
+          {/* Filter Panel */}
+          <div className="home_panel-wrap">
+            <SideBar
+              // selectedRating={selectedRating}
+              // selectRating={handleSelectRating}
+              cuisines={cuisines}
+              // changeChecked={handleChangeChecked}
+            />
+          </div>
+          {/* List & Empty View */}
+          <div className="home_list-wrap">
+            <Products products={fabrics} />
+          </div>
+        </div>
+
         <Newsletter />
         <Footer />
       </div>
