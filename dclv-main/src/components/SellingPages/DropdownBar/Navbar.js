@@ -30,7 +30,9 @@ const Navbar = () => {
     const materialsMenu = materials.map((material) => {
       const title = humanizeSnakeCase(material);
       const url = material;
-      const submenu = groupedFabricTypes[material].map((type) => {
+
+      const firstFiveTypes = groupedFabricTypes[material]?.slice(0, 5);
+      const submenu = firstFiveTypes.map((type) => {
         return {
           title: type.name,
           url: type.slug,
@@ -44,7 +46,7 @@ const Navbar = () => {
     });
 
     return {
-      title: "Shop Fabrics2",
+      title: "Shop Fabrics",
       url: "/shop-fabrics",
       submenu: materialsMenu,
     };
