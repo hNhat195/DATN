@@ -12,8 +12,9 @@ const Container = styled.div`
 const Products = ({ products }) => {
   return (
     <Container>
-      {products &&
-        products.map((item) => <Product item={item} key={item.id} />)}
+      {products?.map((item) => (
+        <Product item={item} key={item.id} />
+      ))}
     </Container>
   );
 };

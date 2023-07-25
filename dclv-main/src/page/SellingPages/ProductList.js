@@ -10,12 +10,14 @@ import Products from "../../components/SellingPages/Products";
 import Navbar2 from "../../components/SellingPages/DropdownBar/Navbar.js";
 import SideBar from "../../components/SellingPages/SideBar";
 import productApi from "../../api/productApi";
+import fabricTypeApi from "../../api/fabricTypeApi";
 import "./styles.css";
 
 const ProductList = () => {
   const { materialSlug } = useParams();
   const [loading, setLoading] = useState(true);
   const [fabrics, setFabrics] = useState(null);
+  const [fabricTypes, setFabricTypes] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -39,19 +41,34 @@ const ProductList = () => {
     }
   }, []);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  useEffect(() => {
+    const fetchFabricTypes = async () => {
+      try {
+        const types = await fabricTypeApi.getFabricTypesByMaterial(
+          materialSlug
+        );
+        if (types) {
+          console.log(types, "tranquangkha");
+          setFabricTypes(types);
+        } else {
+          throw new Error("Failed to fetch fabric types");
+        }
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!fabrics) {
-    return <p>Failed to fetch product.</p>;
-  }
+    if (materialSlug) {
+      fetchFabricTypes();
+    }
+  }, []);
 
-  const cuisines = [
-    { id: 1, checked: false, label: "American" },
-    { id: 2, checked: false, label: "Chinese" },
-    { id: 3, checked: false, label: "Italian" },
-  ];
+  const translateFabricTypesToSideBar = (fabricTypes) => {
+    return fabricTypes?.map((fabricType) => {
+      return { id: fabricType._id, checked: false, label: fabricType.name };
+    });
+  };
 
   return (
     <div>
@@ -65,7 +82,7 @@ const ProductList = () => {
             <SideBar
               // selectedRating={selectedRating}
               // selectRating={handleSelectRating}
-              cuisines={cuisines}
+              cuisines={translateFabricTypesToSideBar(fabricTypes)}
               // changeChecked={handleChangeChecked}
             />
           </div>

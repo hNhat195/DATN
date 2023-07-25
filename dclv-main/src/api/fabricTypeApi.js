@@ -4,6 +4,11 @@ class fabricTypeApi {
     const url = "/fabrictypes";
     return axiosClient.get(url, { params });
   };
+
+  getFabricTypesByMaterial = (material) => {
+    const url = `/fabrictypes/${material}`;
+    return axiosClient.get(url);
+  };
 }
 const fabricTypeAPI = new fabricTypeApi();
 

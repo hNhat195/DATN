@@ -1,6 +1,7 @@
 import React from "react";
 import CheckboxProton from "./CheckboxProton";
 import FilterListToggle from "./FilterListToggle";
+import SortBy from "./SortBy";
 
 import "./styles.css";
 
@@ -34,15 +35,18 @@ export const ratingList = [
 
 const SideBar = ({ selectedRating, selectRating, cuisines, changeChecked }) => (
   <div>
+    <SortBy />
     <div className="input-group">
       <p className="label">SELECT CATAGORIES</p>
-      {cuisines.map((cuisine) => (
-        <CheckboxProton
-          key={cuisine.id}
-          cuisine={cuisine}
-          changeChecked={changeChecked}
-        />
-      ))}
+      <div style={{ minHeight: 200, maxHeight: 300, overflowY: "scroll" }}>
+        {cuisines?.map((cuisine) => (
+          <CheckboxProton
+            key={cuisine.id}
+            cuisine={cuisine}
+            changeChecked={changeChecked}
+          />
+        ))}
+      </div>
     </div>
     <div className="input-group">
       <p className="label">MAIN FABRIC COLOR</p>
