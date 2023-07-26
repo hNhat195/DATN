@@ -11,7 +11,7 @@ export const fabricsMenuItems = [
     submenu: [
       {
         title: "Linen",
-        url: "linen",
+        url: "collections/linen",
         submenu: [
           {
             title: "Organic Linen",
@@ -33,7 +33,7 @@ export const fabricsMenuItems = [
       },
       {
         title: "Cotton",
-        url: "cotton",
+        url: "collections/cotton",
         submenu: [
           {
             title: "Cotton Denim & Chambray",
@@ -47,7 +47,7 @@ export const fabricsMenuItems = [
       },
       {
         title: "Silk",
-        url: "silk",
+        url: "collections/silk",
       },
     ],
   },
