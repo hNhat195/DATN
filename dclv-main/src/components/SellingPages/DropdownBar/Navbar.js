@@ -35,19 +35,19 @@ const Navbar = () => {
       const submenu = firstFiveTypes.map((type) => {
         return {
           title: type.name,
-          url: type.slug,
+          url: `/collections/${type.slug}`,
         };
       });
       return {
         title: title,
-        url: url,
+        url: `/collections/${url}`,
         submenu: submenu,
       };
     });
 
     return {
       title: "Shop Fabrics",
-      url: "/shop-fabrics",
+      // url: "/shop-fabrics",
       submenu: materialsMenu,
     };
   };

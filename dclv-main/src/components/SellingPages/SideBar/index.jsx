@@ -48,14 +48,14 @@ const SideBar = ({ selectedRating, selectRating, cuisines, changeChecked }) => (
         ))}
       </div>
     </div>
-    <div className="input-group">
+    {/* <div className="input-group">
       <p className="label">MAIN FABRIC COLOR</p>
       <FilterListToggle
         options={ratingList}
         value={selectedRating}
         selectToggle={selectRating}
       />
-    </div>
+    </div> */}
   </div>
 );
 

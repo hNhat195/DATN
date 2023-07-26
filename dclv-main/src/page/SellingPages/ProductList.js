@@ -56,7 +56,7 @@ const ProductList = () => {
     if (materialSlug) {
       fetchData();
     }
-  }, []);
+  }, [materialSlug]);
 
   const translateFabricTypesToSideBar = (fabricTypes) => {
     return fabricTypes?.map((fabricType) => {
