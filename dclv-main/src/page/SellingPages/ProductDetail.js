@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Add, Remove } from "@material-ui/icons";
 import styled from "styled-components";
 import Announcement from "../../components/SellingPages/Announcement";
 import Footer from "../../components/SellingPages/Footer";
 import Navbar from "../../components/SellingPages/Navbar";
+import Navbar2 from "../../components/SellingPages/DropdownBar/Navbar.js";
+
 import Newsletter from "../../components/SellingPages/Newsletter";
 import { mobile } from "../../responsive";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import productApi from "../../api/productApi";
 
 const Container = styled.div``;
 
@@ -119,43 +123,58 @@ const Button = styled.button`
 `;
 
 const Product = () => {
-  const [selectedImage, setSelectedImage] = useState(
-    "https://cdn.shopify.com/s/files/1/0504/0986/5414/products/ZQ_Merino_Chestnut_Swatch_1000x1000.jpg?v=1680565550"
-  );
-  const additionalImages = [
-    "https://cdn.shopify.com/s/files/1/0504/0986/5414/products/ZQ_Merino_Chestnut_Swatch_1000x1000.jpg?v=1680565550",
-    "https://cdn.shopify.com/s/files/1/0504/0986/5414/products/ZQ_Merino_Poppy_Hang_1000x1000.jpg?v=1686527461",
-    "https://cdn.shopify.com/s/files/1/0504/0986/5414/products/ZQ_Merino_Poppy_Roll_1000x1000.jpg?v=1686527461",
-  ];
+  const { productSlug } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [fabric, setFabric] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  const fabric = {
-    name: "Organic Linen - Lilac",
-    fabricType: "Organic Linen",
-    color: "Lilac",
-    price: "100",
-    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-            venenatis, dolor in finibus malesuada, lectus ipsum porta nunc, at
-            iaculis arcu nisi sed mauris. Nulla fermentum vestibulum ex, eget
-            tristique tortor pretium ut. Curabitur elit justo, consequat id
-            condimentum ac, volutpat ornare.`,
-  };
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const fabric = await productApi.getProductBySlug(productSlug);
+        if (fabric) {
+          setFabric(fabric);
+          setSelectedImage(fabric.image[0]);
+        } else {
+          throw new Error("Failed to fetch product");
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (productSlug) {
+      fetchProduct();
+    }
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!fabric) {
+    return <p>Failed to fetch product.</p>;
+  }
 
   return (
     <Container>
-      <Navbar />
       <Announcement />
+      <Navbar />
+      <Navbar2 />
       <Wrapper>
         <ImgContainer>
           <div className="thumbnail-images">
             <Carousel
               showStatus={false}
-              selectedItem={additionalImages.indexOf(selectedImage)}
+              selectedItem={fabric?.image?.indexOf(selectedImage)}
               onChange={
                 (index) => console.log("kkkkkkkkk")
                 // handleThumbnailClick(additionalImages[index])
               }
             >
-              {additionalImages.map((image, index) => (
+              {fabric?.image?.map((image, index) => (
                 <div key={index}>
                   <img src={image} alt={`Thumbnail ${index + 1}`} />
                 </div>
@@ -164,9 +183,9 @@ const Product = () => {
           </div>
         </ImgContainer>
         <InfoContainer>
-          <Title>{fabric.name}</Title>
-          <Desc>{fabric.description}</Desc>
-          <Price>$ {fabric.price}</Price>
+          <Title>{fabric?.name}</Title>
+          <Desc>{fabric?.descriptions}</Desc>
+          <Price>$ {fabric?.price}</Price>
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>

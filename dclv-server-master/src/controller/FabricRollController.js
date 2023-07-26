@@ -8,9 +8,62 @@ const { FabricRoll } = require("../models/FabricRoll");
 const { FabricType } = require("../models/FabricType");
 const { Item } = require("../models/Item");
 const { MarketPrice } = require("../models/MarketPrice");
-const { Color } = require("../models/Color")
-const ObjectId = require('mongoose').Types.ObjectId;
+const { Color } = require("../models/Color");
+const ObjectId = require("mongoose").Types.ObjectId;
 
+const getProductsByMaterialSlug = async (req, res) => {
+  try {
+    // Find the Type with the given name
+    const types = await FabricType.find({
+      material: req.params.materialSlug,
+    });
+    if (!types) {
+      res.status(500).json("Material not found!");
+    }
+    const typeIds = types.map((type) => type._id);
+    // Find all products that have the found type's _id as their typeid
+    const products = await FabricRoll.find({
+      fabricTypeId: { $in: typeIds },
+    });
+
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+const getProductsByCollectionId = async (req, res) => {
+  await FabricRoll.find({ fabricTypeId: req.params.id })
+    .exec()
+    .then((products) => {
+      res.status(200).json(products);
+    })
+    .catch((error) => {
+      res.status(500).json(error);
+    });
+};
+
+const getProductBySlug = async (req, res) => {
+  await FabricRoll.findOne({ slug: req.params.slug })
+    .exec()
+    .then((product) => {
+      res.status(200).json(product);
+    })
+    .catch((error) => {
+      res.status(500).json(error);
+    });
+};
+
+const getProductById = async (req, res) => {
+  await FabricRoll.findById(req.params.id)
+    .exec()
+    .then((product) => {
+      res.status(200).json(product);
+    })
+    .catch((error) => {
+      res.status(500).json(error);
+    });
+};
 
 const getProductList1 = async (req, res) => {
   try {
@@ -132,66 +185,66 @@ const getProductList = async (req, res) => {
 };
 
 //Get specific product with its id
-const getProductById = async (req, res) => {
-  try {
-    const product = await FabricRoll.aggregate([
-      { $match: { _id: mongoose.Types.ObjectId(req.query.id) } },
-      {
-        $lookup: {
-          from: "Item",
-          let: { color_code: "$colorCode" },
-          pipeline: [
-            { $match: { $expr: { $eq: ["$colorCode", "$$color_code"] } } },
-            { $unwind: { path: "$marketPriceId" } },
-            {
-              $lookup: {
-                from: "MarketPrice",
-                let: { market_price_id: "$marketPriceId" },
-                pipeline: [
-                  {
-                    $match: { $expr: { $eq: ["$_id", "$$market_price_id"] } },
-                  },
-                ],
-                as: "marketPrice",
-              },
-            },
+// const getProductById = async (req, res) => {
+//   try {
+//     const product = await FabricRoll.aggregate([
+//       { $match: { _id: mongoose.Types.ObjectId(req.query.id) } },
+//       {
+//         $lookup: {
+//           from: "Item",
+//           let: { color_code: "$colorCode" },
+//           pipeline: [
+//             { $match: { $expr: { $eq: ["$colorCode", "$$color_code"] } } },
+//             { $unwind: { path: "$marketPriceId" } },
+//             {
+//               $lookup: {
+//                 from: "MarketPrice",
+//                 let: { market_price_id: "$marketPriceId" },
+//                 pipeline: [
+//                   {
+//                     $match: { $expr: { $eq: ["$_id", "$$market_price_id"] } },
+//                   },
+//                 ],
+//                 as: "marketPrice",
+//               },
+//             },
 
-            { $unwind: "$marketPrice" },
+//             { $unwind: "$marketPrice" },
 
-            {
-              $lookup: {
-                from: "FabricType",
-                let: { type_id: "$typeId" },
-                pipeline: [
-                  {
-                    $match: { $expr: { $eq: ["$_id", "$$type_id"] } },
-                  },
-                ],
-                as: "fabricType",
-              },
-            },
-            { $unwind: "$fabricType" },
-            {
-              $group: {
-                _id: "$_id",
-                colorCode: { $first: "$colorCode" },
-                name: { $first: "$name" },
-                marketPrice: { $push: "$marketPrice" },
-                fabricType: { $first: "$fabricType" },
-              },
-            },
-          ],
-          as: "item",
-        },
-      },
-      { $unwind: "$item" },
-    ]);
+//             {
+//               $lookup: {
+//                 from: "FabricType",
+//                 let: { type_id: "$typeId" },
+//                 pipeline: [
+//                   {
+//                     $match: { $expr: { $eq: ["$_id", "$$type_id"] } },
+//                   },
+//                 ],
+//                 as: "fabricType",
+//               },
+//             },
+//             { $unwind: "$fabricType" },
+//             {
+//               $group: {
+//                 _id: "$_id",
+//                 colorCode: { $first: "$colorCode" },
+//                 name: { $first: "$name" },
+//                 marketPrice: { $push: "$marketPrice" },
+//                 fabricType: { $first: "$fabricType" },
+//               },
+//             },
+//           ],
+//           as: "item",
+//         },
+//       },
+//       { $unwind: "$item" },
+//     ]);
 
-    res.status(200).json(product[0]);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-};
+//     res.status(200).json(product[0]);
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// };
 
 //Get list fabric with ids
 const getListFabricRollWithIds = async (req, res) => {
@@ -595,25 +648,28 @@ async function getMaterialByColor(req, res) {
 
 async function getColorByMaterial(req, res) {
   const body = req.body;
-  const ftype = body.materialId
-  
+  const ftype = body.materialId;
+
   const ftypeList = await FabricRoll.find({
-    fabricTypeId: ftype
-  })
-  
-  const colorList = ftypeList.map(x => x.colorId)
-  const colorListResponse = await Promise.all(colorList.map( async (x) => {
-    const item = await Color.findOne({
-      _id: x
-    }).exec();
-    return item;
-  }))
+    fabricTypeId: ftype,
+  });
+
+  const colorList = ftypeList.map((x) => x.colorId);
+  const colorListResponse = await Promise.all(
+    colorList.map(async (x) => {
+      const item = await Color.findOne({
+        _id: x,
+      }).exec();
+      return item;
+    })
+  );
 
   return res.status(200).json(colorListResponse);
   // return res.status(200).json([]);
 }
 
 module.exports = {
+  getProductsByCollectionId,
   getProductList,
   getProductList1,
   getProductById,
@@ -630,4 +686,6 @@ module.exports = {
   getAllMaterialCode,
   getMaterialByColor,
   getColorByMaterial,
+  getProductsByMaterialSlug,
+  getProductBySlug,
 };

@@ -12,4 +12,15 @@ const getListFabricType = (req, res) => {
   });
 };
 
-module.exports = { getListFabricType };
+const getFabricTypesByMaterial = async (req, res) => {
+  await FabricType.find({ material: req.params.material })
+    .exec()
+    .then((fabricTypes) => {
+      res.status(200).json(fabricTypes);
+    })
+    .catch((error) => {
+      res.status(500).json(error);
+    });
+};
+
+module.exports = { getListFabricType, getFabricTypesByMaterial };
