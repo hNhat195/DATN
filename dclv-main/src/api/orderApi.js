@@ -96,5 +96,21 @@ const orderApi = {
     const url = `/order/${orderId}/update_status_cancel_order`;
     return axiosClient.put(url, data);
   },
+  getSubOrder: (subOrderId) => {
+    const url = `/order/sub-order/${subOrderId}`;
+    return axiosClient.get(url);
+  },
+  getOrderCompleted: () => {
+    const url = `/order/completed`;
+    return axiosClient.get(url);
+  },
+  getCompletedSub: () => {
+    const url = `/order/completed-sub`;
+    return axiosClient.get(url);
+  },
+  getCompletedSubOrderItem: () => {
+    const url = `/order/completed-sub-item`;
+    return axiosClient.get(url);
+  },
 };
 export default orderApi;

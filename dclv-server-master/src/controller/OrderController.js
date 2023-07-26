@@ -88,6 +88,7 @@ const create = async (req, res) => {
       detailBill: [],
       products: productList,
       subOrder: subOrderList,
+      totalQuantity: totalQuantity
     });
     await Promise.all(
       req.body.products.map(async (item, idx) => {
@@ -122,7 +123,7 @@ const create = async (req, res) => {
       { _id: temp._id },
       {
         products: productList,
-        totalQty: totalQuantity,
+        totalQuantity: totalQuantity,
         // subOrder: subOrder,
       },
       { new: true }
@@ -248,14 +249,10 @@ const getListProductsById = (req, res) => {
     .populate({
       path: "products",
       populate: {
-        path: "colorCode",
-        populate: {
-          path: "typeId",
-          select: "name -_id",
-        },
-        select: "colorCode typeId name -_id",
+        path: "fabricID",
+        select: "fabricType color price -_id",
       },
-      select: "colorCode length shippedLength -_id",
+      select: "quantity shipped -_id",
     })
     .exec(function (err, result) {
       if (err) res.json(err);
@@ -666,7 +663,36 @@ const updateSubOrderStatus = async (req, res) => {
           { new: true }
         )
       }
-      console.log("update shipped products in order success")
+
+      const subOrderList = await SubOrder.find({ orderId: orderId })
+      const filtered = subOrderList.filter(item => item.subOrderStatus[item.subOrderStatus.length - 1].name == "completed")
+
+      if (filtered.length > 0) {
+        let total = 0
+        for (let i = 0; i < filtered.length; i++) {
+          total += filtered[i].totalQty
+        }
+
+        const currentOrder = await Order.findOne({ _id: orderId })
+
+        if (total == currentOrder.totalQuantity) {
+          Order.findOneAndUpdate(
+            { _id: mongoose.Types.ObjectId(orderId) },
+            {
+              $push: {
+                orderStatus: {
+                  name: OrderStatus.COMPLETED,
+                  reason: req.body.reason || "",
+                },
+              },
+            },
+            {
+              new: true,
+            },
+          );
+        }
+      }
+
       break;
     default:
       break;
@@ -840,15 +866,92 @@ const testUpdateSubOrder = async (req, res) => {
       { subOrderId: mongoose.Types.ObjectId(req.params.id) },
     )
 
-    const fabricIdList = subOrderItemList.map((item) => item.fabricID)
-    const quantityList = subOrderItemList.map((item) => item.quantity)
-    console.log(fabricIdList)
-    console.log(quantityList)
-    res.status(200).json(subOrderItemList);
+    const foundSubOrder = await SubOrder.findOne(
+      { _id: mongoose.Types.ObjectId(req.params.id) },
+    )
+    const orderId = foundSubOrder.orderId
 
+    const subOrderList = await SubOrder.find({ orderId: orderId })
+    const filtered = subOrderList.filter(item => item.subOrderStatus[item.subOrderStatus.length - 1].name == "completed")
+
+    if (filtered.length > 0) {
+      let total = 0
+      for (let i = 0; i < filtered.length; i++) {
+        total += filtered[i].totalQty
+      }
+
+      const currentOrder = await Order.findOne({ _id: orderId })
+
+      if (total == currentOrder.totalQuantity) {
+        Order.findOneAndUpdate(
+          { _id: mongoose.Types.ObjectId(orderId) },
+          {
+            $push: {
+              orderStatus: {
+                name: OrderStatus.COMPLETED,
+                reason: req.body.reason || "",
+              },
+            },
+          },
+          {
+            new: true,
+          },
+
+        );
+      }
+    }
+    res.status(200).json(filtered);
   } catch (err) {
     res.status(500).json({ err });
   }
+}
+
+const getSubOrder = async (req, res) => {
+  SubOrder.findOne({ _id: mongoose.Types.ObjectId(req.params.id) })
+    .populate({
+      path: "products",
+      populate: {
+        path: "fabricID",
+        select: "fabricType color price -_id",
+      },
+      select: "quantity shipped -_id",
+    })
+    .exec(function (err, result) {
+      if (err) res.json(err);
+      else res.json(result);
+    });
+}
+
+const getCompletedOrder = async (req, res) => {
+  Order.find({ orderStatus: { $elemMatch: { name: 'completed' } }  })
+    .exec(function (err, result) {
+      if (err) res.json(err);
+      else res.json(result);
+    });
+}
+
+const getCompletedSubOrder = async (req, res) => {
+  SubOrder.find({ subOrderStatus: { $elemMatch: { name: 'completed' } }  })
+  .exec(function (err, result) {
+    if (err) res.json(err);
+    else res.json(result);
+  });
+}
+
+const getCompletedSubOrderItem = async (req, res) => {
+  SubOrder.find({ subOrderStatus: { $elemMatch: { name: 'completed' } }  })
+  .populate({
+    path: "products",
+    populate: {
+      path: "fabricID",
+      select: "fabricType color price -_id",
+    },
+    select: "quantity shipped -_id",
+  })
+  .exec(function (err, result) {
+    if (err) res.json(err);
+    else res.json(result);
+  });
 }
 
 module.exports = {
@@ -869,5 +972,9 @@ module.exports = {
   createSubOrder,
   cancelSubOrder,
   updateSubOrderStatus,
-  testUpdateSubOrder
+  testUpdateSubOrder,
+  getSubOrder,
+  getCompletedOrder,
+  getCompletedSubOrder,
+  getCompletedSubOrderItem,
 };

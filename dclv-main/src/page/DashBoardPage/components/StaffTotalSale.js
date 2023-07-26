@@ -36,7 +36,7 @@ export default function StaffTotalSale() {
   useEffect(() => {
     const fetCountOrder = async () => {
       try {
-        const response = await orderApi.countAllOrder();
+        const response = await orderApi.getAll();
         setOrderTotal(response);
       } catch (error) {
         console.log("Failed to fetch order count", error);
@@ -44,6 +44,7 @@ export default function StaffTotalSale() {
     };
     fetCountOrder();
   }, []);
+  
   return (
     <RootStyle>
       <IconWrapperStyle>
@@ -54,7 +55,7 @@ export default function StaffTotalSale() {
           height="35"
         />
       </IconWrapperStyle>
-      <Typography variant="h4">{fNumber(orderTotal)}</Typography>
+      <Typography variant="h4">{orderTotal.length}</Typography>
       <Typography variant="h6" sx={{ opacity: 0.72 }}>
         Tổng đơn hàng
       </Typography>

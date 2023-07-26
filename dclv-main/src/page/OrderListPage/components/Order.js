@@ -248,7 +248,7 @@ export default function Order(props) {
                 "Đã hủy")}
           </p>
         </Grid>
-        <Grid item xs={2} className={classes.dropIcon}>
+        {/* <Grid item xs={2} className={classes.dropIcon}>
           <Button
             className={classes.buttonWidth}
             onClick={handleExpandClick}
@@ -256,12 +256,12 @@ export default function Order(props) {
           >
             {expanded ? <ExpandLess /> : <ExpandMore />}
           </Button>
-        </Grid>
-        <Grid item xs={2} className={classes.dropIcon}>
+        </Grid> */}
+        {/* <Grid item xs={2} className={classes.dropIcon}>
           <Button className={classes.buttonWidth}>
             <MoreVert />
           </Button>
-        </Grid>
+        </Grid> */}
       </Grid>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -324,19 +324,19 @@ export default function Order(props) {
                         scope="row"
                         className={classes.tableContentBlack}
                       >
-                        {row?.colorCode?.name}
+                        {row?.fabricID?.fabricType}
                       </TableCell>
                       <TableCell className={classes.tableContentBlack}>
-                        {row?.colorCode?.colorCode}
+                        {row?.fabricID?.color}
                       </TableCell>
                       <TableCell className={classes.tableContentBlack}>
-                        {row?.length}
+                        {row?.quantity}
                       </TableCell>
                       <TableCell className={classes.tableContentBlack}>
-                        {row.shippedLength}
+                        {row.shipped}
                       </TableCell>
                       <TableCell className={classes.tableContentBlack}>
-                        {row.length - row.shippedLength}
+                        {row.quantity - row.shipped}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -346,18 +346,18 @@ export default function Order(props) {
           </CardContent>
         </Card>
       </Modal>
-      <Grid container item xs={12}>
+      {/* <Grid container item xs={12}>
         <Grid item xs={2}></Grid>
         <Grid item xs={9}>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <BillHeader />
-            {order?.detailBill.map((item, index) => (
-              <Bill bill={item} key={index} />
+            { order?.subOrder?.map((item, index) => (
+              <Bill subOrderId={item} key={index} index={index}/>
             ))}
           </Collapse>
         </Grid>
         <Grid item xs={1}></Grid>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 }

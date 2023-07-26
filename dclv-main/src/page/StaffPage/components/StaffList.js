@@ -77,8 +77,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "10px"
   },
   marginVeritcal: {
-    marginBottom: "12px",
-    marginTop: "12px"
+    marginBottom: "21px",
+    marginTop: "21px",
+    height: "35px"
   }
 }));
 

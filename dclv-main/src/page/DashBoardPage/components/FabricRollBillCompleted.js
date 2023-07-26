@@ -5,6 +5,7 @@ import { Card, Typography } from "@material-ui/core";
 // utils
 import { fNumber } from "../../../utils/formatNumber";
 import billApi from "../../../api/billApi";
+import orderApi from "../../../api/orderApi";
 
 const RootStyle = styled(Card)(({ theme }) => ({
   boxShadow: "none",
@@ -38,8 +39,8 @@ export default function FabricRollBillCompleted() {
   useEffect(() => {
     const fetchFabricRollTotal = async () => {
       try {
-        const response = await billApi.getFabricRollBillCompleted();
-
+        // const response = await billApi.getFabricRollBillCompleted();
+        const response = await orderApi.getCompletedSub()
         setFabricRollTotal(response);
       } catch (error) {
         console.log("Failed to fetch fabric roll bill completed count", error);
@@ -47,6 +48,7 @@ export default function FabricRollBillCompleted() {
     };
     fetchFabricRollTotal();
   }, []);
+  
   return (
     <RootStyle>
       <IconWrapperStyle>
@@ -57,7 +59,7 @@ export default function FabricRollBillCompleted() {
           height="35"
         />
       </IconWrapperStyle>
-      <Typography variant="h4">{fNumber(fabricrollTotal)}</Typography>
+      <Typography variant="h4">{fabricrollTotal.reduce((accumulator, currentValue) => accumulator + currentValue.totalQty,0)}</Typography>
       <Typography variant="h6" sx={{ opacity: 0.72 }}>
         Cây vải giao thành công
       </Typography>

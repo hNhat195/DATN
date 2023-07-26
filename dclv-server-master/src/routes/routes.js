@@ -11,6 +11,18 @@ const { getListFabricType } = require("../controller/FabricTypeController");
 /*----order route------*/
 router.get("/api/order", OrderController.list);
 router.post("/api/order/create", OrderController.create);
+router.get(
+  "/api/order/completed",
+  OrderController.getCompletedOrder
+);
+router.get(
+  "/api/order/completed-sub",
+  OrderController.getCompletedSubOrder
+);
+router.get(
+  "/api/order/completed-sub-item",
+  OrderController.getCompletedSubOrderItem
+);
 router.get("/api/order/:id", OrderController.detail);
 router.get("/api/order/:id/products", OrderController.getListProductsById);
 router.put("/api/order/update_info", OrderController.updateInfo);
@@ -35,6 +47,10 @@ router.put(
 router.put(
   "/api/order/test/:id",
   OrderController.testUpdateSubOrder
+);
+router.get(
+  "/api/order/sub-order/:id",
+  OrderController.getSubOrder
 );
 
 const {

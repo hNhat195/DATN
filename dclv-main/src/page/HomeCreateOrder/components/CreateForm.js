@@ -8,12 +8,20 @@ import {
   Select,
   MenuItem,
 } from "@material-ui/core";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import clsx from "clsx";
 import orderApi from "../../../api/orderApi";
 import productApi from "../../../api/productApi";
 import { makeStyles } from "@material-ui/core/styles";
+import CreateButtonPopup from "./CreateButtonPopup";
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 
 const useStyles = makeStyles((theme) => ({
   alignRight: {
@@ -43,10 +51,43 @@ const useStyles = makeStyles((theme) => ({
   },
   paddingGrid: {
     paddingTop: "20px"
+  },
+  popupContainer: {
+    margin: "0 auto",
+    justifyContent: "center",
+    textAlign: "center",
+    fontSize: "100px",
+  },
+  errorIcon: {
+    color: 'rgb(245, 66, 51)',
+    border: '3px solid rgb(245, 66, 51)',
+    borderRadius: '50%',
+    marginTop: "10px",
+    marginBottom: "20px"
   }
 }));
 
 const objectIdPattern = /^[0-9a-fA-F]{24}$/;
+
+function ErrorPopup({ open, closePopup }) {
+  const classes = useStyles()
+  return (
+    <Dialog open={open} onClose={closePopup} maxWidth="xs" fullWidth>
+      <DialogTitle>Lỗi</DialogTitle>
+      <DialogContent>
+        <DialogContentText className={classes.popupContainer}>
+          <CloseIcon sx={{ fontSize: 40 }} className={classes.errorIcon}></CloseIcon>
+          
+          <h3>Vui lòng nhập thông tin sản phẩm hợp lệ</h3>
+        </DialogContentText>
+      </DialogContent>
+
+      <DialogActions>
+        <Button variant="outline" onClick={closePopup} className={classes.deleteButton}>OK</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
 
 export default function CreateForm({
   productList,
@@ -60,8 +101,7 @@ export default function CreateForm({
   const [fabricMaterial, setFabricMaterial] = useState("");
   const [fabricLength, setFabricLength] = useState("");
   const [materialId, setMaterialId] = useState("");
-  const [materialType, setMaterialType] = useState("");
-
+  const [errorPopup, setErrorPopup] = useState(false)
   const history = useHistory();
   const classes = useStyles();
   const postOrder = async (postData) => {
@@ -86,13 +126,18 @@ export default function CreateForm({
     } else console.log("please add product");
   };
 
+  const closePopup = () => {
+    setErrorPopup(false)
+  }
+
   const handleAdd = (event) => {
     if (
       fabricColor == "" ||
       fabricMaterial == "" ||
-      isNaN(Number.parseInt(fabricLength))
+      isNaN(Number.parseInt(fabricLength)) ||
+      Number.parseInt(fabricLength) <= 0
     ) {
-      console.log("please add information");
+      setErrorPopup(true)
     } else {
       let addData = {
         colorCode: fabricColor,
@@ -100,16 +145,16 @@ export default function CreateForm({
         length: Number.parseInt(fabricLength),
       };
       let checkDuplicate = false;
-      let i=0
-      for(; i<productList.length; i++) {
-        if(addData.colorCode == productList[i].colorCode && addData.typeId == productList[i].typeId) {
+      let i = 0
+      for (; i < productList.length; i++) {
+        if (addData.colorCode == productList[i].colorCode && addData.typeId == productList[i].typeId) {
           checkDuplicate = true;
           break;
         }
       }
 
-      if(checkDuplicate) {
-        console.log("duplicate")
+      if (checkDuplicate) {
+        setErrorPopup(true)
 
       }
       else {
@@ -122,7 +167,7 @@ export default function CreateForm({
   useEffect(() => {
     const fetchMaterial = async () => {
       const response = await productApi.getAllMaterialCode();
-      
+
       setMaterialList(response);
     };
     fetchMaterial();
@@ -133,14 +178,14 @@ export default function CreateForm({
       const response = await productApi.getColorByMaterial(materialId);
       setColorList(response);
     }
-    
+
   };
   useEffect(async () => {
     await fetchColor();
   }, [materialId]);
 
   useEffect(() => {
-    
+
   }, [productList]);
 
   return (
@@ -186,7 +231,7 @@ export default function CreateForm({
               id="fabric-color"
               label="Color"
               onChange={(e) => {
-                
+
                 setFabricColor(e.target.value);
               }}
               value={fabricColor || ""}>
@@ -203,10 +248,9 @@ export default function CreateForm({
         <Grid item xs={12} md={3}></Grid>
         <Grid item xs={12} md={9}>
           <TextField
-            required
             id="fabric-length"
             name="fabric-length"
-            label="Số cây vải"
+            label="Số lượng"
             fullWidth
             autoComplete="fabric length"
             variant="standard"
@@ -232,15 +276,17 @@ export default function CreateForm({
         </Grid>
         <Grid item xs={1}></Grid>
         <Grid item xs={4}>
-          <Button
+          {/* <Button
             variant="outlined"
             type="button"
             className={clsx(classes.buttonCss, classes.acceptButton)}
             onClick={handleSubmit}>
             Tạo đơn
-          </Button>
+          </Button> */}
+          <CreateButtonPopup productList={productList}></CreateButtonPopup>
         </Grid>
       </Grid>
+      {errorPopup && <ErrorPopup open={errorPopup} closePopup={closePopup}></ErrorPopup>}
     </div>
   );
 }

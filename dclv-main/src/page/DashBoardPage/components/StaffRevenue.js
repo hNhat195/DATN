@@ -37,7 +37,8 @@ export default function StaffRevenue() {
   useEffect(() => {
     const fetTotalDeposit = async () => {
       try {
-        const response = await orderApi.totalDeposit();
+        // const response = await orderApi.totalDeposit();
+        const response = await orderApi.getAll();
         setTotalDeposit(response);
       } catch (error) {
         console.log("Failed to fetch deposit", error);
@@ -45,6 +46,7 @@ export default function StaffRevenue() {
     };
     fetTotalDeposit();
   }, []);
+  
   return (
     <RootStyle>
       <IconWrapperStyle>
@@ -55,9 +57,9 @@ export default function StaffRevenue() {
           height="40"
         />
       </IconWrapperStyle>
-      <Typography variant="h4">{fNumberCurrency(totalDeposit)}</Typography>
+      <Typography variant="h4">{totalDeposit.reduce((accumulator, currentValue) => accumulator + (isNaN(currentValue.totalQuantity)? 0 : currentValue.totalQuantity),0)}</Typography>
       <Typography variant="h6" sx={{ opacity: 0.72 }}>
-        Doanh thu
+        Tổng số lượng cây vải đã đặt
       </Typography>
     </RootStyle>
   );

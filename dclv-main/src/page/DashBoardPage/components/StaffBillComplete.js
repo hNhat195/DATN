@@ -5,6 +5,7 @@ import { Card, Typography } from "@material-ui/core";
 // utils
 import { fNumber } from "../../../utils/formatNumber";
 import billApi from "../../../api/billApi";
+import orderApi from "../../../api/orderApi";
 
 const RootStyle = styled(Card)(({ theme }) => ({
   boxShadow: "none",
@@ -36,7 +37,8 @@ export default function StaffBillComplete() {
   useEffect(() => {
     const fetCountBillComplete = async () => {
       try {
-        const response = await billApi.getBillCompleted();
+        // const response = await billApi.getBillCompleted();
+        const response = await orderApi.getOrderCompleted()
         setBillComplete(response);
       } catch (error) {
         console.log("Failed to fetch bill complete count", error);
@@ -54,9 +56,9 @@ export default function StaffBillComplete() {
           height="35"
         />
       </IconWrapperStyle>
-      <Typography variant="h4">{fNumber(billComplete)}</Typography>
+      <Typography variant="h4">{billComplete.length}</Typography>
       <Typography variant="h6" sx={{ opacity: 0.72 }}>
-        Hóa đơn giao thành công
+        Đơn hàng giao thành công
       </Typography>
     </RootStyle>
   );

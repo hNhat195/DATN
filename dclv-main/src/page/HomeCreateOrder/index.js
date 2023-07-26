@@ -75,7 +75,7 @@ export default function HomeCreateOrder() {
     <div className={classes.parent}>
       <Announcement></Announcement>
       <Navbar></Navbar>
-      <Navbar2></Navbar2>
+      
       <div className={classes.contentContainer}>
         <Grid container spacing={2}>
           <Grid item xs={9}>

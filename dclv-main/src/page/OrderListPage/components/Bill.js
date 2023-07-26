@@ -21,6 +21,7 @@ import clsx from "clsx";
 import productApi from "../../../api/productApi";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
+import orderApi from "../../../api/orderApi";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -109,12 +110,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Bill(props) {
-  const { bill } = props;
+export default function Bill({subOrderId, index}) {
+  // const { bill } = props;
   const classes = useStyles();
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [listFabricRoll, setListFabricRoll] = useState([]);
+  const [subOrder, setSubOrder] = useState({})
+  useEffect(() => {
+    console.log(subOrderId)
+  }, [])
 
   const handleOpen = (e) => {
     e.stopPropagation();
@@ -126,20 +131,26 @@ export default function Bill(props) {
     setOpen(false);
   };
 
+  useEffect(async () => {
+    // let mounted = true;
+
+    // const fetchFabricRoll = async (listId) => {
+    //   const response = await productApi.getListById(listId);
+
+    //   if (mounted) setListFabricRoll(response);
+    // };
+
+    // fetchFabricRoll({ ids: bill.fabricRoll });
+    // return () => {
+    //   mounted = false;
+    // };
+    const response = await orderApi.getSubOrder(subOrderId)
+    setSubOrder(response)
+  }, []);
+
   useEffect(() => {
-    let mounted = true;
-
-    const fetchFabricRoll = async (listId) => {
-      const response = await productApi.getListById(listId);
-
-      if (mounted) setListFabricRoll(response);
-    };
-
-    fetchFabricRoll({ ids: bill.fabricRoll });
-    return () => {
-      mounted = false;
-    };
-  }, [bill.fabricRoll]);
+    console.log(subOrder.subOrderStatus)
+  }, [subOrder])
 
   const [expanded, setExpanded] = useState(false);
 
@@ -148,50 +159,53 @@ export default function Bill(props) {
     setExpanded(!expanded);
   };
 
-  const handleClick = (e) => {
-    e.stopPropagation();
-    history.push(`/order/billDetail/${bill._id}`);
-  };
+  // const handleClick = (e) => {
+  //   e.stopPropagation();
+  //   history.push(`/order/billDetail/${bill._id}`);
+  // };
 
   return (
-    <Grid container className={classes.root} onClick={handleClick}>
+    <Grid container className={classes.root}>
       <Grid
         item
         xs={2}
         className={clsx(classes.billId, classes.verticalCenter)}>
-        HD{bill.billID}
+        Sub Order {index}
       </Grid>
       <Grid item xs={2} className={classes.verticalCenter}>
-        {moment(bill.exportBillTime).subtract(1, "days").format("DD/MM/YYYY")}
+        {/* {moment(bill.exportBillTime).subtract(1, "days").format("DD/MM/YYYY")} */}
+        {subOrder?.totalQty}
       </Grid>
       <Grid item xs={2}>
-        {bill.salesmanID ? bill.salesmanID.name : "Trống"}
+        {/* {bill.salesmanID ? bill.salesmanID.name : "Trống"} */}
+        
+        {/* {subOrder?.subOrderStatus[subOrder?.subOrderStatus?.length - 1].name} */}
       </Grid>
       <Grid item xs={2} className={classes.verticalCenter}>
-        {bill.clientID ? bill.clientID.name : "Trống"}
+        {/* {bill.clientID ? bill.clientID.name : "Trống"} */}
       </Grid>
       <Grid item xs={2} className={classes.alignVerticalCenter}>
         <Button onClick={handleOpen}>Chi tiết</Button>
       </Grid>
       <Grid container item xs={2}>
-        <p
+        {/* <p
           className={
-            bill.status[bill.status.length - 1].name === "exported"
+            subOrder?.subOrderStatus[subOrder?.subOrderStatus?.length - 1].name === "ready"
               ? classes.exportedTypo
-              : bill.status[bill.status.length - 1].name === "shipping"
+              : subOrder?.subOrderStatus[subOrder?.subOrderStatus?.length - 1].name === "in-progress"
               ? classes.deliveryTypo
-              : bill.status[bill.status.length - 1].name === "completed"
+              : subOrder?.subOrderStatus[subOrder?.subOrderStatus?.length - 1].name === "completed"
               ? classes.successTypo
               : classes.failTypo
           }>
-          {bill.status[bill.status.length - 1].name === "exported"
-            ? "Đã xuất"
-            : bill.status[bill.status.length - 1].name === "shipping"
+          {subOrder?.subOrderStatus[subOrder?.subOrderStatus?.length - 1].name === "ready"
+            ? "Đã sẵn sàng"
+            : subOrder?.subOrderStatus[subOrder?.subOrderStatus?.length - 1].name === "in-progress"
             ? "Đang vận chuyển"
-            : bill.status[bill.status.length - 1].name === "completed"
+            : subOrder?.subOrderStatus[subOrder?.subOrderStatus?.length - 1].name === "completed"
             ? "Hoàn tất"
             : "Thất bại"}
-        </p>
+        </p> */}
       </Grid>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -221,14 +235,14 @@ export default function Bill(props) {
                       Mã màu
                     </TableCell>
                     <TableCell className={classes.headerTable}>Tên</TableCell>
-                    <TableCell className={classes.headerTable}>Lô</TableCell>
+                    {/* <TableCell className={classes.headerTable}>Lô</TableCell> */}
                     <TableCell className={classes.headerTable}>
                       Chiều dài
                     </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {listFabricRoll?.map((row, idx) => (
+                  {subOrder?.products?.map((row, idx) => (
                     <TableRow
                       key={idx}
                       sx={{
@@ -244,16 +258,16 @@ export default function Bill(props) {
                         component="th"
                         scope="row"
                         className={classes.tableContentBlack}>
-                        {row?.colorCode}
+                        {row?.fabricID.color}
                       </TableCell>
                       <TableCell className={classes.tableContentBlack}>
-                        {row?.item.name}
+                        {row?.fabricID.fabricType}
                       </TableCell>
-                      <TableCell className={classes.tableContentBlack}>
+                      {/* <TableCell className={classes.tableContentBlack}>
                         {row?.lot}
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell className={classes.tableContentBlack}>
-                        {row?.length}
+                        {row?.quantity}
                       </TableCell>
                     </TableRow>
                   ))}
