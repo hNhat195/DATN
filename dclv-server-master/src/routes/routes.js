@@ -110,6 +110,12 @@ const {
 } = require("../controller/FabricRollController");
 
 router.get("/api/collections/:materialSlug", getProductsByMaterialSlug);
+router.get("/api/product/list-type", getFullListFabricType);
+router.get("/api/product/colorcode", getListColorcode);
+router.get("/api/product/allmaterialcode", getAllMaterialCode);
+router.get("/api/product/allcolorcode", getAllColorCode);
+router.get("/api/product/matbycolor", getMaterialByColor);
+router.post("/api/product/colorbymat", getColorByMaterial);
 router.get("/api/product/:slug", getProductBySlug);
 router.get("/api/products/:id", getProductById);
 
@@ -121,12 +127,7 @@ router.post("/api/product/fabricroll-bill", getFabricRollOfBill);
 router.put("/api/product/item/:id", updateMarketPrice);
 router.get("/api/chartwarehouse", getChartWarehouseTrue);
 router.get("/api/getfabricwarehouse", getFabricTypeWarehouse);
-router.get("/api/product/list-type", getFullListFabricType);
-router.get("/api/product/colorcode", getListColorcode);
-router.get("/api/product/allmaterialcode", getAllMaterialCode);
-router.get("/api/product/allcolorcode", getAllColorCode);
-router.get("/api/product/matbycolor", getMaterialByColor);
-router.post("/api/product/colorbymat", getColorByMaterial);
+
 /*------------------------*/
 
 router.get("/api/user/admin/liststaff", listStaff);

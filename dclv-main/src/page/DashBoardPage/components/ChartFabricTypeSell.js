@@ -18,8 +18,8 @@ function ChartFabricTypeSell() {
     function addQuantities(arr) {
       const quantities = {};
       for (let i = 0; i < arr.length; i++) {
-        const name = arr[0].fabricID;
-        const quantity = arr[0].quantity
+        const name = arr[i].fabricID;
+        const quantity = arr[i].quantity
         const key = JSON.stringify(name);
         if (!quantities[key]) {
           quantities[key] = 0;
@@ -35,12 +35,10 @@ function ChartFabricTypeSell() {
         const response = await orderApi.getCompletedSubOrderItem()
         const temp = response.map((item) => item.products)
         const tempList = []
-        for (let i = 0; i < fabrictypesell.length; i++) {
-          tempList.push(...fabrictypesell[i]);
+        for (let i = 0; i < temp.length; i++) {
+          tempList.push(...temp[i]);
         }
-        console.log(tempList)
         const resultList = addQuantities(tempList)
-        console.log(resultList)
         setFabricTypeSell(resultList);
       } catch (error) {
         console.log("Failed to fetch fabric type sell", error);
@@ -50,7 +48,7 @@ function ChartFabricTypeSell() {
   }, []);
   useEffect(() => {
     
-    // console.log(fabrictypesell)
+    console.log(fabrictypesell)
     
   }, [fabrictypesell])
   return (

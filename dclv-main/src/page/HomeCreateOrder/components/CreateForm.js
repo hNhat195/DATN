@@ -212,7 +212,7 @@ export default function CreateForm({
                 setMaterialId(mat._id);
               }}
               value={fabricMaterial || ""}>
-              {materialList.map((item, idx) => {
+              {materialList.length > 0 && materialList?.map((item, idx) => {
                 return (
                   <MenuItem key={idx} value={item.name}>
                     {item.name}
@@ -235,7 +235,7 @@ export default function CreateForm({
                 setFabricColor(e.target.value);
               }}
               value={fabricColor || ""}>
-              {colorList.map((item, idx) => {
+              {colorList.length > 0 && colorList?.map((item, idx) => {
                 return (
                   <MenuItem key={idx} value={item.colorCode}>
                     {item.colorCode}
