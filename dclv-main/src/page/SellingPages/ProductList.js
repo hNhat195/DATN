@@ -17,39 +17,33 @@ const ProductList = () => {
   const { materialSlug } = useParams();
   const [loading, setLoading] = useState(true);
   const [fabrics, setFabrics] = useState(null);
+  const [filteredFabrics, setFilteredFabrics] = useState(null);
+
   const [fabricTypes, setFabricTypes] = useState([]);
+  const [fabricTypeItems, setFabricTypeItems] = useState(null);
+
+  const [sortBy, setSortBy] = useState(null);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
         const fabrics = await productApi.getProductsByMaterialSlug(
           materialSlug
         );
-        if (fabrics) {
-          setFabrics(fabrics);
-        } else {
-          throw new Error("Failed to fetch product");
-        }
-      } catch (error) {
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (materialSlug) {
-      fetchProducts();
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchFabricTypes = async () => {
-      try {
         const types = await fabricTypeApi.getFabricTypesByMaterial(
           materialSlug
         );
+
+        if (fabrics) {
+          setFabrics(fabrics);
+          setFilteredFabrics(fabrics);
+        } else {
+          throw new Error("Failed to fetch product");
+        }
+
         if (types) {
-          console.log(types, "tranquangkha");
           setFabricTypes(types);
+          setFabricTypeItems(translateFabricTypesToSideBar(types));
         } else {
           throw new Error("Failed to fetch fabric types");
         }
@@ -60,7 +54,7 @@ const ProductList = () => {
     };
 
     if (materialSlug) {
-      fetchFabricTypes();
+      fetchData();
     }
   }, []);
 
@@ -68,6 +62,31 @@ const ProductList = () => {
     return fabricTypes?.map((fabricType) => {
       return { id: fabricType._id, checked: false, label: fabricType.name };
     });
+  };
+
+  const handleChangeChecked = (id) => {
+    const typeItems = fabricTypeItems;
+    const updatedCheckedTypeItems = typeItems.map((item) =>
+      item.id === id ? { ...item, checked: !item.checked } : item
+    );
+
+    const checkedTypeIds = updatedCheckedTypeItems
+      .filter((item) => {
+        return item.checked;
+      })
+      .map((item) => {
+        return item.id;
+      });
+
+    setFilteredFabrics(
+      checkedTypeIds?.length === 0
+        ? fabrics
+        : fabrics.filter((fabric) =>
+            checkedTypeIds.includes(fabric.fabricTypeId)
+          )
+    );
+
+    setFabricTypeItems(updatedCheckedTypeItems);
   };
 
   return (
@@ -82,13 +101,13 @@ const ProductList = () => {
             <SideBar
               // selectedRating={selectedRating}
               // selectRating={handleSelectRating}
-              cuisines={translateFabricTypesToSideBar(fabricTypes)}
-              // changeChecked={handleChangeChecked}
+              cuisines={fabricTypeItems}
+              changeChecked={handleChangeChecked}
             />
           </div>
           {/* List & Empty View */}
           <div className="home_list-wrap">
-            <Products products={fabrics} />
+            <Products products={filteredFabrics} />
           </div>
         </div>
 
