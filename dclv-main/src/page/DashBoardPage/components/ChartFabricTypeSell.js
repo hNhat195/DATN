@@ -27,6 +27,17 @@ function ChartFabricTypeSell() {
         quantities[key] += quantity;
       }
       return Object.keys(quantities).map(key => ({ name: JSON.parse(key), quantity: quantities[key] }));
+      // return Object.keys(quantities).map(key => ({ name: key, quantity: quantities[key] }));
+    }
+
+    function convertObjects(arr) {
+      return arr.map(obj => {
+        const color = obj.name.color
+        const fabricType = obj.name.fabricType
+        const quantity = obj.quantity
+        const name = `${fabricType} - ${color}`;
+        return { name, quantity };
+      });
     }
 
     const fetchFabricTypeSell = async () => {
@@ -38,7 +49,9 @@ function ChartFabricTypeSell() {
         for (let i = 0; i < temp.length; i++) {
           tempList.push(...temp[i]);
         }
-        const resultList = addQuantities(tempList)
+        const reduceList = addQuantities(tempList)
+        
+        const resultList = convertObjects(reduceList)
         setFabricTypeSell(resultList);
       } catch (error) {
         console.log("Failed to fetch fabric type sell", error);
@@ -48,7 +61,7 @@ function ChartFabricTypeSell() {
   }, []);
   useEffect(() => {
     
-    console.log(fabrictypesell)
+    
     
   }, [fabrictypesell])
   return (
@@ -70,8 +83,8 @@ function ChartFabricTypeSell() {
           </Label>
         </CommonSeriesSettings> */}
         <Series
-          valueField="countFabrictype"
-          argumentField="_id"
+          valueField="quantity"
+          argumentField="name"
           type="bar"
           color="#f3c40b"
           // style={{margin: 100}}

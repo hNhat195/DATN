@@ -14,27 +14,47 @@ import orderApi from "../../../api/orderApi";
 function ChartOrderHandle() {
   const [orderstatus, setOrderStatus] = useState([]);
   useEffect(() => {
+    function counting(arr) {
+      const countStatus = {}
+      countStatus["pending"] = 0
+      countStatus["canceled"] = 0
+      countStatus["completed"] = 0
+      for(let i=0; i<arr.length; i++) {
+        if(arr[i].status == "pending") {
+          countStatus['pending']++
+        }
+        else if(arr[i].status == "completed") countStatus['completed']++
+        else countStatus['canceled']++
+      }
+      return Object.keys(countStatus).map(key => ({ status: key, quantity: countStatus[key] }));
+    }
+
     const fetchOrderStatus = async () => {
       try {
-        const response = await orderApi.getOrderStatus();
-
-        setOrderStatus(response);
+        // const response = await orderApi.getOrderStatus();
+        const response = await orderApi.getAll()
+        const mapping = response.map((item) => {return {status: item.orderStatus[item.orderStatus.length-1].name, orderTime: item.orderTime}})
+        const countStatus = counting(mapping)
+        setOrderStatus(countStatus);
       } catch (error) {
         console.log("Failed to fetch fabric type sell", error);
       }
     };
     fetchOrderStatus();
   }, []);
+  useEffect(() => {
+    console.log(orderstatus)
+  }, [orderstatus])
   const customizePoint = (pointInfo) => {
     if (pointInfo.argument == "completed")
       return {
         color: "#4caf50",
       };
-    else if (pointInfo.argument == "processing")
+    else if (pointInfo.argument == "pending")
       return {
         color: "#f8ca00",
       };
-    else if (pointInfo.argument == "cancel")
+    else if (pointInfo.argument == "canceled")
       return {
         color: "#f44336",
       };
@@ -44,13 +64,13 @@ function ChartOrderHandle() {
   //     return {
   //       argumentText:"Hoàn tất"
   //     }
-  //   else if(legendInfo.argumentText == "process")
+  //   else if(legendInfo.argumentText == "pending")
   //     return {
-  //       text: "Đang xử lý"
+  //       argumentText: "Đang xử lý"
   //     }
-  //   else if(legendInfo.argumentText == "cancel")
+  //   else if(legendInfo.argumentText == "canceled")
   //     return {
-  //       text: "Hủy"
+  //       argumentText: "Đã hủy"
   //     }
   // };
   return (
@@ -70,7 +90,7 @@ function ChartOrderHandle() {
           // customizeText={customizeLegendText}
         />
         <Export enabled={true} />
-        <Series argumentField="_id" valueField="lastStatusOrder">
+        <Series argumentField="status" valueField="quantity">
           <Label
             visible={true}
             position="columns"
