@@ -32,7 +32,7 @@ const routes = [
     component: HomePage,
   },
   {
-    path: "/collections/:collectionId",
+    path: "/collections/:materialSlug",
     exact: true,
     component: ProductList,
   },
@@ -43,7 +43,7 @@ const routes = [
     component: Product,
   },
   {
-    path: "/products/:productId",
+    path: "/product/:productSlug",
     exact: true,
     component: HomeCreateOrder,
   },

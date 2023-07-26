@@ -4,6 +4,8 @@ import React from "react";
 import styled from "styled-components";
 import { mobile } from "../../responsive";
 
+import SearchBar from "./SearchBar";
+
 const Container = styled.div`
   ${mobile({ height: "50px" })}
 `;
@@ -25,15 +27,17 @@ const Left = styled.div`
 const Language = styled.span`
   font-size: 14px;
   cursor: pointer;
+  margin: 0 2px;
   ${mobile({ display: "none" })}
 `;
 
 const SearchContainer = styled.div`
   border: 0.5px solid lightgray;
+  border-radius: 3px;
   display: flex;
   align-items: center;
   margin-left: 25px;
-  padding: 5px;
+  padding: 2px;
 `;
 
 const Input = styled.input`
@@ -71,11 +75,12 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Left>
-          <Language>EN</Language>
-          <SearchContainer>
+          <SearchBar />
+          {/* <Language>EN</Language> */}
+          {/* <SearchContainer>
             <Input placeholder="Search" />
-            <Search style={{ color: "gray", fontSize: 16 }} />
-          </SearchContainer>
+            <Search style={{ color: "gray", fontSize: 18 }} />
+          </SearchContainer> */}
         </Left>
         <Center>
           <Logo>FABRICVN</Logo>

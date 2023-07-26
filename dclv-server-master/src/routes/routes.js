@@ -6,7 +6,10 @@ const verify = require("../auth/checkToken");
 
 const OrderController = require("../controller/OrderController");
 
-const { getListFabricType } = require("../controller/FabricTypeController");
+const {
+  getListFabricType,
+  getFabricTypesByMaterial,
+} = require("../controller/FabricTypeController");
 
 /*----order route------*/
 router.get("/api/order", OrderController.list);
@@ -79,7 +82,9 @@ router.get("/api/admin/liststaff", listStaff);
 router.get("/api/admin/staffInfo/:id", infoStaffById);
 
 /*-----FabricType route------*/
-router.get("/api/fabrictype", getListFabricType);
+router.get("/api/fabrictypes", getListFabricType);
+router.get("/api/fabrictypes/:material", getFabricTypesByMaterial);
+
 /*---------------------*/
 
 /*-----Fabric Roll route------*/
@@ -100,15 +105,19 @@ const {
   getAllColorCode,
   getMaterialByColor,
   getColorByMaterial,
+  getProductsByMaterialSlug,
+  getProductBySlug,
 } = require("../controller/FabricRollController");
 
-router.get("/api/collections/:id", getProductsByCollectionId);
+router.get("/api/collections/:materialSlug", getProductsByMaterialSlug);
+router.get("/api/product/:slug", getProductBySlug);
 router.get("/api/products/:id", getProductById);
+
 router.get("/api/product", getProductList);
 router.get("/api/product1", getProductList1);
 router.post("/api/product/list", getListFabricRollWithIds);
 router.post("/api/product/fabricroll-bill", getFabricRollOfBill);
-router.put("/api/product/:id", updateProductStatus);
+// router.put("/api/product/:id", updateProductStatus);
 router.put("/api/product/item/:id", updateMarketPrice);
 router.get("/api/chartwarehouse", getChartWarehouseTrue);
 router.get("/api/getfabricwarehouse", getFabricTypeWarehouse);

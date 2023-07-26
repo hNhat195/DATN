@@ -1,15 +1,17 @@
-export const menuItems = [
+export const homeMenuItems = [
   {
     title: "Home",
     url: "/",
   },
+];
+export const fabricsMenuItems = [
   {
     title: "Shop Fabrics",
     url: "/shop-fabrics",
     submenu: [
       {
         title: "Linen",
-        url: "linen",
+        url: "collections/linen",
         submenu: [
           {
             title: "Organic Linen",
@@ -31,7 +33,7 @@ export const menuItems = [
       },
       {
         title: "Cotton",
-        url: "cotton",
+        url: "collections/cotton",
         submenu: [
           {
             title: "Cotton Denim & Chambray",
@@ -45,56 +47,13 @@ export const menuItems = [
       },
       {
         title: "Silk",
-        url: "silk",
+        url: "collections/silk",
       },
     ],
   },
-  {
-    title: "Shop Patterns",
-    url: "/shop-patterns",
-    submenu: [
-      {
-        title: "Linen",
-        url: "linen",
-        submenu: [
-          {
-            title: "Organic Linen",
-            url: "collections/organic-linen",
-          },
-          {
-            title: "Linen Gingham",
-            url: "collections/linen-gingham",
-          },
-          {
-            title: "Linen Midweight",
-            url: "collections/linen-midweight",
-          },
-          {
-            title: "Linen Heavyweight",
-            url: "collections/linen-heavyweight",
-          },
-        ],
-      },
-      {
-        title: "Cotton",
-        url: "cotton",
-        submenu: [
-          {
-            title: "Cotton Denim & Chambray",
-            url: "collections/cotton-denim-&-chambray",
-          },
-          {
-            title: "Cotton Shirting",
-            url: "collections/cotton-shirting",
-          },
-        ],
-      },
-      {
-        title: "Silk",
-        url: "silk",
-      },
-    ],
-  },
+];
+
+export const aboutUsMenuItems = [
   {
     title: "About Us",
     url: "/about-us",
