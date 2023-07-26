@@ -12,6 +12,7 @@ const port = process.env.BACK_END_PORT;
 const mongodb_url = process.env.MONGODB_URL_V2;
 
 const router = require("./src/routes/routes");
+const { sendMailSuccess } = require("./src/controller/mailer");
 
 const app = express();
 app.use(bodyParser.json());
@@ -28,6 +29,17 @@ mongoose
       console.log(`Server is running at http://localhost:${port}`);
     });
   })
+  // .then(() => {
+  //   sendMailSuccess(
+  //     {
+  //       orderId: "ABCZYC",
+  //       totalQuantity: 100,
+  //     },
+  //     {
+  //       name: "Lê Hồng Nhật",
+  //     }
+  //   );
+  // })
   .catch((error) => {
     console.log("Connect to MongoDB failed!" + error);
   });
