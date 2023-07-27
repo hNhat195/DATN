@@ -35,6 +35,7 @@ const ProductList = () => {
         );
 
         if (fabrics) {
+          console.log(fabrics)
           setFabrics(fabrics);
           setFilteredFabrics(fabrics);
         } else {
@@ -42,6 +43,7 @@ const ProductList = () => {
         }
 
         if (types) {
+          console.log(types)
           setFabricTypes(types);
           setFabricTypeItems(translateFabricTypesToSideBar(types));
         } else {
