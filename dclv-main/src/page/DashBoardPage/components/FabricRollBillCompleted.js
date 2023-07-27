@@ -34,21 +34,39 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
     "linear-gradient(135deg, rgba(183, 33, 54, 0) 0%, rgba(183, 33, 54, 0.24) 100%)",
 }));
 
-export default function FabricRollBillCompleted() {
+export default function FabricRollBillCompleted({dateRangeFilter}) {
   const [fabricrollTotal, setFabricRollTotal] = useState([]);
+  const [filteredList, setFilteredList] = useState([])
   useEffect(() => {
     const fetchFabricRollTotal = async () => {
       try {
         // const response = await billApi.getFabricRollBillCompleted();
         const response = await orderApi.getCompletedSub()
         setFabricRollTotal(response);
+        setFilteredList(response)
       } catch (error) {
         console.log("Failed to fetch fabric roll bill completed count", error);
       }
     };
     fetchFabricRollTotal();
   }, []);
-  
+  useEffect(() => {
+    if (dateRangeFilter.startDate && dateRangeFilter.endDate) {
+      let temp = fabricrollTotal?.filter(
+        (item) =>
+          Date.parse(item.subOrderTime) >= Date.parse(dateRangeFilter.startDate) &&
+          Date.parse(item.subOrderTime) <= Date.parse(dateRangeFilter.endDate)
+      );
+      setFilteredList(temp)
+    }
+    else {
+      let temp = fabricrollTotal
+      setFilteredList(temp)
+    }
+  }, [dateRangeFilter])
+  useEffect(() => {
+    console.log(fabricrollTotal)
+  }, [fabricrollTotal])
   return (
     <RootStyle>
       <IconWrapperStyle>
@@ -59,7 +77,7 @@ export default function FabricRollBillCompleted() {
           height="35"
         />
       </IconWrapperStyle>
-      <Typography variant="h4">{fabricrollTotal.reduce((accumulator, currentValue) => accumulator + currentValue.totalQty,0)}</Typography>
+      <Typography variant="h4">{filteredList.reduce((accumulator, currentValue) => accumulator + currentValue.totalQty,0)}</Typography>
       <Typography variant="h6" sx={{ opacity: 0.72 }}>
         Cây vải giao thành công
       </Typography>

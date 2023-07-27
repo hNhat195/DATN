@@ -32,20 +32,36 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
   )} 0%, ${alpha(theme.palette.info.dark, 0.24)} 100%)`,
 }));
 
-export default function StaffBillComplete() {
+export default function StaffBillComplete({dateRangeFilter}) {
   const [billComplete, setBillComplete] = useState([]);
+  const [filteredList, setFilteredList] = useState([])
   useEffect(() => {
     const fetCountBillComplete = async () => {
       try {
         // const response = await billApi.getBillCompleted();
         const response = await orderApi.getOrderCompleted()
         setBillComplete(response);
+        setFilteredList(response)
       } catch (error) {
         console.log("Failed to fetch bill complete count", error);
       }
     };
     fetCountBillComplete();
   }, []);
+  useEffect(() => {
+    if (dateRangeFilter.startDate && dateRangeFilter.endDate) {
+      let temp = billComplete?.filter(
+        (item) =>
+          Date.parse(item.orderTime) >= Date.parse(dateRangeFilter.startDate) &&
+          Date.parse(item.orderTime) <= Date.parse(dateRangeFilter.endDate)
+      );
+      setFilteredList(temp)
+    }
+    else {
+      let temp = billComplete
+      setFilteredList(temp)
+    }
+  }, [dateRangeFilter])
   return (
     <RootStyle>
       <IconWrapperStyle>
@@ -56,7 +72,7 @@ export default function StaffBillComplete() {
           height="35"
         />
       </IconWrapperStyle>
-      <Typography variant="h4">{billComplete.length}</Typography>
+      <Typography variant="h4">{filteredList.length}</Typography>
       <Typography variant="h6" sx={{ opacity: 0.72 }}>
         Đơn hàng giao thành công
       </Typography>

@@ -19,7 +19,16 @@ import ChartBillStatus from './components/ChartBillStatus';
 
 function DashBoard() {
   const classes = useStyles();
-
+  const [dateRangeFilter, setDateRangeFilter] = useState({
+    startDate: "",
+    endDate: "",
+  });
+  const handleDateRangeFilterChange = (newDateRange) => {
+    setDateRangeFilter(newDateRange);
+  };
+  useEffect(() => {
+    console.log(dateRangeFilter)
+  }, [dateRangeFilter])
   return (
     <Box className={classes.root}>
       <Container maxWidth="xl">
@@ -29,7 +38,7 @@ function DashBoard() {
             <Typography variant="h4">Tổng quan</Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={6}>
-            <DateFilter />
+            <DateFilter onChange={handleDateRangeFilterChange}/>
           </Grid>
           <Grid container item xs={12} sm={4} md={4} className={classes.notiSearch}>
             <Grid item xs={2} sm={2} md={2}>
@@ -41,16 +50,16 @@ function DashBoard() {
           </Grid>
 
           <Grid item xs={12} sm={6} md={3} className={classes.staffTotalSale}>
-            <StaffTotalSale />
+            <StaffTotalSale dateRangeFilter={dateRangeFilter} />
           </Grid>
           <Grid item xs={12} sm={6} md={3} className={classes.staffOrderComplete}>
-            <StaffBillComplete />
+            <StaffBillComplete dateRangeFilter={dateRangeFilter} />
           </Grid>
           <Grid item xs={12} sm={6} md={3} className={classes.staffRevenue}>
-            <StaffRevenue />
+            <StaffRevenue dateRangeFilter={dateRangeFilter} />
           </Grid>
           <Grid item xs={12} sm={6} md={3} className={classes.RevenueProducts}>
-            <FabricRollBillCompleted />
+            <FabricRollBillCompleted dateRangeFilter={dateRangeFilter} />
           </Grid>
           {/* <Grid item xs={12} md={6} lg={8} className={classes.Chart1}>
             <ChartFabricWarehouse />
@@ -61,11 +70,11 @@ function DashBoard() {
           </Grid> */}
 
           <Grid item xs={12} md={6} lg={8} className={classes.Chart1}>
-            <ChartFabricTypeSell />
+            <ChartFabricTypeSell dateRangeFilter={dateRangeFilter} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4} className={classes.TopProducts}>
-            <ChartOrderHandle />
+            <ChartOrderHandle dateRangeFilter={dateRangeFilter} />
           </Grid>
         </Grid>
       </Container>
