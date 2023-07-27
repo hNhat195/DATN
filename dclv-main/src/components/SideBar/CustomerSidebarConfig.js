@@ -12,13 +12,13 @@ const sideBarConfig = [
     href: "",
     icon: StoreIcon,
   },
-  {
-    tag: "product",
-    path: "/product",
-    name: "Sản phẩm",
-    href: "",
-    icon: LocalParkingIcon,
-  },
+  // {
+  //   tag: "product",
+  //   path: "/product",
+  //   name: "Sản phẩm",
+  //   href: "",
+  //   icon: LocalParkingIcon,
+  // },
   {
     tag: "order",
     path: "/order",

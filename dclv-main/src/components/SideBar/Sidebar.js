@@ -8,6 +8,7 @@ import SalesmanSidebarConfig from "./SalemanSidebarConfig";
 import AdminSidebarConfig from "./AdminSidebarConfig";
 import CustomerSidebarConfig from "./CustomerSidebarConfig";
 import Link from "@material-ui/core/Link";
+import userUtil from "../../utils/user";
 
 const useStyles = makeStyles((theme) => ({
   sidebarBg: {
@@ -42,9 +43,19 @@ function Sidebar(props) {
   const { openMobile, onMobileClose, className } = props;
   const classes = useStyles();
   const { pathname } = useLocation();
-  const role = localStorage.getItem("role");
+
   //Get sidebar list item with role
+
+  const role = userUtil.getCurrentUserRole();
+
   let sidebarConfig = AdminSidebarConfig;
+  if (role === userUtil.userRole.admin) {
+    sidebarConfig = AdminSidebarConfig;
+  } else if (role === userUtil.userRole.staff) {
+    sidebarConfig = SalesmanSidebarConfig;
+  } else {
+    sidebarConfig = CustomerSidebarConfig;
+  }
 
   //check path is activate
   const match = (path) => (path ? !!matchPath(pathname, { path }) : false);
