@@ -45,7 +45,7 @@ const routes = [
   {
     path: "/product/:productSlug",
     exact: true,
-    component: HomeCreateOrder,
+    component: ProductDetail,
   },
   {
     path: "/home/create-order",
