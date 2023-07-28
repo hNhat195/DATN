@@ -31,19 +31,35 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
   )} 0%, ${alpha(theme.palette.primary.dark, 0.24)} 100%)`,
 }));
 
-export default function StaffTotalSale() {
+export default function StaffTotalSale({dateRangeFilter}) {
   const [orderTotal, setOrderTotal] = useState([]);
+  const [filteredList, setFilteredList] = useState([])
   useEffect(() => {
     const fetCountOrder = async () => {
       try {
         const response = await orderApi.getAll();
         setOrderTotal(response);
+        setFilteredList(response)
       } catch (error) {
         console.log("Failed to fetch order count", error);
       }
     };
     fetCountOrder();
   }, []);
+  useEffect(() => {
+    if (dateRangeFilter.startDate && dateRangeFilter.endDate) {
+      let temp = orderTotal?.filter(
+        (item) =>
+          Date.parse(item.orderTime) >= Date.parse(dateRangeFilter.startDate) &&
+          Date.parse(item.orderTime) <= Date.parse(dateRangeFilter.endDate)
+      );
+      setFilteredList(temp)
+    }
+    else {
+      let temp = orderTotal
+      setFilteredList(temp)
+    }
+  }, [dateRangeFilter])
   
   return (
     <RootStyle>
@@ -55,7 +71,7 @@ export default function StaffTotalSale() {
           height="35"
         />
       </IconWrapperStyle>
-      <Typography variant="h4">{orderTotal.length}</Typography>
+      <Typography variant="h4">{filteredList.length}</Typography>
       <Typography variant="h6" sx={{ opacity: 0.72 }}>
         Tổng đơn hàng
       </Typography>

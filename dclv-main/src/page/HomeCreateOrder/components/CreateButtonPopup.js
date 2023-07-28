@@ -128,12 +128,27 @@ export default function CreateButtonPopup({ productList }) {
     const response = await orderApi.create(postData);
     return response;
   };
-  const handleCreate = async (event) => {
-    if (fullname.trim() == "" || email.trim() == "" || phone.trim() == "" || address.trim() == "") {
-      setErrorMessage("Vui lòng nhập thông tin cá nhân hợp lệ")
-      setErrorPopup(true);
+  function validateEmail(email) {
+    const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/;
+    return regex.test(email);
+  }
+  function validatePhoneNumber(phoneNumber) {
+    const regex = /^0\d{9}$/;
+    return regex.test(phoneNumber);
+  }
+  function validateName(name) {
+    if (name.trim() == "") {
+      return false
+    } else {
+      if (name.trim().length > 5 && name.trim.length < 50) {
+        return true
+      }
+      return false
     }
-    else {
+  }
+  const handleCreate = async (event) => {
+    // if (fullname.trim() == "" || email.trim() == "" || phone.trim() == "" || address.trim() == "") {
+    if (validateName(fullname) && validateEmail(email) && validatePhoneNumber(phone) && validateName(address)) {
       if (productList.length > 0) {
         let postData = {
           note: "",
@@ -144,15 +159,19 @@ export default function CreateButtonPopup({ productList }) {
           products: productList,
           receiverAddress: address,
         };
-        // await postOrder(postData);
-        // event.preventDefault();
+        await postOrder(postData);
+        event.preventDefault();
         setOpenPopup(true)
         // setOpen(false);
         // history.push(`/`);
       } else {
         setErrorMessage("Vui lòng thêm sản phẩm để tạo đơn hàng")
         setErrorPopup(true);
-      } 
+      }
+    }
+    else {
+      setErrorMessage("Vui lòng nhập thông tin cá nhân hợp lệ")
+      setErrorPopup(true);
     }
   }
 
