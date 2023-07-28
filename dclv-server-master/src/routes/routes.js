@@ -14,18 +14,13 @@ const {
 /*----order route------*/
 router.get("/api/order", OrderController.list);
 router.post("/api/order/create", OrderController.create);
-router.get(
-  "/api/order/completed",
-  OrderController.getCompletedOrder
-);
-router.get(
-  "/api/order/completed-sub",
-  OrderController.getCompletedSubOrder
-);
+router.get("/api/order/completed", OrderController.getCompletedOrder);
+router.get("/api/order/completed-sub", OrderController.getCompletedSubOrder);
 router.get(
   "/api/order/completed-sub-item",
   OrderController.getCompletedSubOrderItem
 );
+router.get("/api/user-orders/:userId", OrderController.getOrdersByUserId);
 router.get("/api/order/:id", OrderController.detail);
 router.get("/api/order/:id/products", OrderController.getListProductsById);
 router.put("/api/order/update_info", OrderController.updateInfo);
@@ -47,14 +42,8 @@ router.put(
   "/api/order/update-sub-order-status/:id",
   OrderController.updateSubOrderStatus
 );
-router.put(
-  "/api/order/test/:id",
-  OrderController.testUpdateSubOrder
-);
-router.get(
-  "/api/order/sub-order/:id",
-  OrderController.getSubOrder
-);
+router.put("/api/order/test/:id", OrderController.testUpdateSubOrder);
+router.get("/api/order/sub-order/:id", OrderController.getSubOrder);
 
 const {
   createNewCustomer,

@@ -74,6 +74,18 @@ const list = async (req, res) => {
     });
 };
 
+const getOrdersByUserId = async (req, res) => {
+  console.log(req.params, "params");
+  await Order.find({ clientID: req.params.userId })
+    .exec()
+    .then((orders) => {
+      res.status(200).json(orders);
+    })
+    .catch((error) => {
+      res.status(500).json(error);
+    });
+};
+
 const create = async (req, res) => {
   try {
     const id = await getNextSequenceValue("orderId");
@@ -995,4 +1007,5 @@ module.exports = {
   getCompletedOrder,
   getCompletedSubOrder,
   getCompletedSubOrderItem,
+  getOrdersByUserId,
 };

@@ -114,5 +114,10 @@ const orderApi = {
     const url = `/order/completed-sub-item`;
     return axiosClient.get(url);
   },
+
+  getOrdersByUserId: (userId) => {
+    const url = `/user-orders/${userId}`;
+    return axiosClient.get(url);
+  },
 };
 export default orderApi;
