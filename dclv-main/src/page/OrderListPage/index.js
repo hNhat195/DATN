@@ -7,6 +7,7 @@ import orderApi from "../../api/orderApi";
 import CreateButton from "./components/CreateButton";
 import ListPagination from "../../components/ListPagination";
 import { makeStyles } from "@material-ui/core/styles";
+import userUtil from "../../utils/user";
 
 const useStyles = makeStyles((theme) => ({
   containerStyled: {
@@ -35,7 +36,14 @@ export default function OrderListPage() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await orderApi.getAll(0, 100);
+      const user = userUtil.getCurrentUser();
+      let response;
+      if (user.role === userUtil.userRole.customer) {
+        response = await orderApi.getAll(0, 100, user._id);
+      } else {
+        response = await orderApi.getAll(0, 100);
+      }
+
       setOrderList(response);
       setFilteredOrderList(response);
       setOrderPerPage(response.slice(0, pageSize));

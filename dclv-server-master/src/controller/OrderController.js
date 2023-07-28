@@ -24,7 +24,17 @@ async function getNextSequenceValue(sequenceName) {
 const list = async (req, res) => {
   const page = Number.parseInt(req.query.page) || 0;
   const limit = Number.parseInt(req.query.limit) || 6;
-  Order.find()
+  const userId = req.query.userId;
+
+  let orderQuery;
+
+  if (userId) {
+    orderQuery = Order.find({ clientID: userId });
+  } else {
+    orderQuery = Order.find();
+  }
+
+  orderQuery
     .populate({
       path: "products",
       populate: {
@@ -52,7 +62,7 @@ const list = async (req, res) => {
     })
     .populate({
       path: "clientID",
-      select: "name -_id",
+      select: "name _id",
     })
     // .skip(page * limit)
     // .limit(limit)
@@ -88,7 +98,7 @@ const create = async (req, res) => {
       detailBill: [],
       products: productList,
       subOrder: subOrderList,
-      totalQuantity: totalQuantity
+      totalQuantity: totalQuantity,
     });
     await Promise.all(
       req.body.products.map(async (item, idx) => {
@@ -634,46 +644,50 @@ const updateSubOrderStatus = async (req, res) => {
           {
             $set: {
               shipped: {
-                $toInt: "$quantity"
-              }
-            }
-          }
+                $toInt: "$quantity",
+              },
+            },
+          },
         ]
       );
-      const subOrderItemList = await SubOrderItem.find(
-        { subOrderId: mongoose.Types.ObjectId(req.params.id) },
-      )
-      const fabricIdList = subOrderItemList.map((item) => item.fabricID)
-      const quantityList = subOrderItemList.map((item) => item.quantity)
+      const subOrderItemList = await SubOrderItem.find({
+        subOrderId: mongoose.Types.ObjectId(req.params.id),
+      });
+      const fabricIdList = subOrderItemList.map((item) => item.fabricID);
+      const quantityList = subOrderItemList.map((item) => item.quantity);
 
-      const foundSubOrder = await SubOrder.findOne(
-        { _id: mongoose.Types.ObjectId(req.params.id) },
-      )
-      const orderId = foundSubOrder.orderId
+      const foundSubOrder = await SubOrder.findOne({
+        _id: mongoose.Types.ObjectId(req.params.id),
+      });
+      const orderId = foundSubOrder.orderId;
 
       for (let i = 0; i < fabricIdList.length; i++) {
         await OrderItem.findOneAndUpdate(
           {
             orderId: orderId,
-            fabricID: fabricIdList[i]
+            fabricID: fabricIdList[i],
           },
           {
-            $inc: { shipped: quantityList[i] }
+            $inc: { shipped: quantityList[i] },
           },
           { new: true }
-        )
+        );
       }
 
-      const subOrderList = await SubOrder.find({ orderId: orderId })
-      const filtered = subOrderList.filter(item => item.subOrderStatus[item.subOrderStatus.length - 1].name == "completed")
+      const subOrderList = await SubOrder.find({ orderId: orderId });
+      const filtered = subOrderList.filter(
+        (item) =>
+          item.subOrderStatus[item.subOrderStatus.length - 1].name ==
+          "completed"
+      );
 
       if (filtered.length > 0) {
-        let total = 0
+        let total = 0;
         for (let i = 0; i < filtered.length; i++) {
-          total += filtered[i].totalQty
+          total += filtered[i].totalQty;
         }
 
-        const currentOrder = await Order.findOne({ _id: orderId })
+        const currentOrder = await Order.findOne({ _id: orderId });
 
         if (total == currentOrder.totalQuantity) {
           Order.findOneAndUpdate(
@@ -688,7 +702,7 @@ const updateSubOrderStatus = async (req, res) => {
             },
             {
               new: true,
-            },
+            }
           );
         }
       }
@@ -862,25 +876,28 @@ const getOrderFabricType = async (req, res) => {
 
 const testUpdateSubOrder = async (req, res) => {
   try {
-    const subOrderItemList = await SubOrderItem.find(
-      { subOrderId: mongoose.Types.ObjectId(req.params.id) },
-    )
+    const subOrderItemList = await SubOrderItem.find({
+      subOrderId: mongoose.Types.ObjectId(req.params.id),
+    });
 
-    const foundSubOrder = await SubOrder.findOne(
-      { _id: mongoose.Types.ObjectId(req.params.id) },
-    )
-    const orderId = foundSubOrder.orderId
+    const foundSubOrder = await SubOrder.findOne({
+      _id: mongoose.Types.ObjectId(req.params.id),
+    });
+    const orderId = foundSubOrder.orderId;
 
-    const subOrderList = await SubOrder.find({ orderId: orderId })
-    const filtered = subOrderList.filter(item => item.subOrderStatus[item.subOrderStatus.length - 1].name == "completed")
+    const subOrderList = await SubOrder.find({ orderId: orderId });
+    const filtered = subOrderList.filter(
+      (item) =>
+        item.subOrderStatus[item.subOrderStatus.length - 1].name == "completed"
+    );
 
     if (filtered.length > 0) {
-      let total = 0
+      let total = 0;
       for (let i = 0; i < filtered.length; i++) {
-        total += filtered[i].totalQty
+        total += filtered[i].totalQty;
       }
 
-      const currentOrder = await Order.findOne({ _id: orderId })
+      const currentOrder = await Order.findOne({ _id: orderId });
 
       if (total == currentOrder.totalQuantity) {
         Order.findOneAndUpdate(
@@ -895,8 +912,7 @@ const testUpdateSubOrder = async (req, res) => {
           },
           {
             new: true,
-          },
-
+          }
         );
       }
     }
@@ -904,7 +920,7 @@ const testUpdateSubOrder = async (req, res) => {
   } catch (err) {
     res.status(500).json({ err });
   }
-}
+};
 
 const getSubOrder = async (req, res) => {
   SubOrder.findOne({ _id: mongoose.Types.ObjectId(req.params.id) })
@@ -920,39 +936,41 @@ const getSubOrder = async (req, res) => {
       if (err) res.json(err);
       else res.json(result);
     });
-}
+};
 
 const getCompletedOrder = async (req, res) => {
-  Order.find({ orderStatus: { $elemMatch: { name: 'completed' } }  })
+  Order.find({ orderStatus: { $elemMatch: { name: "completed" } } }).exec(
+    function (err, result) {
+      if (err) res.json(err);
+      else res.json(result);
+    }
+  );
+};
+
+const getCompletedSubOrder = async (req, res) => {
+  SubOrder.find({ subOrderStatus: { $elemMatch: { name: "completed" } } }).exec(
+    function (err, result) {
+      if (err) res.json(err);
+      else res.json(result);
+    }
+  );
+};
+
+const getCompletedSubOrderItem = async (req, res) => {
+  SubOrder.find({ subOrderStatus: { $elemMatch: { name: "completed" } } })
+    .populate({
+      path: "products",
+      populate: {
+        path: "fabricID",
+        select: "fabricType color price -_id",
+      },
+      select: "quantity shipped -_id",
+    })
     .exec(function (err, result) {
       if (err) res.json(err);
       else res.json(result);
     });
-}
-
-const getCompletedSubOrder = async (req, res) => {
-  SubOrder.find({ subOrderStatus: { $elemMatch: { name: 'completed' } }  })
-  .exec(function (err, result) {
-    if (err) res.json(err);
-    else res.json(result);
-  });
-}
-
-const getCompletedSubOrderItem = async (req, res) => {
-  SubOrder.find({ subOrderStatus: { $elemMatch: { name: 'completed' } }  })
-  .populate({
-    path: "products",
-    populate: {
-      path: "fabricID",
-      select: "fabricType color price -_id",
-    },
-    select: "quantity shipped -_id",
-  })
-  .exec(function (err, result) {
-    if (err) res.json(err);
-    else res.json(result);
-  });
-}
+};
 
 module.exports = {
   getTotalOrderbyMonth,
