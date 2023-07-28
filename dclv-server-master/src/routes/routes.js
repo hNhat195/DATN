@@ -97,6 +97,7 @@ const {
   getProductsByMaterialSlug,
   getProductBySlug,
   getProductsHomePage,
+  searchProductBySlug,
 } = require("../controller/FabricRollController");
 
 router.get("/api/collections/:materialSlug", getProductsByMaterialSlug);
@@ -107,6 +108,7 @@ router.get("/api/product/allcolorcode", getAllColorCode);
 router.get("/api/product/matbycolor", getMaterialByColor);
 router.post("/api/product/colorbymat", getColorByMaterial);
 router.get("/api/product/homepage", getProductsHomePage);
+router.get("/api/product/search/:slug", searchProductBySlug);
 router.get("/api/product/:slug", getProductBySlug);
 router.get("/api/products/:id", getProductById);
 

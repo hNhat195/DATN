@@ -33,9 +33,9 @@ export const ratingList = [
   },
 ];
 
-const SideBar = ({ selectedRating, selectRating, cuisines, changeChecked }) => (
+const SideBar = ({ selectedRating, selectRating, cuisines, changeChecked, sortBy, setSortBy, filtered, setFiltered }) => (
   <div>
-    <SortBy />
+    <SortBy sortBy={sortBy} setSortBy={setSortBy} />
     <div className="input-group">
       <p className="label">SELECT CATAGORIES</p>
       <div style={{ minHeight: 200, maxHeight: 300, overflowY: "scroll" }}>
@@ -44,6 +44,8 @@ const SideBar = ({ selectedRating, selectRating, cuisines, changeChecked }) => (
             key={cuisine.id}
             cuisine={cuisine}
             changeChecked={changeChecked}
+            filter={filtered}
+            setFilter={setFiltered}
           />
         ))}
       </div>

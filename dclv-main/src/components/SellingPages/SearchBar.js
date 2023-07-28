@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, TextField, InputAdornment } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
+import productApi from "../../api/productApi";
 
 const useStyles = makeStyles({
   box: {
@@ -14,15 +15,19 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SearchField({ onChange }) {
+export default function SearchField({ onChange, searchWord, setSearchWord }) {
   const classes = useStyles();
-  const [keyword, setKeyword] = useState("");
-
   const handleKeywordChange = (event) => {
     const newKeyword = event.target.value;
     // setKeyword(newKeyword);
     // onChange(newKeyword);
   };
+  const handleSearch = (event) => {
+    // if(event.key === "Enter") {
+      setSearchWord(event.target.value)
+    // }
+  }
+  
   return (
     <>
       <Box className={classes.box}>
@@ -30,6 +35,8 @@ export default function SearchField({ onChange }) {
           className={classes.textField}
           id="input-with-icon-textfield"
           placeholder="Search"
+          onChange={(e) => handleSearch(e)}
+          // onKeyDown={handleSearch}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">

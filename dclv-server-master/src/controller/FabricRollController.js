@@ -53,6 +53,7 @@ const getProductsByCollectionId = async (req, res) => {
 };
 
 const getProductBySlug = async (req, res) => {
+  console.log(req.params.slug)
   await FabricRoll.findOne({ slug: req.params.slug })
     .exec()
     .then((product) => {
@@ -61,6 +62,26 @@ const getProductBySlug = async (req, res) => {
     .catch((error) => {
       res.status(500).json(error);
     });
+};
+
+const searchProductBySlug = async (req, res) => {
+  try {
+    const slug = req.params.slug
+    const foundProducts = await FabricRoll.find({
+      slug: { $regex: slug},
+    }).exec();
+    return res.json({
+      message: "Thành công",
+      status: 200,
+      data: foundProducts,
+    });
+
+  } catch (error) {
+    return res.json({
+      message: "Thất bại",
+      status: 400,
+    });
+  }
 };
 
 const getProductById = async (req, res) => {
@@ -698,4 +719,5 @@ module.exports = {
   getProductsByMaterialSlug,
   getProductBySlug,
   getProductsHomePage,
+  searchProductBySlug,
 };

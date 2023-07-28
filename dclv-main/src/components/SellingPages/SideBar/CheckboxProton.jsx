@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CheckboxProton = ({ changeChecked, cuisine }) => {
+const CheckboxProton = ({ changeChecked, cuisine, filtered, setFiltered }) => {
   const classes = useStyles();
   const { checked, label, id } = cuisine;
   return (
@@ -42,7 +42,10 @@ const CheckboxProton = ({ changeChecked, cuisine }) => {
             }}
             size="small"
             checked={checked}
-            onChange={() => changeChecked(id)}
+            onChange={(event) => changeChecked(id, event)}
+            // onChange={(event) => setFilter([...filter, id])}
+            // onChange={(event) => console.log(filtered)}
+            value={id}
             inputProps={{ "aria-label": "checkbox with small size" }}
           />
         }

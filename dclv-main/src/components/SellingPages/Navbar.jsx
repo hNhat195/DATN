@@ -70,12 +70,12 @@ const MenuItem = styled.div`
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
-const Navbar = () => {
+const Navbar = ({searchWord, setSearchWord}) => {
   return (
     <Container>
       <Wrapper>
         <Left>
-          <SearchBar />
+          <SearchBar searchWord={searchWord} setSearchWord={setSearchWord} />
           {/* <Language>EN</Language> */}
           {/* <SearchContainer>
             <Input placeholder="Search" />
