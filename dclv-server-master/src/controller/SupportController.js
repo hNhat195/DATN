@@ -25,7 +25,6 @@ const createSupport = async (req, res) => {
 
     res.send({ status: 200, result });
   } catch (err) {
-    console.log(err);
     res.json({ status: 400, message: err });
   }
 };
@@ -45,6 +44,39 @@ const getSupportsByClientId = async (req, res) => {
         res.json(result);
       }
     });
+};
+
+const getAllSupports = async (req, res) => {
+  Support.find()
+    .populate({
+      path: "clientId",
+      select: "name email address phone",
+    })
+    .exec(function (err, result) {
+      if (err) res.json(err);
+      else {
+        res.json(result);
+      }
+    });
+};
+
+const responseSupport = async (req, res) => {
+  Support.findOneAndUpdate(
+    { _id: req.body.supportId },
+    {
+      feedback: req.body.feedback,
+      staffId: req.body.staffId,
+      responsedAt: Date.now(),
+      status: "responsed",
+    },
+    function (err, result) {
+      if (err) {
+        return res.json({ message: "Error" });
+      } else {
+        return res.json(result);
+      }
+    }
+  );
 };
 
 const getSupport = (req, res) => {
@@ -109,4 +141,6 @@ module.exports = {
   createSupport,
   getSupport,
   getSupportsByClientId,
+  getAllSupports,
+  responseSupport,
 };

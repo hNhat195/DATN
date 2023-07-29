@@ -18,6 +18,8 @@ import { Done, Cancel, Edit } from "@material-ui/icons";
 import DefaultButton from "../../../components/Button/DefaultButton";
 import { useHistory } from "react-router-dom";
 import supportUtil from "../../../utils/support";
+import userUtil from "../../../utils/user";
+import supportApi from "../../../api/supportApi";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -122,13 +124,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SupportItem(props) {
-  const { item } = props;
+  const { item, user } = props;
   const classes = useStyles();
   const history = useHistory();
 
+  const [support, setSupport] = useState({
+    staffId: userUtil.getCurrentUserId,
+    supportId: null,
+    feedback: null,
+  });
+
   const [open, setOpen] = useState(false);
 
-  const handleOpen = (e) => {
+  const handleOpen = (e, supportId) => {
+    setSupport({ ...support, supportId: supportId });
     //Seperate onClick in child and parents component
     e.stopPropagation();
     setOpen(true);
@@ -146,6 +155,11 @@ export default function SupportItem(props) {
     //Seperate onClick in child and parents component
     e.stopPropagation();
     setExpanded(!expanded);
+  };
+
+  const handleConfirm = () => {
+    supportApi.responseSupport(support);
+    setOpen(false);
   };
 
   return (
@@ -184,7 +198,7 @@ export default function SupportItem(props) {
         )}
       </Grid>
       <Grid item xs={1} className={classes.productList}>
-        <Button onClick={handleOpen}>
+        <Button onClick={(e) => handleOpen(e, item._id)}>
           <Edit color="primary" fontSize="small" />
         </Button>
       </Grid>
@@ -259,9 +273,19 @@ export default function SupportItem(props) {
                 <TextField
                   id="reply-content"
                   variant="outlined"
+                  disabled={
+                    user.role === userUtil.userRole.customer ? true : false
+                  }
+                  required
                   multiline
                   minRows={4}
                   className={classes.inpBoxWidth}
+                  onChange={(e) => {
+                    setSupport({
+                      ...support,
+                      feedback: e.target.value,
+                    });
+                  }}
                 ></TextField>
               </Container>
               <Container className={classes.buttonBox}>
@@ -275,7 +299,13 @@ export default function SupportItem(props) {
                     Hủy
                   </Typography>
                 </Button>
-                <DefaultButton title="Xác nhận" icon={Done} />
+                <DefaultButton
+                  title="Xác nhận"
+                  icon={Done}
+                  clickEvent={() => {
+                    handleConfirm();
+                  }}
+                />
               </Container>
             </form>
           </CardContent>

@@ -132,4 +132,6 @@ router.get(
   "/api/supports/client/:clientId",
   SupportController.getSupportsByClientId
 );
+router.get("/api/supports/get-all", SupportController.getAllSupports);
+router.put("/api/support/response", SupportController.responseSupport);
 module.exports = router;

@@ -15,9 +15,15 @@ export default function SupportPage() {
 
   const getSupportList = async () => {
     try {
-      const userId = userUtil.getCurrentUserId();
-      const supports = await supportApi.getSupportsByClientId(userId);
-      console.log(supports, "supportssupportssupports");
+      const role = userUtil.getCurrentUserRole();
+      let supports;
+      if (role === userUtil.userRole.customer) {
+        const userId = userUtil.getCurrentUserId();
+        supports = await supportApi.getSupportsByClientId(userId);
+      } else {
+        supports = await supportApi.getAllSupports();
+      }
+
       setSupportList(supports);
     } catch (error) {
       console.log(error);
@@ -48,7 +54,7 @@ export default function SupportPage() {
       <FilterBar />
       <ListHeader />
       {supportList?.map((item, idx) => (
-        <SupportItem item={item} key={idx} />
+        <SupportItem item={item} user={userUtil.getCurrentUser()} key={idx} />
       ))}
     </Container>
   );
