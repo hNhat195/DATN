@@ -2,13 +2,18 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const SupportSchema = new Schema(
   {
-    orderId: {
-      type: Schema.Types.ObjectId,
-      ref: "Order",
+    // orderId: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "Order",
+    //   default: null,
+    //   required: true,
+    // },
+    orderCode: {
+      type: Number,
       default: null,
       required: true,
     },
-    clientID: {
+    clientId: {
       type: Schema.Types.ObjectId,
       default: null,
       ref: "Customer",
@@ -28,6 +33,12 @@ const SupportSchema = new Schema(
       type: String,
       default: "",
     },
+    status: {
+      type: String,
+      enum: ["requested", "responsed", "canceled"],
+      default: "requested",
+      required: true,
+    },
     requestedAt: {
       type: Date,
       default: Date.now(),
@@ -35,8 +46,7 @@ const SupportSchema = new Schema(
     },
     responsedAt: {
       type: Date,
-      default: Date.now(),
-      required: true,
+      default: null,
     },
   },
   { collection: "Support" }

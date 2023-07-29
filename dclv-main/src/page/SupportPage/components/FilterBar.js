@@ -10,6 +10,8 @@ import {
 import DateFilter from "../../../components/DateFilter";
 import SearchField from "../../../components/SearchField";
 import { Notifications } from "@material-ui/icons";
+import CreateSupportModal from "./CreateSupportModal";
+import userUtil from "../../../utils/user";
 
 const useStyles = makeStyles({
   root: {
@@ -35,6 +37,10 @@ export default function FilterBar() {
     <>
       <Grid container className={classes.root}>
         <Grid item xs={2}>
+          <CreateSupportModal setRefresh={true} />
+        </Grid>
+
+        <Grid item xs={2}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Trạng thái</InputLabel>
             <Select
@@ -49,11 +55,11 @@ export default function FilterBar() {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={1}></Grid>
         <Grid item xs={6}>
           <DateFilter />
         </Grid>
-        <Grid container item xs={3}>
+
+        <Grid container item xs={2}>
           <Grid item xs={2} className={classes.verticalCenter}>
             <Button>
               <Notifications fontSize="large" />

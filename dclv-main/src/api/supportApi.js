@@ -1,8 +1,8 @@
 import axiosClient from "./axiosClient";
 
 class SupportApi {
-  getAll = () => {
-    const url = "/support";
+  getSupportsByClientId = (clientId) => {
+    const url = `/supports/client/${clientId}`;
     return axiosClient.get(url);
   };
   response = (data) => {

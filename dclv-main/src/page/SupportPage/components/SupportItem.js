@@ -16,6 +16,7 @@ import clsx from "clsx";
 import { Done, Cancel } from "@material-ui/icons";
 import DefaultButton from "../../../components/Button/DefaultButton";
 import { useHistory } from "react-router-dom";
+import supportUtil from "../../../utils/support";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -112,10 +113,11 @@ const useStyles = makeStyles((theme) => ({
   btnColor: {
     color: "black",
   },
-  statusOk: {
+  statusResponsed: {
     color: "#5A9E4B",
   },
-  statusNotOk: { color: "#D19431" },
+  statusRequested: { color: "#D19431" },
+  statusCanceled: { color: "#e8132f" },
 }));
 
 export default function SupportItem(props) {
@@ -152,28 +154,35 @@ export default function SupportItem(props) {
         xs={2}
         className={clsx(classes.orderId, classes.verticalCenter)}
       >
-        <p>MĐH{item.order.orderId}</p>
+        <p>MĐH{item.orderCode}</p>
       </Grid>
       <Grid item xs={2} className={classes.verticalCenter}>
-        <p>{item.customer.name}</p>
+        <p>{item.clientId.name}</p>
       </Grid>
 
       <Grid item xs={2} className={classes.productList}>
-        <p>{item.customer.phone}</p>
+        <p>{item.clientId.phone}</p>
       </Grid>
 
       <Grid item xs={3} className={classes.verticalCenter}>
-        <p className={classes.verticalAlign}>{item.request}</p>
+        <p className={classes.verticalAlign}>{item.content}</p>
       </Grid>
       <Grid item xs={3} className={classes.productList}>
-        {item.status === false ? (
-          <Typography className={classes.statusNotOk}>
+        {item.status === supportUtil.supportStatus.requested ? (
+          <Typography className={classes.statusRequested}>
             Chưa có phản hồi
           </Typography>
+        ) : item.status === supportUtil.supportStatus.canceled ? (
+          <Typography className={classes.statusCanceled}>
+            Đã huỷ yêu cầu
+          </Typography>
         ) : (
-          <Typography className={classes.statusOk}>{item.response}</Typography>
+          <Typography className={classes.statusResponsed}>
+            {item.feedback}
+          </Typography>
         )}
       </Grid>
+
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
