@@ -10,6 +10,11 @@ class ProductApi {
     return axiosClient.get(url);
   };
 
+  getProductHomepage = () => {
+    const url = `/product/homepage`;
+    return axiosClient.get(url);
+  };
+
   getProductById = (productId) => {
     const url = `/product/${productId}`;
     return axiosClient.get(url);

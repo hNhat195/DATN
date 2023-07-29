@@ -71,8 +71,8 @@ function CardProfile() {
         <Typography variant="body1">
           {role === "admin"
             ? "Quản lí"
-            : role === "salesman"
-            ? "Nhân viên bán hàng"
+            : role === "staff"
+            ? "Nhân viên"
             : role === "shipper"
             ? "Nhân viên vận chuyển"
             : "Khách hàng"}

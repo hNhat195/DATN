@@ -1,10 +1,12 @@
 import axiosClient from "./axiosClient";
 
 const orderApi = {
-  getAll: (page, limit) => {
+  getAll: (page, limit, userId) => {
     let url;
 
-    if (page && limit) url = `/order?page=${page}&limit=${limit}`;
+    if (page && limit)
+      url = `/order?page=${page}&limit=${limit}&userId=${userId}`;
+    else if (userId) url = `/order?userId=${userId}`;
     else url = `/order`;
     return axiosClient.get(url);
   },
@@ -13,7 +15,7 @@ const orderApi = {
     return axiosClient.post(url, data);
   },
   createSubOrder: (data) => {
-    const url = "/order/create-sub-order"
+    const url = "/order/create-sub-order";
     return axiosClient.post(url, data);
   },
   getOne: (orderId) => {
@@ -110,6 +112,11 @@ const orderApi = {
   },
   getCompletedSubOrderItem: () => {
     const url = `/order/completed-sub-item`;
+    return axiosClient.get(url);
+  },
+
+  getOrdersByUserId: (userId) => {
+    const url = `/user-orders/${userId}`;
     return axiosClient.get(url);
   },
 };

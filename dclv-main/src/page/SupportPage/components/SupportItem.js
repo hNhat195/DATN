@@ -13,9 +13,13 @@ import {
   Container,
 } from "@material-ui/core";
 import clsx from "clsx";
-import { Done, Cancel } from "@material-ui/icons";
+
+import { Done, Cancel, Edit } from "@material-ui/icons";
 import DefaultButton from "../../../components/Button/DefaultButton";
 import { useHistory } from "react-router-dom";
+import supportUtil from "../../../utils/support";
+import userUtil from "../../../utils/user";
+import supportApi from "../../../api/supportApi";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -112,20 +116,28 @@ const useStyles = makeStyles((theme) => ({
   btnColor: {
     color: "black",
   },
-  statusOk: {
+  statusResponsed: {
     color: "#5A9E4B",
   },
-  statusNotOk: { color: "#D19431" },
+  statusRequested: { color: "#D19431" },
+  statusCanceled: { color: "#e8132f" },
 }));
 
 export default function SupportItem(props) {
-  const { item } = props;
+  const { item, user } = props;
   const classes = useStyles();
   const history = useHistory();
 
+  const [support, setSupport] = useState({
+    staffId: userUtil.getCurrentUserId,
+    supportId: null,
+    feedback: null,
+  });
+
   const [open, setOpen] = useState(false);
 
-  const handleOpen = (e) => {
+  const handleOpen = (e, supportId) => {
+    setSupport({ ...support, supportId: supportId });
     //Seperate onClick in child and parents component
     e.stopPropagation();
     setOpen(true);
@@ -145,35 +157,52 @@ export default function SupportItem(props) {
     setExpanded(!expanded);
   };
 
+  const handleConfirm = () => {
+    supportApi.responseSupport(support);
+    setOpen(false);
+  };
+
   return (
     <Grid container className={classes.root}>
       <Grid
         item
-        xs={2}
+        xs={1}
         className={clsx(classes.orderId, classes.verticalCenter)}
       >
-        <p>MĐH{item.order.orderId}</p>
+        <p>MDH{item.orderCode}</p>
       </Grid>
       <Grid item xs={2} className={classes.verticalCenter}>
-        <p>{item.customer.name}</p>
+        <p>{item.clientId.name}</p>
       </Grid>
 
       <Grid item xs={2} className={classes.productList}>
-        <p>{item.customer.phone}</p>
+        <p>{item.clientId.phone}</p>
       </Grid>
 
       <Grid item xs={3} className={classes.verticalCenter}>
-        <p className={classes.verticalAlign}>{item.request}</p>
+        <p className={classes.verticalAlign}>{item.content}</p>
       </Grid>
       <Grid item xs={3} className={classes.productList}>
-        {item.status === false ? (
-          <Typography className={classes.statusNotOk}>
+        {item.status === supportUtil.supportStatus.requested ? (
+          <Typography className={classes.statusRequested}>
             Chưa có phản hồi
           </Typography>
+        ) : item.status === supportUtil.supportStatus.canceled ? (
+          <Typography className={classes.statusCanceled}>
+            Đã huỷ yêu cầu
+          </Typography>
         ) : (
-          <Typography className={classes.statusOk}>{item.response}</Typography>
+          <Typography className={classes.statusResponsed}>
+            {item.feedback}
+          </Typography>
         )}
       </Grid>
+      <Grid item xs={1} className={classes.productList}>
+        <Button onClick={(e) => handleOpen(e, item._id)}>
+          <Edit color="primary" fontSize="small" />
+        </Button>
+      </Grid>
+
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -210,7 +239,26 @@ export default function SupportItem(props) {
                   id="order-id"
                   variant="outlined"
                   disabled
-                  defaultValue="MDH1234"
+                  defaultValue={"MDH" + item.orderCode}
+                  className={classes.inpBoxWidth}
+                ></TextField>
+                <InputLabel htmlFor="order-id">
+                  <Typography
+                    gutterBottom
+                    variant="h6"
+                    className={classes.btnColor}
+                  >
+                    Yêu cầu
+                  </Typography>
+                </InputLabel>
+                <TextField
+                  id="order-id"
+                  variant="outlined"
+                  disabled
+                  multiline
+                  minRows={1}
+                  maxRows={4}
+                  defaultValue={item.content}
                   className={classes.inpBoxWidth}
                 ></TextField>
                 <InputLabel htmlFor="reply-content">
@@ -225,9 +273,19 @@ export default function SupportItem(props) {
                 <TextField
                   id="reply-content"
                   variant="outlined"
+                  disabled={
+                    user.role === userUtil.userRole.customer ? true : false
+                  }
+                  required
                   multiline
-                  rows={6}
+                  minRows={4}
                   className={classes.inpBoxWidth}
+                  onChange={(e) => {
+                    setSupport({
+                      ...support,
+                      feedback: e.target.value,
+                    });
+                  }}
                 ></TextField>
               </Container>
               <Container className={classes.buttonBox}>
@@ -241,7 +299,13 @@ export default function SupportItem(props) {
                     Hủy
                   </Typography>
                 </Button>
-                <DefaultButton title="Xác nhận" icon={Done} />
+                <DefaultButton
+                  title="Xác nhận"
+                  icon={Done}
+                  clickEvent={() => {
+                    handleConfirm();
+                  }}
+                />
               </Container>
             </form>
           </CardContent>

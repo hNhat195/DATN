@@ -14,18 +14,13 @@ const {
 /*----order route------*/
 router.get("/api/order", OrderController.list);
 router.post("/api/order/create", OrderController.create);
-router.get(
-  "/api/order/completed",
-  OrderController.getCompletedOrder
-);
-router.get(
-  "/api/order/completed-sub",
-  OrderController.getCompletedSubOrder
-);
+router.get("/api/order/completed", OrderController.getCompletedOrder);
+router.get("/api/order/completed-sub", OrderController.getCompletedSubOrder);
 router.get(
   "/api/order/completed-sub-item",
   OrderController.getCompletedSubOrderItem
 );
+router.get("/api/user-orders/:userId", OrderController.getOrdersByUserId);
 router.get("/api/order/:id", OrderController.detail);
 router.get("/api/order/:id/products", OrderController.getListProductsById);
 router.put("/api/order/update_info", OrderController.updateInfo);
@@ -47,14 +42,8 @@ router.put(
   "/api/order/update-sub-order-status/:id",
   OrderController.updateSubOrderStatus
 );
-router.put(
-  "/api/order/test/:id",
-  OrderController.testUpdateSubOrder
-);
-router.get(
-  "/api/order/sub-order/:id",
-  OrderController.getSubOrder
-);
+router.put("/api/order/test/:id", OrderController.testUpdateSubOrder);
+router.get("/api/order/sub-order/:id", OrderController.getSubOrder);
 
 const {
   createNewCustomer,
@@ -107,6 +96,8 @@ const {
   getColorByMaterial,
   getProductsByMaterialSlug,
   getProductBySlug,
+  getProductsHomePage,
+  searchProductBySlug,
 } = require("../controller/FabricRollController");
 
 router.get("/api/collections/:materialSlug", getProductsByMaterialSlug);
@@ -116,6 +107,8 @@ router.get("/api/product/allmaterialcode", getAllMaterialCode);
 router.get("/api/product/allcolorcode", getAllColorCode);
 router.get("/api/product/matbycolor", getMaterialByColor);
 router.post("/api/product/colorbymat", getColorByMaterial);
+router.get("/api/product/homepage", getProductsHomePage);
+router.get("/api/product/search/:slug", searchProductBySlug);
 router.get("/api/product/:slug", getProductBySlug);
 router.get("/api/products/:id", getProductById);
 
@@ -132,4 +125,15 @@ router.get("/api/getfabricwarehouse", getFabricTypeWarehouse);
 
 router.get("/api/user/admin/liststaff", listStaff);
 
+/*-------------------------*/
+//Support routes
+
+const SupportController = require("../controller/SupportController");
+router.post("/api/support/create", SupportController.createSupport);
+router.get(
+  "/api/supports/client/:clientId",
+  SupportController.getSupportsByClientId
+);
+router.get("/api/supports/get-all", SupportController.getAllSupports);
+router.put("/api/support/response", SupportController.responseSupport);
 module.exports = router;

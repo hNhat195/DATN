@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
   image: {
     backgroundImage:
-      "url(https://webservices.wkf.fr/editorial/medias/images/actu-77374-report-d_imposition-des.jpg)",
+      "url(https://agorafabrics.com/wp-content/uploads/2021/11/AGORA_WEB_1rst.png)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -138,7 +138,7 @@ export default function SignIn() {
 
       localStorage.setItem(
         "user",
-        JSON.stringify({ ...response, role: formState.values.role })
+        JSON.stringify({ role: formState.values.role, ...response })
       );
       localStorage.setItem("access_token", response.access_token);
       history.push("/dashboard");
@@ -180,7 +180,8 @@ export default function SignIn() {
             <Typography
               component="span"
               variant="subtitle1"
-              className={classes.alert}>
+              className={classes.alert}
+            >
               {alert}
             </Typography>
           </div>
@@ -246,7 +247,8 @@ export default function SignIn() {
               onChange={handleChange}
               SelectProps={{
                 native: true,
-              }}>
+              }}
+            >
               <option value="staff">Nhân viên</option>
               <option value="customer">Khách hàng</option>
             </TextField>
@@ -267,7 +269,8 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}>
+              className={classes.submit}
+            >
               Đăng nhập
             </Button>
             <Grid container>
