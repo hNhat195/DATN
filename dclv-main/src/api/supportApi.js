@@ -1,11 +1,15 @@
 import axiosClient from "./axiosClient";
 
 class SupportApi {
-  getAll = () => {
-    const url = "/support";
+  getSupportsByClientId = (clientId) => {
+    const url = `/supports/client/${clientId}`;
     return axiosClient.get(url);
   };
-  response = (data) => {
+  getAllSupports = () => {
+    const url = `/supports/get-all`;
+    return axiosClient.get(url);
+  };
+  responseSupport = (data) => {
     const url = "/support/response";
     return axiosClient.put(url, data);
   };

@@ -125,4 +125,15 @@ router.get("/api/getfabricwarehouse", getFabricTypeWarehouse);
 
 router.get("/api/user/admin/liststaff", listStaff);
 
+/*-------------------------*/
+//Support routes
+
+const SupportController = require("../controller/SupportController");
+router.post("/api/support/create", SupportController.createSupport);
+router.get(
+  "/api/supports/client/:clientId",
+  SupportController.getSupportsByClientId
+);
+router.get("/api/supports/get-all", SupportController.getAllSupports);
+router.put("/api/support/response", SupportController.responseSupport);
 module.exports = router;
