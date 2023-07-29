@@ -143,7 +143,6 @@ export default function CreateSupportModal({ setRefresh }) {
           setOpen(false);
           setRefresh((prevState) => !prevState);
         } catch (error) {
-          console.log(error, "error qq gì");
           alert("Thông tin không hợp lệ");
         }
       }
@@ -174,11 +173,12 @@ export default function CreateSupportModal({ setRefresh }) {
           <CardContent>
             <Typography
               gutterBottom
-              variant="h6"
+              variant="h5"
               className={classes.titleModal}
             >
               Tạo yêu cầu hỗ trợ
             </Typography>
+
             <form className={classes.formModal} autoComplete="off">
               <Box className={classes.nameStaff}>
                 <FormControl

@@ -13,7 +13,8 @@ import {
   Container,
 } from "@material-ui/core";
 import clsx from "clsx";
-import { Done, Cancel } from "@material-ui/icons";
+
+import { Done, Cancel, Edit } from "@material-ui/icons";
 import DefaultButton from "../../../components/Button/DefaultButton";
 import { useHistory } from "react-router-dom";
 import supportUtil from "../../../utils/support";
@@ -151,10 +152,10 @@ export default function SupportItem(props) {
     <Grid container className={classes.root}>
       <Grid
         item
-        xs={2}
+        xs={1}
         className={clsx(classes.orderId, classes.verticalCenter)}
       >
-        <p>MĐH{item.orderCode}</p>
+        <p>MDH{item.orderCode}</p>
       </Grid>
       <Grid item xs={2} className={classes.verticalCenter}>
         <p>{item.clientId.name}</p>
@@ -181,6 +182,11 @@ export default function SupportItem(props) {
             {item.feedback}
           </Typography>
         )}
+      </Grid>
+      <Grid item xs={1} className={classes.productList}>
+        <Button onClick={handleOpen}>
+          <Edit color="primary" fontSize="small" />
+        </Button>
       </Grid>
 
       <Modal
@@ -219,7 +225,26 @@ export default function SupportItem(props) {
                   id="order-id"
                   variant="outlined"
                   disabled
-                  defaultValue="MDH1234"
+                  defaultValue={"MDH" + item.orderCode}
+                  className={classes.inpBoxWidth}
+                ></TextField>
+                <InputLabel htmlFor="order-id">
+                  <Typography
+                    gutterBottom
+                    variant="h6"
+                    className={classes.btnColor}
+                  >
+                    Yêu cầu
+                  </Typography>
+                </InputLabel>
+                <TextField
+                  id="order-id"
+                  variant="outlined"
+                  disabled
+                  multiline
+                  minRows={1}
+                  maxRows={4}
+                  defaultValue={item.content}
                   className={classes.inpBoxWidth}
                 ></TextField>
                 <InputLabel htmlFor="reply-content">
@@ -235,7 +260,7 @@ export default function SupportItem(props) {
                   id="reply-content"
                   variant="outlined"
                   multiline
-                  rows={6}
+                  minRows={4}
                   className={classes.inpBoxWidth}
                 ></TextField>
               </Container>
