@@ -32,20 +32,43 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
   )} 0%, ${alpha(theme.palette.warning.dark, 0.24)} 100%)`,
 }));
 
-export default function StaffRevenue() {
+export default function StaffRevenue({ dateRangeFilter }) {
   const [totalDeposit, setTotalDeposit] = useState([]);
+  const [filteredList, setFilteredList] = useState([])
+  const [displayedValue, setDisplayedValue] = useState(0)
   useEffect(() => {
     const fetTotalDeposit = async () => {
       try {
         // const response = await orderApi.totalDeposit();
         const response = await orderApi.getAll();
         setTotalDeposit(response);
+        setFilteredList(response)
       } catch (error) {
         console.log("Failed to fetch deposit", error);
       }
     };
     fetTotalDeposit();
   }, []);
+  useEffect(() => {
+    if (dateRangeFilter.startDate && dateRangeFilter.endDate) {
+      let temp = totalDeposit?.filter(
+        (item) =>
+          Date.parse(item.orderTime) >= Date.parse(dateRangeFilter.startDate) &&
+          Date.parse(item.orderTime) <= Date.parse(dateRangeFilter.endDate)
+      );
+      setFilteredList(temp)
+    }
+    else {
+      let temp = totalDeposit
+      setFilteredList(temp)
+    }
+  }, [dateRangeFilter])
+  useEffect(() => {
+    
+    const temp = filteredList.reduce((accumulator, currentValue) => accumulator + (isNaN(currentValue.totalQuantity) ? 0 : currentValue.totalQuantity), 0)
+    
+    setDisplayedValue(temp)
+  }, [filteredList])
   
   return (
     <RootStyle>
@@ -57,7 +80,7 @@ export default function StaffRevenue() {
           height="40"
         />
       </IconWrapperStyle>
-      <Typography variant="h4">{totalDeposit.reduce((accumulator, currentValue) => accumulator + (isNaN(currentValue.totalQuantity)? 0 : currentValue.totalQuantity),0)}</Typography>
+      <Typography variant="h4">{displayedValue}</Typography>
       <Typography variant="h6" sx={{ opacity: 0.72 }}>
         Tổng số lượng cây vải đã đặt
       </Typography>

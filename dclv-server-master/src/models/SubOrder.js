@@ -18,6 +18,11 @@ const SubOrderSchema = new Schema(
       default: "",
       required: false,
     },
+    subOrderTime: {
+      type: Date,
+      default: Date.now(),
+      required: true,
+    },
     totalQty: {
       type: Number,
     },
