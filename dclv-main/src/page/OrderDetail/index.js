@@ -39,10 +39,20 @@ const useStyles = makeStyles((theme) => ({
     color: "#000040",
   },
   btnCancel: {
-    backgroundColor: "#EAECFF",
+    backgroundColor: "#fff",
     color: "#696983",
     "&:hover": {
       backgroundColor: "red",
+      color: "black",
+    },
+    textTransform: "none",
+    padding: theme.spacing(1.5),
+  },
+  btnUpdate: {
+    backgroundColor: "#fff",
+    color: "#696983",
+    "&:hover": {
+      backgroundColor: "rgb(252, 186, 3)",
       color: "black",
     },
     textTransform: "none",
@@ -143,13 +153,7 @@ export default function OrderDetail() {
             {"Chi tiết đơn đặt hàng MDH" + detail.orderId}
           </Typography>
         </Grid>
-        <Grid>
-          <SubOrderPopup
-            orderId={id}
-            products={detail.products}
-            subOrder={detail.subOrder}
-          ></SubOrderPopup>
-        </Grid>
+        
       </Grid>
       <Grid container spacing={2} className={classes.root}>
         <Grid item xs={12} md={7}>
@@ -158,6 +162,52 @@ export default function OrderDetail() {
         <Grid item xs={12} md={5}>
           <TimelineStatus statusList={detail.orderStatus} />
         </Grid>
+        <Grid container spacing={2} className={classes.btnGroup}>
+        <Grid item>
+          <SubOrderPopup
+            orderId={id}
+            products={detail.products}
+            subOrder={detail.subOrder}
+          ></SubOrderPopup>
+        </Grid>
+        <Grid item>
+          
+          <Button
+            startIcon={<Cancel />}
+            onClick={() => {
+              handleCancel();
+            }}
+            disabled={lastStatus === (OrderStatus.CANCELED ||OrderStatus.COMPLETED)}
+            size="medium"
+            className={classes.btnCancel}
+          >
+            <Typography variant="h6" className={classes.btnCancelTitle}>
+              Hủy
+            </Typography>
+          </Button>
+        </Grid>
+        <Grid item>
+          {/* <DefaultButton
+            title="Quay lại"
+            icon={ArrowBack}
+            clickEvent={handleBack}
+          /> */}
+          
+        </Grid>
+        <Grid item>
+          {/* <DefaultButton title="Cập nhật" icon={ArrowUpward} /> */}
+          <Button
+            startIcon={<Publish />}
+            disabled={lastStatus === (OrderStatus.CANCELED ||OrderStatus.COMPLETED)}
+            size="medium"
+            className={classes.btnUpdate}
+          >
+            <Typography variant="h6" className={classes.btnCancelTitle}>
+              Cập nhật
+            </Typography>
+          </Button>
+        </Grid>
+      </Grid>
         <Grid item xs={12} md={7}>
           <ListBill detailBill={detail.detailBill} />
         </Grid>
@@ -172,57 +222,10 @@ export default function OrderDetail() {
         </Grid>
 
         {detail.subOrder?.map((item, idx) => (
-          // <Grid item container key={idx} xs={12} md={12}>
-          //   <Grid item container xs={12} md={6}>
-          //     <OrderInfo products={item.products} />
-          //     <Grid item xs={3}>
-          //       {/* <button
-          //         onClick={(e) => handleUpdateSubOrderStatus(e, item._id, idx)}
-          //       >
-          //         Chuyển trạng thái
-          //       </button> */}
-          //       <ChangeStatusPopup subOrder={item} idx={idx} detail={detail} setDetail={setDetail}></ChangeStatusPopup>
-          //     </Grid>
-          //     <Grid item xs={3}>
-          //       <button onClick={(e) => handleCancelSubOrder(e, item, idx)}>
-          //         Hủy đơn hàng
-          //       </button>
-          //     </Grid>
-          //   </Grid>
-          //   <Grid>
-          //     <TimelineStatus statusList={item.subOrderStatus} />
-          //   </Grid>
-          // </Grid>
           <SubOrderList item={item} idx={idx} detail={detail} setDetail={setDetail}></SubOrderList>
         ))}
       </Grid>
-      <Grid container spacing={2} className={classes.btnGroup}>
-        <Grid item>
-          <Button
-            startIcon={<Cancel />}
-            onClick={() => {
-              handleCancel();
-            }}
-            disabled={lastStatus === OrderStatus.CANCELED}
-            size="large"
-            className={classes.btnCancel}
-          >
-            <Typography variant="h6" className={classes.btnCancelTitle}>
-              Hủy
-            </Typography>
-          </Button>
-        </Grid>
-        <Grid item>
-          <DefaultButton
-            title="Quay lại"
-            icon={ArrowBack}
-            clickEvent={handleBack}
-          />
-        </Grid>
-        <Grid item>
-          <DefaultButton title="Cập nhật" icon={ArrowUpward} />
-        </Grid>
-      </Grid>
+      
     </Container>
   );
 }

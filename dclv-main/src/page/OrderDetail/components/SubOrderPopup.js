@@ -169,7 +169,7 @@ export default function SubOrderPopup({ orderId, products, subOrder }) {
 
   return (
     <span>
-      <Button variant="outline" onClick={handleClickOpen}>
+      <Button size="large" variant="outline" onClick={handleClickOpen}>
         Tạo suborder
       </Button>
       <Dialog
