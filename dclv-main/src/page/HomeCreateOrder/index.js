@@ -58,15 +58,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HomeCreateOrder() {
   const classes = useStyles();
-  const history = useHistory();
 
   const [colorList, setColorList] = useState([]);
   const [materialList, setMaterialList] = useState([]);
   const [productList, setProductList] = useState([]);
-
-  const handleBack = () => {
-    history.push(`/order`);
-  };
 
   return (
     <div className={classes.parent}>

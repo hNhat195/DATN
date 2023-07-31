@@ -6,18 +6,9 @@ import { Button, Grid, Typography, Container } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import orderApi from "../../api/orderApi";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  ArrowBack,
-  ArrowUpward,
-  Cancel,
-  ImportExport,
-} from "@material-ui/icons";
-// import easyinvoice from "easyinvoice";
-import DefaultButton from "../../components/Button/DefaultButton";
 import { useHistory, useParams } from "react-router-dom";
 import SubOrderPopup from "./components/SubOrderPopup";
-
-import { OrderStatus } from "../../const/OrderStatus";
+import easyinvoice from "easyinvoice";
 import SubOrderList from "./components/SubOrderList";
 import CancelOrderPopup from "./components/CancelOrderPopup";
 import ChangeOrderStatusPopup from "./components/ChangeOrderStatusPopup";
@@ -113,8 +104,8 @@ export default function OrderDetail() {
 
   const handleExport = async () => {
     const res = await orderApi.exportBill(id);
-    // const result = await easyinvoice.createInvoice(res.data);
-    // await easyinvoice.download("myInvoice.pdf", result.pdf);
+    const result = await easyinvoice.createInvoice(res.data);
+    await easyinvoice.download("myInvoice.pdf", result.pdf);
   };
   const handleUpdateStatus = async () => {
     const res = await orderApi.updateStatus(id, {
@@ -168,6 +159,15 @@ export default function OrderDetail() {
             products={detail.products}
             subOrder={detail.subOrder}></SubOrderPopup>
         </Grid>
+        <Grid>
+          <Button
+            color="secondary"
+            size="large"
+            variant="outline"
+            onClick={handleExport}>
+            Xuất hoá đơn
+          </Button>
+        </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.root}>
         <Grid item xs={12} md={7}>
@@ -184,42 +184,12 @@ export default function OrderDetail() {
               subOrder={detail.subOrder}></SubOrderPopup>
           </Grid>
           <Grid item>
-            {/* <Button
-            startIcon={<Cancel />}
-            onClick={() => {
-              handleCancel();
-            }}
-            disabled={lastStatus === (OrderStatus.CANCELED ||OrderStatus.COMPLETED)}
-            size="medium"
-            className={classes.btnCancel}
-          >
-            <Typography variant="h6" className={classes.btnCancelTitle}>
-              Hủy
-            </Typography>
-          </Button> */}
             <CancelOrderPopup
               disabledChange={false}
               handleCancel={handleCancel}></CancelOrderPopup>
           </Grid>
+          <Grid item></Grid>
           <Grid item>
-            {/* <DefaultButton
-            title="Quay lại"
-            icon={ArrowBack}
-            clickEvent={handleBack}
-          /> */}
-          </Grid>
-          <Grid item>
-            {/* <DefaultButton title="Cập nhật" icon={ArrowUpward} /> */}
-            {/* <Button
-            startIcon={<Publish />}
-            disabled={lastStatus === (OrderStatus.CANCELED ||OrderStatus.COMPLETED)}
-            size="medium"
-            className={classes.btnUpdate}
-          >
-            <Typography variant="h6" className={classes.btnCancelTitle}>
-              Cập nhật
-            </Typography>
-          </Button> */}
             <ChangeOrderStatusPopup
               lastStatus={lastStatus}
               disabledChange={false}
