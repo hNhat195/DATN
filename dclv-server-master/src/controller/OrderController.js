@@ -541,7 +541,12 @@ const updateStatus = async (req, res) => {
           if (err) {
             return res.json({ message: "Error" });
           } else {
-            return res.json(result);
+            return res.json({
+              message: "Cập nhật trạng thái đơn hàng thành công",
+              status: 200,
+              data: result,
+            });
+
           }
         }
       );
@@ -564,7 +569,11 @@ const updateStatus = async (req, res) => {
           if (err) {
             return res.json({ message: "Error" });
           } else {
-            return res.json(result);
+            return res.json({
+              message: "Cập nhật trạng thái đơn hàng thành công",
+              status: 200,
+              data: result,
+            });
           }
         }
       );
@@ -587,7 +596,11 @@ const updateStatus = async (req, res) => {
           if (err) {
             return res.json({ message: "Error" });
           } else {
-            return res.json(result);
+            return res.json({
+              message: "Cập nhật trạng thái đơn hàng thành công",
+              status: 200,
+              data: result,
+            });
           }
         }
       );

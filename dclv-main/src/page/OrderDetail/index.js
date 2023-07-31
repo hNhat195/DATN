@@ -19,6 +19,8 @@ import SubOrderPopup from "./components/SubOrderPopup";
 
 import { OrderStatus } from "../../const/OrderStatus";
 import SubOrderList from "./components/SubOrderList";
+import CancelOrderPopup from "./components/CancelOrderPopup";
+import ChangeOrderStatusPopup from "./components/ChangeOrderStatusPopup";
 
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
@@ -44,10 +46,20 @@ const useStyles = makeStyles((theme) => ({
     color: "#000040",
   },
   btnCancel: {
-    backgroundColor: "#EAECFF",
+    backgroundColor: "#fff",
     color: "#696983",
     "&:hover": {
       backgroundColor: "red",
+      color: "black",
+    },
+    textTransform: "none",
+    padding: theme.spacing(1.5),
+  },
+  btnUpdate: {
+    backgroundColor: "#fff",
+    color: "#696983",
+    "&:hover": {
+      backgroundColor: "rgb(252, 186, 3)",
       color: "black",
     },
     textTransform: "none",
@@ -75,6 +87,14 @@ export default function OrderDetail() {
   });
   const [lastStatus, setLastStatus] = useState();
 
+  useEffect(() => {
+    console.log(detail);
+  }, [detail]);
+
+  const handleOrderStatus = async () => {
+    console.log(detail);
+  };
+
   const handleCancel = async () => {
     const res = await orderApi.updateStatusCancelOrder(id, {
       status: "cancel",
@@ -95,6 +115,21 @@ export default function OrderDetail() {
     const res = await orderApi.exportBill(id);
     // const result = await easyinvoice.createInvoice(res.data);
     // await easyinvoice.download("myInvoice.pdf", result.pdf);
+  };
+  const handleUpdateStatus = async () => {
+    const res = await orderApi.updateStatus(id, {
+      status: "change status",
+      reason: "change status by admin",
+    });
+
+    let temp = detail;
+    temp.orderStatus.push(
+      res?.data.orderStatus[res.data.orderStatus.length - 1]
+    );
+    setDetail(temp);
+    setLastStatus(
+      res?.data.orderStatus[res?.data.orderStatus?.length - 1]?.name
+    );
   };
 
   useEffect(() => {}, [lastStatus, detail.subOrder]);
@@ -141,6 +176,57 @@ export default function OrderDetail() {
         <Grid item xs={12} md={5}>
           <TimelineStatus statusList={detail.orderStatus} />
         </Grid>
+        <Grid container spacing={2} className={classes.btnGroup}>
+          <Grid item>
+            <SubOrderPopup
+              orderId={id}
+              products={detail.products}
+              subOrder={detail.subOrder}></SubOrderPopup>
+          </Grid>
+          <Grid item>
+            {/* <Button
+            startIcon={<Cancel />}
+            onClick={() => {
+              handleCancel();
+            }}
+            disabled={lastStatus === (OrderStatus.CANCELED ||OrderStatus.COMPLETED)}
+            size="medium"
+            className={classes.btnCancel}
+          >
+            <Typography variant="h6" className={classes.btnCancelTitle}>
+              Hủy
+            </Typography>
+          </Button> */}
+            <CancelOrderPopup
+              disabledChange={false}
+              handleCancel={handleCancel}></CancelOrderPopup>
+          </Grid>
+          <Grid item>
+            {/* <DefaultButton
+            title="Quay lại"
+            icon={ArrowBack}
+            clickEvent={handleBack}
+          /> */}
+          </Grid>
+          <Grid item>
+            {/* <DefaultButton title="Cập nhật" icon={ArrowUpward} /> */}
+            {/* <Button
+            startIcon={<Publish />}
+            disabled={lastStatus === (OrderStatus.CANCELED ||OrderStatus.COMPLETED)}
+            size="medium"
+            className={classes.btnUpdate}
+          >
+            <Typography variant="h6" className={classes.btnCancelTitle}>
+              Cập nhật
+            </Typography>
+          </Button> */}
+            <ChangeOrderStatusPopup
+              lastStatus={lastStatus}
+              disabledChange={false}
+              orderDetail={detail?.orderStatus}
+              handleUpdateStatus={handleUpdateStatus}></ChangeOrderStatusPopup>
+          </Grid>
+        </Grid>
         <Grid item xs={12} md={7}>
           <ListBill detailBill={detail.detailBill} />
         </Grid>
@@ -161,51 +247,6 @@ export default function OrderDetail() {
             detail={detail}
             setDetail={setDetail}></SubOrderList>
         ))}
-      </Grid>
-      <Grid container spacing={2} className={classes.btnGroup}>
-        <Grid item>
-          <Button
-            startIcon={<Cancel />}
-            onClick={() => {
-              handleCancel();
-            }}
-            disabled={lastStatus === OrderStatus.CANCELED}
-            size="large"
-            className={classes.btnCancel}>
-            <Typography variant="h6" className={classes.btnCancelTitle}>
-              Hủy
-            </Typography>
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button
-            startIcon={<ImportExport />}
-            onClick={() => {
-              handleExport();
-            }}
-            disabled={
-              !(
-                detail?.orderStatus[detail?.orderStatus?.length - 1]?.name ===
-                OrderStatus.COMPLETED
-              )
-            }
-            size="large"
-            className={classes.btnCancel}>
-            <Typography variant="h6" className={classes.btnCancelTitle}>
-              Xuất hoá đơn
-            </Typography>
-          </Button>
-        </Grid>
-        <Grid item>
-          <DefaultButton
-            title="Quay lại"
-            icon={ArrowBack}
-            clickEvent={handleBack}
-          />
-        </Grid>
-        <Grid item>
-          <DefaultButton title="Cập nhật" icon={ArrowUpward} />
-        </Grid>
       </Grid>
     </Container>
   );
