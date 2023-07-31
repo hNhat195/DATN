@@ -13,6 +13,7 @@ const mongodb_url = process.env.MONGODB_URL_V2;
 
 const router = require("./src/routes/routes");
 const { sendMailSuccess } = require("./src/controller/mailer");
+const { exportBill } = require("./src/controller/exportBill");
 
 const app = express();
 app.use(bodyParser.json());

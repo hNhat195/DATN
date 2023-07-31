@@ -6,14 +6,12 @@ import { Button, Grid, Typography, Container } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import orderApi from "../../api/orderApi";
 import { makeStyles } from "@material-ui/core/styles";
-import { ArrowBack, ArrowUpward, Cancel, Publish } from "@material-ui/icons";
-import DefaultButton from "../../components/Button/DefaultButton";
 import { useHistory, useParams } from "react-router-dom";
 import SubOrderPopup from "./components/SubOrderPopup";
-
-import { OrderStatus } from "../../const/OrderStatus";
-import ChangeStatusPopup from "./components/ChangeStatusPopup";
+import easyinvoice from "easyinvoice";
 import SubOrderList from "./components/SubOrderList";
+import CancelOrderPopup from "./components/CancelOrderPopup";
+import ChangeOrderStatusPopup from "./components/ChangeOrderStatusPopup";
 
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
@@ -39,10 +37,20 @@ const useStyles = makeStyles((theme) => ({
     color: "#000040",
   },
   btnCancel: {
-    backgroundColor: "#EAECFF",
+    backgroundColor: "#fff",
     color: "#696983",
     "&:hover": {
       backgroundColor: "red",
+      color: "black",
+    },
+    textTransform: "none",
+    padding: theme.spacing(1.5),
+  },
+  btnUpdate: {
+    backgroundColor: "#fff",
+    color: "#696983",
+    "&:hover": {
+      backgroundColor: "rgb(252, 186, 3)",
       color: "black",
     },
     textTransform: "none",
@@ -70,6 +78,10 @@ export default function OrderDetail() {
   });
   const [lastStatus, setLastStatus] = useState();
 
+  useEffect(() => {
+    console.log(detail);
+  }, [detail]);
+
   const handleOrderStatus = async () => {
     console.log(detail);
   };
@@ -90,23 +102,25 @@ export default function OrderDetail() {
     );
   };
 
-  const handleCancelSubOrder = async (e, subOrder, idx) => {
-    const res = await orderApi.cancelSubOrder(subOrder._id, {
-      status: "cancel",
-      reason: "cancel by admin",
-    });
-    let temp = detail;
-    temp.subOrder[idx] = res;
-    setDetail(temp);
+  const handleExport = async () => {
+    const res = await orderApi.exportBill(id);
+    const result = await easyinvoice.createInvoice(res.data);
+    await easyinvoice.download("myInvoice.pdf", result.pdf);
   };
-
-  const handleUpdateSubOrderStatus = async (e, subOrderId, idx) => {
-    const res = await orderApi.updateSubOrderStatus(subOrderId, {
-      reason: "cancel by admin",
+  const handleUpdateStatus = async () => {
+    const res = await orderApi.updateStatus(id, {
+      status: "change status",
+      reason: "change status by admin",
     });
+
     let temp = detail;
-    temp.subOrder[idx] = res;
+    temp.orderStatus.push(
+      res?.data.orderStatus[res.data.orderStatus.length - 1]
+    );
     setDetail(temp);
+    setLastStatus(
+      res?.data.orderStatus[res?.data.orderStatus?.length - 1]?.name
+    );
   };
 
   useEffect(() => {}, [lastStatus, detail.subOrder]);
@@ -127,10 +141,6 @@ export default function OrderDetail() {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(detail);
-  }, [detail]);
-
   const handleBack = () => {
     history.push(`/order`);
   };
@@ -147,8 +157,16 @@ export default function OrderDetail() {
           <SubOrderPopup
             orderId={id}
             products={detail.products}
-            subOrder={detail.subOrder}
-          ></SubOrderPopup>
+            subOrder={detail.subOrder}></SubOrderPopup>
+        </Grid>
+        <Grid>
+          <Button
+            color="secondary"
+            size="large"
+            variant="outline"
+            onClick={handleExport}>
+            Xuất hoá đơn
+          </Button>
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.root}>
@@ -157,6 +175,27 @@ export default function OrderDetail() {
         </Grid>
         <Grid item xs={12} md={5}>
           <TimelineStatus statusList={detail.orderStatus} />
+        </Grid>
+        <Grid container spacing={2} className={classes.btnGroup}>
+          <Grid item>
+            <SubOrderPopup
+              orderId={id}
+              products={detail.products}
+              subOrder={detail.subOrder}></SubOrderPopup>
+          </Grid>
+          <Grid item>
+            <CancelOrderPopup
+              disabledChange={false}
+              handleCancel={handleCancel}></CancelOrderPopup>
+          </Grid>
+          <Grid item></Grid>
+          <Grid item>
+            <ChangeOrderStatusPopup
+              lastStatus={lastStatus}
+              disabledChange={false}
+              orderDetail={detail?.orderStatus}
+              handleUpdateStatus={handleUpdateStatus}></ChangeOrderStatusPopup>
+          </Grid>
         </Grid>
         <Grid item xs={12} md={7}>
           <ListBill detailBill={detail.detailBill} />
@@ -172,56 +211,12 @@ export default function OrderDetail() {
         </Grid>
 
         {detail.subOrder?.map((item, idx) => (
-          // <Grid item container key={idx} xs={12} md={12}>
-          //   <Grid item container xs={12} md={6}>
-          //     <OrderInfo products={item.products} />
-          //     <Grid item xs={3}>
-          //       {/* <button
-          //         onClick={(e) => handleUpdateSubOrderStatus(e, item._id, idx)}
-          //       >
-          //         Chuyển trạng thái
-          //       </button> */}
-          //       <ChangeStatusPopup subOrder={item} idx={idx} detail={detail} setDetail={setDetail}></ChangeStatusPopup>
-          //     </Grid>
-          //     <Grid item xs={3}>
-          //       <button onClick={(e) => handleCancelSubOrder(e, item, idx)}>
-          //         Hủy đơn hàng
-          //       </button>
-          //     </Grid>
-          //   </Grid>
-          //   <Grid>
-          //     <TimelineStatus statusList={item.subOrderStatus} />
-          //   </Grid>
-          // </Grid>
-          <SubOrderList item={item} idx={idx} detail={detail} setDetail={setDetail}></SubOrderList>
+          <SubOrderList
+            item={item}
+            idx={idx}
+            detail={detail}
+            setDetail={setDetail}></SubOrderList>
         ))}
-      </Grid>
-      <Grid container spacing={2} className={classes.btnGroup}>
-        <Grid item>
-          <Button
-            startIcon={<Cancel />}
-            onClick={() => {
-              handleCancel();
-            }}
-            disabled={lastStatus === OrderStatus.CANCELED}
-            size="large"
-            className={classes.btnCancel}
-          >
-            <Typography variant="h6" className={classes.btnCancelTitle}>
-              Hủy
-            </Typography>
-          </Button>
-        </Grid>
-        <Grid item>
-          <DefaultButton
-            title="Quay lại"
-            icon={ArrowBack}
-            clickEvent={handleBack}
-          />
-        </Grid>
-        <Grid item>
-          <DefaultButton title="Cập nhật" icon={ArrowUpward} />
-        </Grid>
       </Grid>
     </Container>
   );

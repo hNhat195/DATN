@@ -10,8 +10,7 @@ const { Color } = require("../models/Color");
 const { SubOrder } = require("../models/SubOrder");
 const { SubOrderItem } = require("../models/SubOrderItem");
 const { OrderStatus, SubOrderStatus } = require("../constant/OrderStatus");
-
-const mailer = require("../utils/mailer");
+const { sendMailCreate, sendMailUpdateStatus } = require("./mailer");
 
 async function getNextSequenceValue(sequenceName) {
   let seq = await Counter.findOneAndUpdate(
@@ -75,7 +74,6 @@ const list = async (req, res) => {
 };
 
 const getOrdersByUserId = async (req, res) => {
-  console.log(req.params, "params");
   await Order.find({ clientID: req.params.userId })
     .exec()
     .then((orders) => {
@@ -146,10 +144,12 @@ const create = async (req, res) => {
       {
         products: productList,
         totalQuantity: totalQuantity,
-        // subOrder: subOrder,
       },
       { new: true }
     );
+    let user = await Customer.findOne({ _id: req.body.clientID });
+    console.log(user);
+    sendMailCreate(temp, user);
 
     res.send({ status: 200, result });
   } catch (err) {
@@ -330,6 +330,12 @@ const updateStatusCancelOrder = async (req, res) => {
           },
         });
       })
+    );
+    var user = await Customer.findOne({ _id: newOrderStatus.clientID });
+
+    sendMailCancel(
+      newOrderStatus.orderStatus[newOrderStatus.orderStatus.length - 1],
+      user
     );
 
     return res.json({
@@ -541,7 +547,16 @@ const updateStatus = async (req, res) => {
           if (err) {
             return res.json({ message: "Error" });
           } else {
-            return res.json(result);
+            var user = Customer.findOne({ _id: result.clientID });
+            sendMailUpdateStatus(
+              result.orderStatus[result.orderStatus.length - 1],
+              user
+            );
+            return res.json({
+              message: "Cập nhật trạng thái đơn hàng thành công",
+              status: 200,
+              data: result,
+            });
           }
         }
       );
@@ -564,7 +579,16 @@ const updateStatus = async (req, res) => {
           if (err) {
             return res.json({ message: "Error" });
           } else {
-            return res.json(result);
+            var user = Customer.findOne({ _id: result.clientID });
+            sendMailUpdateStatus(
+              result.orderStatus[result.orderStatus.length - 1],
+              user
+            );
+            return res.json({
+              message: "Cập nhật trạng thái đơn hàng thành công",
+              status: 200,
+              data: result,
+            });
           }
         }
       );
@@ -587,7 +611,16 @@ const updateStatus = async (req, res) => {
           if (err) {
             return res.json({ message: "Error" });
           } else {
-            return res.json(result);
+            var user = Customer.findOne({ _id: result.clientID });
+            sendMailUpdateStatus(
+              result.orderStatus[result.orderStatus.length - 1],
+              user
+            );
+            return res.json({
+              message: "Cập nhật trạng thái đơn hàng thành công",
+              status: 200,
+              data: result,
+            });
           }
         }
       );
