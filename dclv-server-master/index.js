@@ -22,8 +22,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(router);
 
-app.post("/generate-invoice", exportBill);
-
 mongoose
   .connect(mongodb_url, { useNewUrlParser: true })
   .then(() => {

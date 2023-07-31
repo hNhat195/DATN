@@ -1,4 +1,4 @@
-import { Grid, Typography, Container } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { useState } from "react";
 
 import { makeStyles, styled } from "@material-ui/core/styles";
@@ -8,7 +8,6 @@ import CreateForm from "./components/CreateForm";
 import OrderTable from "./components/OrderTable";
 import Announcement from "../../components/SellingPages/Announcement";
 import Navbar from "../../components/SellingPages/Navbar";
-import Navbar2 from "../../components/SellingPages/DropdownBar/Navbar.js";
 import Footer from "../../components/SellingPages/Footer";
 
 const useStyles = makeStyles((theme) => ({
@@ -47,16 +46,14 @@ const useStyles = makeStyles((theme) => ({
   btnCancelTitle: {
     ...theme.typography.buttonPrimary,
   },
-  orderDetailBox: {
-
-  },
+  orderDetailBox: {},
   parent: {
     height: "800px",
   },
   contentContainer: {
     height: "70%",
-    paddingTop: "30px"
-  }
+    paddingTop: "30px",
+  },
 }));
 
 export default function HomeCreateOrder() {
@@ -75,7 +72,7 @@ export default function HomeCreateOrder() {
     <div className={classes.parent}>
       <Announcement></Announcement>
       <Navbar></Navbar>
-      
+
       <div className={classes.contentContainer}>
         <Grid container spacing={2}>
           <Grid item xs={9}>
@@ -83,8 +80,7 @@ export default function HomeCreateOrder() {
           </Grid>
         </Grid>
         <Grid container spacing={2} className={classes.root}>
-          <Grid item md={1}>
-          </Grid>
+          <Grid item md={1}></Grid>
           <Grid item xs={12} md={4}>
             <CreateForm
               productList={productList}
@@ -101,8 +97,7 @@ export default function HomeCreateOrder() {
               setProductList={setProductList}
             />
           </Grid>
-          <Grid item md={1}>
-          </Grid>
+          <Grid item md={1}></Grid>
         </Grid>
       </div>
       <Footer></Footer>

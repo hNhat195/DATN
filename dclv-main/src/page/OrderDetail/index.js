@@ -6,13 +6,18 @@ import { Button, Grid, Typography, Container } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import orderApi from "../../api/orderApi";
 import { makeStyles } from "@material-ui/core/styles";
-import { ArrowBack, ArrowUpward, Cancel, Publish } from "@material-ui/icons";
+import {
+  ArrowBack,
+  ArrowUpward,
+  Cancel,
+  ImportExport,
+} from "@material-ui/icons";
+// import easyinvoice from "easyinvoice";
 import DefaultButton from "../../components/Button/DefaultButton";
 import { useHistory, useParams } from "react-router-dom";
 import SubOrderPopup from "./components/SubOrderPopup";
 
 import { OrderStatus } from "../../const/OrderStatus";
-import ChangeStatusPopup from "./components/ChangeStatusPopup";
 import SubOrderList from "./components/SubOrderList";
 
 const useStyles = makeStyles((theme) => ({
@@ -70,10 +75,6 @@ export default function OrderDetail() {
   });
   const [lastStatus, setLastStatus] = useState();
 
-  const handleOrderStatus = async () => {
-    console.log(detail);
-  };
-
   const handleCancel = async () => {
     const res = await orderApi.updateStatusCancelOrder(id, {
       status: "cancel",
@@ -90,23 +91,10 @@ export default function OrderDetail() {
     );
   };
 
-  const handleCancelSubOrder = async (e, subOrder, idx) => {
-    const res = await orderApi.cancelSubOrder(subOrder._id, {
-      status: "cancel",
-      reason: "cancel by admin",
-    });
-    let temp = detail;
-    temp.subOrder[idx] = res;
-    setDetail(temp);
-  };
-
-  const handleUpdateSubOrderStatus = async (e, subOrderId, idx) => {
-    const res = await orderApi.updateSubOrderStatus(subOrderId, {
-      reason: "cancel by admin",
-    });
-    let temp = detail;
-    temp.subOrder[idx] = res;
-    setDetail(temp);
+  const handleExport = async () => {
+    const res = await orderApi.exportBill(id);
+    // const result = await easyinvoice.createInvoice(res.data);
+    // await easyinvoice.download("myInvoice.pdf", result.pdf);
   };
 
   useEffect(() => {}, [lastStatus, detail.subOrder]);
@@ -127,10 +115,6 @@ export default function OrderDetail() {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(detail);
-  }, [detail]);
-
   const handleBack = () => {
     history.push(`/order`);
   };
@@ -147,8 +131,7 @@ export default function OrderDetail() {
           <SubOrderPopup
             orderId={id}
             products={detail.products}
-            subOrder={detail.subOrder}
-          ></SubOrderPopup>
+            subOrder={detail.subOrder}></SubOrderPopup>
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.root}>
@@ -172,28 +155,11 @@ export default function OrderDetail() {
         </Grid>
 
         {detail.subOrder?.map((item, idx) => (
-          // <Grid item container key={idx} xs={12} md={12}>
-          //   <Grid item container xs={12} md={6}>
-          //     <OrderInfo products={item.products} />
-          //     <Grid item xs={3}>
-          //       {/* <button
-          //         onClick={(e) => handleUpdateSubOrderStatus(e, item._id, idx)}
-          //       >
-          //         Chuyển trạng thái
-          //       </button> */}
-          //       <ChangeStatusPopup subOrder={item} idx={idx} detail={detail} setDetail={setDetail}></ChangeStatusPopup>
-          //     </Grid>
-          //     <Grid item xs={3}>
-          //       <button onClick={(e) => handleCancelSubOrder(e, item, idx)}>
-          //         Hủy đơn hàng
-          //       </button>
-          //     </Grid>
-          //   </Grid>
-          //   <Grid>
-          //     <TimelineStatus statusList={item.subOrderStatus} />
-          //   </Grid>
-          // </Grid>
-          <SubOrderList item={item} idx={idx} detail={detail} setDetail={setDetail}></SubOrderList>
+          <SubOrderList
+            item={item}
+            idx={idx}
+            detail={detail}
+            setDetail={setDetail}></SubOrderList>
         ))}
       </Grid>
       <Grid container spacing={2} className={classes.btnGroup}>
@@ -205,10 +171,28 @@ export default function OrderDetail() {
             }}
             disabled={lastStatus === OrderStatus.CANCELED}
             size="large"
-            className={classes.btnCancel}
-          >
+            className={classes.btnCancel}>
             <Typography variant="h6" className={classes.btnCancelTitle}>
               Hủy
+            </Typography>
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            startIcon={<ImportExport />}
+            onClick={() => {
+              handleExport();
+            }}
+            disabled={
+              !(
+                detail?.orderStatus[detail?.orderStatus?.length - 1]?.name ===
+                OrderStatus.COMPLETED
+              )
+            }
+            size="large"
+            className={classes.btnCancel}>
+            <Typography variant="h6" className={classes.btnCancelTitle}>
+              Xuất hoá đơn
             </Typography>
           </Button>
         </Grid>
