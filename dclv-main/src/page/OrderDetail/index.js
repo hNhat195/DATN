@@ -14,6 +14,8 @@ import SubOrderPopup from "./components/SubOrderPopup";
 import { OrderStatus } from "../../const/OrderStatus";
 import ChangeStatusPopup from "./components/ChangeStatusPopup";
 import SubOrderList from "./components/SubOrderList";
+import CancelOrderPopup from "./components/CancelOrderPopup";
+import ChangeOrderStatusPopup from "./components/ChangeOrderStatusPopup";
 
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
@@ -80,6 +82,10 @@ export default function OrderDetail() {
   });
   const [lastStatus, setLastStatus] = useState();
 
+  useEffect(() => {
+    console.log(detail)
+  }, [detail])
+
   const handleOrderStatus = async () => {
     console.log(detail);
   };
@@ -100,23 +106,20 @@ export default function OrderDetail() {
     );
   };
 
-  const handleCancelSubOrder = async (e, subOrder, idx) => {
-    const res = await orderApi.cancelSubOrder(subOrder._id, {
-      status: "cancel",
-      reason: "cancel by admin",
+  const handleUpdateStatus = async () => {
+    const res = await orderApi.updateStatus(id, {
+      status: "change status",
+      reason: "change status by admin",
     });
-    let temp = detail;
-    temp.subOrder[idx] = res;
-    setDetail(temp);
-  };
 
-  const handleUpdateSubOrderStatus = async (e, subOrderId, idx) => {
-    const res = await orderApi.updateSubOrderStatus(subOrderId, {
-      reason: "cancel by admin",
-    });
     let temp = detail;
-    temp.subOrder[idx] = res;
+    temp.orderStatus.push(
+      res?.data.orderStatus[res.data.orderStatus.length - 1]
+    );
     setDetail(temp);
+    setLastStatus(
+      res?.data.orderStatus[res?.data.orderStatus?.length - 1]?.name
+    );
   };
 
   useEffect(() => {}, [lastStatus, detail.subOrder]);
@@ -172,7 +175,7 @@ export default function OrderDetail() {
         </Grid>
         <Grid item>
           
-          <Button
+          {/* <Button
             startIcon={<Cancel />}
             onClick={() => {
               handleCancel();
@@ -184,7 +187,8 @@ export default function OrderDetail() {
             <Typography variant="h6" className={classes.btnCancelTitle}>
               Hủy
             </Typography>
-          </Button>
+          </Button> */}
+          <CancelOrderPopup disabledChange={false} handleCancel={handleCancel}></CancelOrderPopup>
         </Grid>
         <Grid item>
           {/* <DefaultButton
@@ -196,7 +200,7 @@ export default function OrderDetail() {
         </Grid>
         <Grid item>
           {/* <DefaultButton title="Cập nhật" icon={ArrowUpward} /> */}
-          <Button
+          {/* <Button
             startIcon={<Publish />}
             disabled={lastStatus === (OrderStatus.CANCELED ||OrderStatus.COMPLETED)}
             size="medium"
@@ -205,7 +209,8 @@ export default function OrderDetail() {
             <Typography variant="h6" className={classes.btnCancelTitle}>
               Cập nhật
             </Typography>
-          </Button>
+          </Button> */}
+          <ChangeOrderStatusPopup lastStatus={lastStatus} disabledChange={false} orderDetail={detail?.orderStatus} handleUpdateStatus={handleUpdateStatus}></ChangeOrderStatusPopup>
         </Grid>
       </Grid>
         <Grid item xs={12} md={7}>
