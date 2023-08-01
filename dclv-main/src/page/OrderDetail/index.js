@@ -8,7 +8,6 @@ import orderApi from "../../api/orderApi";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory, useParams } from "react-router-dom";
 import SubOrderPopup from "./components/SubOrderPopup";
-import easyinvoice from "easyinvoice";
 import SubOrderList from "./components/SubOrderList";
 import CancelOrderPopup from "./components/CancelOrderPopup";
 import ChangeOrderStatusPopup from "./components/ChangeOrderStatusPopup";
@@ -101,11 +100,37 @@ export default function OrderDetail() {
       res?.data.orderStatus[res?.data.orderStatus?.length - 1]?.name
     );
   };
+  const downloadFile = (base64Data, fileName) => {
+    // Convert the base64 data to a Blob
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const fileBlob = new Blob([byteArray], {
+      type: "application/octet-stream",
+    });
+
+    // Create a URL for the Blob
+    const fileUrl = URL.createObjectURL(fileBlob);
+
+    // Create a link element and simulate a click to initiate the download
+    const link = document.createElement("a");
+    link.href = fileUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+
+    // Cleanup: remove the link and revoke the URL
+    document.body.removeChild(link);
+    URL.revokeObjectURL(fileUrl);
+  };
 
   const handleExport = async () => {
     const res = await orderApi.exportBill(id);
-    const result = await easyinvoice.createInvoice(res.data);
-    await easyinvoice.download("myInvoice.pdf", result.pdf);
+
+    downloadFile(res.data, "Bill.pdf");
   };
   const handleUpdateStatus = async () => {
     const res = await orderApi.updateStatus(id, {
