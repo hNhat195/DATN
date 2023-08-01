@@ -42,7 +42,6 @@ export default function CreateForm({
   const [fabricMaterial, setFabricMaterial] = useState("");
   const [fabricLength, setFabricLength] = useState("");
   const [materialId, setMaterialId] = useState("");
-  const [materialType, setMaterialType] = useState("");
 
   const history = useHistory();
   const classes = useStyles();
@@ -52,20 +51,28 @@ export default function CreateForm({
   };
 
   const handleSubmit = async (event) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    event.preventDefault();
     if (productList.length > 0) {
       let postData = {
         note: "front end call api",
-        receiverName: "Front end",
-        receiverPhone: "094444",
-        deposit: 10,
-        clientID: null,
+        receiverName: user?.name,
+        receiverPhone: user?.phone,
+        deposit: 0,
+        clientID: user?._id,
         products: productList,
-        receiverAddress: "front end test",
+        receiverAddress: user?.address,
       };
-      await postOrder(postData);
-      event.preventDefault();
-      history.push(`/order`);
-    } else console.log("please add product");
+      try {
+        await postOrder(postData);
+        alert("Success!");
+        history.push("/order/create");
+      } catch (error) {
+        alert("Error when create order, please try again");
+      }
+    } else {
+      alert("Please add product to cart before submit!");
+    }
   };
 
   const handleAdd = (event) => {
@@ -82,19 +89,20 @@ export default function CreateForm({
         length: Number.parseInt(fabricLength),
       };
       let checkDuplicate = false;
-      let i=0
-      for(; i<productList.length; i++) {
-        if(addData.colorCode == productList[i].colorCode && addData.typeId == productList[i].typeId) {
+      let i = 0;
+      for (; i < productList.length; i++) {
+        if (
+          addData.colorCode == productList[i].colorCode &&
+          addData.typeId == productList[i].typeId
+        ) {
           checkDuplicate = true;
           break;
         }
       }
 
-      if(checkDuplicate) {
-        console.log("duplicate")
-
-      }
-      else {
+      if (checkDuplicate) {
+        console.log("duplicate");
+      } else {
         setProductList([...productList, addData]);
       }
       event.preventDefault();
@@ -104,7 +112,7 @@ export default function CreateForm({
   useEffect(() => {
     const fetchMaterial = async () => {
       const response = await productApi.getAllMaterialCode();
-      
+
       setMaterialList(response);
     };
     fetchMaterial();
@@ -115,15 +123,12 @@ export default function CreateForm({
       const response = await productApi.getColorByMaterial(materialId);
       setColorList(response);
     }
-    
   };
   useEffect(async () => {
     await fetchColor();
   }, [materialId]);
 
-  useEffect(() => {
-    
-  }, [productList]);
+  useEffect(() => {}, [productList]);
 
   return (
     <div>
@@ -168,7 +173,6 @@ export default function CreateForm({
               id="fabric-color"
               label="Color"
               onChange={(e) => {
-                
                 setFabricColor(e.target.value);
               }}
               value={fabricColor || ""}>

@@ -119,5 +119,9 @@ const orderApi = {
     const url = `/user-orders/${userId}`;
     return axiosClient.get(url);
   },
+  exportBill: (orderId) => {
+    const url = `generate-invoice`;
+    return axiosClient.post(url, { orderId: orderId });
+  },
 };
 export default orderApi;
