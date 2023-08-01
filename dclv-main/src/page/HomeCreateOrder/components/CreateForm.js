@@ -35,8 +35,10 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "true",
   },
   changeButton: {
+    backgroundColor: 'rgb(252, 186, 3)',
+    color: '#fff',
     '&:hover': {
-      color: 'rgb(252, 186, 3)',
+      backgroundColor: 'rgb(230, 170, 5)',
     },
   },
   deleteButton: {
@@ -64,6 +66,12 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '50%',
     marginTop: "10px",
     marginBottom: "20px"
+  },
+  menu: {
+    maxHeight: '300px',
+  },
+  spaceBlank: {
+    height: '100px'
   }
 }));
 
@@ -201,6 +209,7 @@ export default function CreateForm({
           <FormControl fullWidth={true}>
             <InputLabel id="fabric-material">Chất liệu</InputLabel>
             <Select
+              MenuProps={{ classes: { paper: classes.menu } }}
               labelId="fabric-material"
               id="fabric-material"
               label="Material"
@@ -227,6 +236,7 @@ export default function CreateForm({
           <FormControl fullWidth={true}>
             <InputLabel id="fabric-color">Mã màu</InputLabel>
             <Select
+              MenuProps={{ classes: { paper: classes.menu } }}
               labelId="fabric-color"
               id="fabric-color"
               label="Color"
@@ -263,27 +273,23 @@ export default function CreateForm({
         </Grid>
         <Grid item xs={12} md={3}></Grid>
       </Grid>
-
+      <Grid container className={classes.spaceBlank}></Grid>
       <Grid container spacing={8} className={classes.paddingGrid}>
         <Grid item xs={4}>
+
+        </Grid>
+        <Grid item xs={2}></Grid>
+        <Grid item xs={4}>
+          {/* <CreateButtonPopup productList={productList}></CreateButtonPopup> */}
           <Button
-            variant="outlined"
+            variant="contained"
             type="button"
             onClick={handleAdd}
-            className={clsx(classes.buttonCss, classes.changeButton)}>
+
+            className={clsx(classes.buttonCss, classes.changeButton)}
+            >
             Thêm
           </Button>
-        </Grid>
-        <Grid item xs={1}></Grid>
-        <Grid item xs={4}>
-          {/* <Button
-            variant="outlined"
-            type="button"
-            className={clsx(classes.buttonCss, classes.acceptButton)}
-            onClick={handleSubmit}>
-            Tạo đơn
-          </Button> */}
-          <CreateButtonPopup productList={productList}></CreateButtonPopup>
         </Grid>
       </Grid>
       {errorPopup && <ErrorPopup open={errorPopup} closePopup={closePopup}></ErrorPopup>}

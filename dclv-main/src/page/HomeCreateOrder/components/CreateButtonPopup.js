@@ -177,7 +177,7 @@ export default function CreateButtonPopup({ productList }) {
 
   return (
     <span>
-      <Button variant="outline" onClick={handleClickOpen} className={classes.changeButton} title="Tạo đơn hàng">
+      <Button variant="contained" color="success" onClick={handleClickOpen} title="Tạo đơn hàng">
         Tạo đơn
       </Button>
       <Dialog open={open} onClose={handleClose} fullWidth={true}>

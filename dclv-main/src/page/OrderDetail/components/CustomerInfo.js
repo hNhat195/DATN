@@ -36,6 +36,9 @@ const useStyles = makeStyles({
     lineHeight: "40px",
     fontWeight: "bold",
   },
+  tableCss: {
+    width: "470px"
+  }
 });
 
 export default function CustomerInfo(props) {
@@ -49,7 +52,7 @@ export default function CustomerInfo(props) {
 
   return (
     <div className={classes.customerInfo}>
-      <Grid container>
+      {/* <Grid container>
         <Grid item xs={10}>
           <Typography variant="h5" className={classes.title}>
             Thông tin khách hàng
@@ -82,7 +85,7 @@ export default function CustomerInfo(props) {
                   {/* <Typography variant="subtitle1">
                     Đông Hòa - Dĩ An - Bình Dương
                   </Typography> */}
-                </td>
+                {/* </td>
               </tr>
               <tr>
                 <td>
@@ -112,13 +115,13 @@ export default function CustomerInfo(props) {
             <BorderColor fontSize="large" /> Ghi chú
           </div>
         </Grid>
-      </Grid>
+      </Grid> */}
       <Typography component="h6" className={classes.title}>
         Người nhận
       </Typography>
       <Grid container>
         <Grid item>
-          <table>
+          <table className={classes.tableCss}>
             <tbody>
               <tr>
                 <td>
@@ -138,9 +141,6 @@ export default function CustomerInfo(props) {
                       ? props.receiverAddress
                       : ""}
                   </Typography>
-                  {/* <Typography variant="subtitle1">
-                    KP 6 - Tp Thủ Đức - Tp Hồ Chí Minh
-                  </Typography> */}
                 </td>
               </tr>
               <tr>

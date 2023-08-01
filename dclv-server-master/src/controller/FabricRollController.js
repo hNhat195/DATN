@@ -53,7 +53,6 @@ const getProductsByCollectionId = async (req, res) => {
 };
 
 const getProductBySlug = async (req, res) => {
-  console.log(req.params.slug)
   await FabricRoll.findOne({ slug: req.params.slug })
     .exec()
     .then((product) => {

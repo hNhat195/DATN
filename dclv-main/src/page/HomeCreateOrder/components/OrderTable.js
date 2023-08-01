@@ -7,44 +7,35 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import {
+  Grid,
   Typography,
 } from "@material-ui/core";
 import "./styled.css";
 import OrderTableItem from "./OrderTableItem";
+import CreateButtonPopup from "./CreateButtonPopup";
+import { makeStyles } from "@material-ui/core/styles";
+
+
+const useStyles = makeStyles((theme) => ({
+
+  spaceBlank: {
+    height: '35px'
+  },
+  tableHeight: {
+    height: '300px'
+  }
+}));
 
 export default function OrderTable({ productList, setProductList }) {
-  // return (
-  //   <div>
-  //     <h2 className="table-title">Các sản phẩm đã tạo</h2>
-  //   <table>
-  //     <thead>
-  //       <tr>
-  //         <td width="300px" className="border-right">Chất liệu</td>
-  //         <td width="160px" className="border-right">Mã màu</td>
-  //         <td width="60px" className="border-right">Số cây vải</td>
-  //         <td width="180px"></td>
-  //       </tr>
-  //     </thead>
-  //     <tbody>
-  //       {productList.map((row, index) => (
-  //         <OrderTableItem
-  //           row={row}
-  //           key={index}
-  //           index={index}
-  //           productList={productList}
-  //           setProductList={setProductList}
-  //         ></OrderTableItem>
-  //       ))}
-  //     </tbody>
-  //   </table>
-  //   </div>
-  // );
+  const classes = useStyles()
+
   return (
     <div>
       <Typography variant="h4" gutterBottom>
         Chi tiết
       </Typography>
-      <TableContainer component={Paper} sx={{ maxHeight: 350 }}>
+      <Grid className={classes.tableHeight}>
+      <TableContainer component={Paper} sx={{ maxHeight: 300 }}>
         <Table aria-label="simple table" stickyHeader>
           <TableHead>
             <TableRow>
@@ -61,6 +52,15 @@ export default function OrderTable({ productList, setProductList }) {
           </TableBody>
         </Table>
       </TableContainer>
+      </Grid>
+      <Grid className={classes.spaceBlank}></Grid>
+      <Grid container>
+        <Grid item xs={10}></Grid>
+        <Grid item>
+          <CreateButtonPopup productList={productList}></CreateButtonPopup>
+        </Grid>
+      </Grid>
+
     </div>
   );
 }
