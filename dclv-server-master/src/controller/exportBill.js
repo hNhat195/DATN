@@ -67,8 +67,8 @@ const exportBill = async (req, res) => {
         customize: {},
       },
     };
-
-    res.json({ status: 200, message: "Success!", data: data });
+    const result = await easyinvoice.createInvoice(data);
+    res.json({ status: 200, message: "Success!", data: result.pdf });
   } catch (error) {
     console.log(error);
     res.json({ status: 400, message: "Error creating invoice" });
