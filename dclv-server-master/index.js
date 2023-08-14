@@ -30,17 +30,9 @@ mongoose
       console.log(`Server is running at http://localhost:${port}`);
     });
   })
-  // .then(() => {
-  //   sendMailSuccess(
-  //     {
-  //       orderId: "ABCZYC",
-  //       totalQuantity: 100,
-  //     },
-  //     {
-  //       name: "Lê Hồng Nhật",
-  //     }
-  //   );
-  // })
   .catch((error) => {
     console.log("Connect to MongoDB failed!" + error);
   });
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
