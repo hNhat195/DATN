@@ -77,10 +77,8 @@ const sendMailSuccess = (order, user) => {
   };
   transporter.sendMail(mainOptions, function (err, info) {
     if (err) {
-      console.log(err);
       res.redirect("/");
     } else {
-      console.log("Message sent: " + info.response);
       res.redirect("/");
     }
   });
@@ -156,10 +154,8 @@ const sendMailCancel = (order, user) => {
   };
   transporter.sendMail(mainOptions, function (err, info) {
     if (err) {
-      console.log(err);
       res.redirect("/");
     } else {
-      console.log("Message sent: " + info.response);
       res.redirect("/");
     }
   });
@@ -235,10 +231,8 @@ const sendMailUpdateStatus = (order, user) => {
   };
   transporter.sendMail(mainOptions, function (err, info) {
     if (err) {
-      console.log(err);
       res.redirect("/");
     } else {
-      console.log("Message sent: " + info.response);
       res.redirect("/");
     }
   });
@@ -313,10 +307,8 @@ const sendMailCreate = (order, user) => {
   };
   transporter.sendMail(mainOptions, function (err, info) {
     if (err) {
-      console.log(err);
       res.redirect("/");
     } else {
-      console.log("Message sent: " + info.response);
       res.redirect("/");
     }
   });

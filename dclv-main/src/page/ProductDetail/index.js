@@ -149,12 +149,7 @@ const Product = () => {
           <div className="thumbnail-images">
             <Carousel
               showStatus={false}
-              selectedItem={additionalImages.indexOf(selectedImage)}
-              onChange={
-                (index) => console.log("kkkkkkkkk")
-                // handleThumbnailClick(additionalImages[index])
-              }
-            >
+              selectedItem={additionalImages.indexOf(selectedImage)}>
               {additionalImages.map((image, index) => (
                 <div key={index}>
                   <img src={image} alt={`Thumbnail ${index + 1}`} />

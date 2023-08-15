@@ -22,9 +22,9 @@ const ProductList = () => {
   const [fabricTypes, setFabricTypes] = useState([]);
   const [fabricTypeItems, setFabricTypeItems] = useState(null);
 
-  const [sortBy, setSortBy] = useState('best');
-  const [searchWord, setSearchWord] = useState("")
-  const [filtered, setFiltered] = useState([])
+  const [sortBy, setSortBy] = useState("best");
+  const [searchWord, setSearchWord] = useState("");
+  const [filtered, setFiltered] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,7 +36,6 @@ const ProductList = () => {
         );
 
         if (fabrics) {
-          // console.log(fabrics)
           setFabrics(fabrics);
           setFilteredFabrics(fabrics);
         } else {
@@ -44,7 +43,6 @@ const ProductList = () => {
         }
 
         if (types) {
-          // console.log(types)
           setFabricTypes(types);
           setFabricTypeItems(translateFabricTypesToSideBar(types));
         } else {
@@ -80,13 +78,13 @@ const ProductList = () => {
       .map((item) => {
         return item.id;
       });
-    
+
     setFilteredFabrics(
       checkedTypeIds?.length === 0
         ? fabrics
         : fabrics.filter((fabric) =>
-          checkedTypeIds.includes(fabric.fabricTypeId)
-        )
+            checkedTypeIds.includes(fabric.fabricTypeId)
+          )
     );
 
     setFabricTypeItems(updatedCheckedTypeItems);
@@ -94,23 +92,21 @@ const ProductList = () => {
 
   useEffect(() => {
     let sorted = [...fabrics];
-    if (sortBy === 'asc') {
+    if (sortBy === "asc") {
       sorted = sorted.sort((a, b) => a.price - b.price);
-
-    } else if (sortBy === 'desc') {
+    } else if (sortBy === "desc") {
       sorted = sorted.sort((a, b) => b.price - a.price);
-
-    } else if (sortBy === 'nameAsc') {
+    } else if (sortBy === "nameAsc") {
       sorted = sorted.sort((a, b) => a.name.localeCompare(b.name));
-
-    } else if (sortBy === 'nameDesc') {
+    } else if (sortBy === "nameDesc") {
       sorted = sorted.sort((a, b) => b.name.localeCompare(a.name));
-
     }
-    
-    let temp = sorted?.filter((item) => item.name.toLowerCase().includes(searchWord.toLowerCase()))
-    setFilteredFabrics(temp)
-  }, [searchWord, sortBy])
+
+    let temp = sorted?.filter((item) =>
+      item.name.toLowerCase().includes(searchWord.toLowerCase())
+    );
+    setFilteredFabrics(temp);
+  }, [searchWord, sortBy]);
 
   return (
     <div>

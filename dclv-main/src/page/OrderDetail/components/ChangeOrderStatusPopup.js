@@ -13,60 +13,56 @@ import { useState, useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   changeButton: {
-    '&:hover': {
-      color: 'rgb(252, 186, 3)',
+    "&:hover": {
+      color: "rgb(252, 186, 3)",
     },
   },
   deleteButton: {
-    '&:hover': {
-      color: 'rgb(245, 66, 51)',
+    "&:hover": {
+      color: "rgb(245, 66, 51)",
     },
   },
   acceptButton: {
-    '&:hover': {
-      color: 'rgb(11, 214, 38)',
+    "&:hover": {
+      color: "rgb(11, 214, 38)",
     },
   },
 }));
 
-export default function ChangeOrderStatusPopup({ subOrder, idx, detail, setDetail, disabledChange, lastStatus, orderDetail, handleUpdateStatus }) {
+export default function ChangeOrderStatusPopup({
+  subOrder,
+  idx,
+  detail,
+  setDetail,
+  disabledChange,
+  lastStatus,
+  orderDetail,
+  handleUpdateStatus,
+}) {
   const [open, setOpen] = React.useState(false);
-  const [currentStatus, setCurrentStatus] = useState("")
-  const [nextStatus, setNextStatus] = useState("")
-  
+  const [currentStatus, setCurrentStatus] = useState("");
+  const [nextStatus, setNextStatus] = useState("");
+
   const classes = useStyles();
 
-  useEffect(() => {
-    
-  }, [disabledChange])
+  useEffect(() => {}, [disabledChange]);
 
-  useEffect(() => {
-    console.log(currentStatus);
-    console.log(lastStatus)
-  }, [currentStatus, lastStatus])
-
-  useEffect(() => {
-    
-  }, [])
+  useEffect(() => {}, []);
 
   const handleClickOpen = () => {
-    // const latestStatus = subOrder.subOrderStatus[subOrder.subOrderStatus.length - 1].name;
-    const latestStatus = orderDetail[orderDetail.length-1].name
-    console.log(latestStatus)
-    if (latestStatus == 'pending') {
-      setCurrentStatus('Chờ xử lý')
-      setNextStatus('Đã sẵn sàng')
-      
+    const latestStatus = orderDetail[orderDetail.length - 1].name;
+
+    if (latestStatus == "pending") {
+      setCurrentStatus("Chờ xử lý");
+      setNextStatus("Đã sẵn sàng");
+    } else if (latestStatus == "ready") {
+      setCurrentStatus("Đã sẵn sàng");
+      setNextStatus("Đang giao");
+    } else if (latestStatus == "in-progress") {
+      setCurrentStatus("Đang giao");
+      setNextStatus("Đã hoàn thành");
     }
-    else if (latestStatus == 'ready') {
-        setCurrentStatus('Đã sẵn sàng')
-        setNextStatus('Đang giao') 
-      }
-    else if (latestStatus == 'in-progress') {
-      setCurrentStatus('Đang giao')
-      setNextStatus('Đã hoàn thành')
-    }
-    console.log(orderDetail)
+
     setOpen(true);
   };
 
@@ -74,13 +70,16 @@ export default function ChangeOrderStatusPopup({ subOrder, idx, detail, setDetai
     setOpen(false);
   };
 
-  const handleChange = async () => {
-    
-  }
+  const handleChange = async () => {};
 
   return (
     <span>
-      <Button variant="outline" onClick={handleClickOpen} className={classes.changeButton} disabled={disabledChange} title="Chuyển trạng thái">
+      <Button
+        variant="outline"
+        onClick={handleClickOpen}
+        className={classes.changeButton}
+        disabled={disabledChange}
+        title="Chuyển trạng thái">
         Chuyển trạng thái
       </Button>
       <Dialog open={open} onClose={handleClose} fullWidth={true}>
@@ -92,14 +91,23 @@ export default function ChangeOrderStatusPopup({ subOrder, idx, detail, setDetai
               <b> "{currentStatus}" </b>
               sang trạng thái
               <b> "{nextStatus}" </b>
-
             </p>
           </DialogContentText>
         </DialogContent>
 
         <DialogActions>
-          <Button className={classes.deleteButton} variant="outline" onClick={handleClose}>Không</Button>
-          <Button className={classes.acceptButton} variant="outline" onClick={handleUpdateStatus}>Đồng ý</Button>
+          <Button
+            className={classes.deleteButton}
+            variant="outline"
+            onClick={handleClose}>
+            Không
+          </Button>
+          <Button
+            className={classes.acceptButton}
+            variant="outline"
+            onClick={handleUpdateStatus}>
+            Đồng ý
+          </Button>
         </DialogActions>
       </Dialog>
     </span>

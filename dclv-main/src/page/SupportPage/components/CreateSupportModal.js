@@ -11,11 +11,8 @@ import {
   TextField,
   Container,
   FormControl,
-  MenuItem,
   Box,
 } from "@material-ui/core";
-import moment from "moment";
-import clsx from "clsx";
 import { Done, Cancel } from "@material-ui/icons";
 import DefaultButton from "../../../components/Button/DefaultButton";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
@@ -167,15 +164,13 @@ export default function CreateSupportModal({ setRefresh }) {
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
-        }}
-      >
+        }}>
         <Card>
           <CardContent>
             <Typography
               gutterBottom
               variant="h5"
-              className={classes.titleModal}
-            >
+              className={classes.titleModal}>
               Tạo yêu cầu hỗ trợ
             </Typography>
 
@@ -184,14 +179,12 @@ export default function CreateSupportModal({ setRefresh }) {
                 <FormControl
                   fullWidth
                   margin="dense"
-                  style={{ marginRight: "10px" }}
-                >
+                  style={{ marginRight: "10px" }}>
                   <InputLabel htmlFor="support-orderCode"></InputLabel>
                   <Typography
                     gutterBottom
                     variant="h6"
-                    className={classes.btnColor}
-                  >
+                    className={classes.btnColor}>
                     Mã đơn hàng
                   </Typography>
                   <TextField
@@ -214,14 +207,12 @@ export default function CreateSupportModal({ setRefresh }) {
                 <FormControl
                   fullWidth
                   margin="dense"
-                  style={{ marginRight: "10px" }}
-                >
+                  style={{ marginRight: "10px" }}>
                   <InputLabel htmlFor="support-content"></InputLabel>
                   <Typography
                     gutterBottom
                     variant="h6"
-                    className={classes.btnColor}
-                  >
+                    className={classes.btnColor}>
                     Nội dung yêu cầu
                   </Typography>
                   <TextField
@@ -244,8 +235,7 @@ export default function CreateSupportModal({ setRefresh }) {
                   startIcon={<Cancel />}
                   size="large"
                   className={classes.btnCancel}
-                  onClick={handleClose}
-                >
+                  onClick={handleClose}>
                   <Typography variant="h6" className={classes.btnCancelTitle}>
                     Hủy
                   </Typography>

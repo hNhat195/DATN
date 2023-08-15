@@ -18,8 +18,6 @@ import {
   Paper,
 } from "@material-ui/core";
 import clsx from "clsx";
-import productApi from "../../../api/productApi";
-import moment from "moment";
 import { useHistory } from "react-router-dom";
 import orderApi from "../../../api/orderApi";
 
@@ -110,16 +108,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Bill({subOrderId, index}) {
+export default function Bill({ subOrderId, index }) {
   // const { bill } = props;
   const classes = useStyles();
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [listFabricRoll, setListFabricRoll] = useState([]);
-  const [subOrder, setSubOrder] = useState({})
-  useEffect(() => {
-    console.log(subOrderId)
-  }, [])
+  const [subOrder, setSubOrder] = useState({});
 
   const handleOpen = (e) => {
     e.stopPropagation();
@@ -132,25 +127,9 @@ export default function Bill({subOrderId, index}) {
   };
 
   useEffect(async () => {
-    // let mounted = true;
-
-    // const fetchFabricRoll = async (listId) => {
-    //   const response = await productApi.getListById(listId);
-
-    //   if (mounted) setListFabricRoll(response);
-    // };
-
-    // fetchFabricRoll({ ids: bill.fabricRoll });
-    // return () => {
-    //   mounted = false;
-    // };
-    const response = await orderApi.getSubOrder(subOrderId)
-    setSubOrder(response)
+    const response = await orderApi.getSubOrder(subOrderId);
+    setSubOrder(response);
   }, []);
-
-  useEffect(() => {
-    console.log(subOrder.subOrderStatus)
-  }, [subOrder])
 
   const [expanded, setExpanded] = useState(false);
 
@@ -158,11 +137,6 @@ export default function Bill({subOrderId, index}) {
     e.stopPropagation();
     setExpanded(!expanded);
   };
-
-  // const handleClick = (e) => {
-  //   e.stopPropagation();
-  //   history.push(`/order/billDetail/${bill._id}`);
-  // };
 
   return (
     <Grid container className={classes.root}>
@@ -178,7 +152,7 @@ export default function Bill({subOrderId, index}) {
       </Grid>
       <Grid item xs={2}>
         {/* {bill.salesmanID ? bill.salesmanID.name : "Trống"} */}
-        
+
         {/* {subOrder?.subOrderStatus[subOrder?.subOrderStatus?.length - 1].name} */}
       </Grid>
       <Grid item xs={2} className={classes.verticalCenter}>
@@ -187,26 +161,7 @@ export default function Bill({subOrderId, index}) {
       <Grid item xs={2} className={classes.alignVerticalCenter}>
         <Button onClick={handleOpen}>Chi tiết</Button>
       </Grid>
-      <Grid container item xs={2}>
-        {/* <p
-          className={
-            subOrder?.subOrderStatus[subOrder?.subOrderStatus?.length - 1].name === "ready"
-              ? classes.exportedTypo
-              : subOrder?.subOrderStatus[subOrder?.subOrderStatus?.length - 1].name === "in-progress"
-              ? classes.deliveryTypo
-              : subOrder?.subOrderStatus[subOrder?.subOrderStatus?.length - 1].name === "completed"
-              ? classes.successTypo
-              : classes.failTypo
-          }>
-          {subOrder?.subOrderStatus[subOrder?.subOrderStatus?.length - 1].name === "ready"
-            ? "Đã sẵn sàng"
-            : subOrder?.subOrderStatus[subOrder?.subOrderStatus?.length - 1].name === "in-progress"
-            ? "Đang vận chuyển"
-            : subOrder?.subOrderStatus[subOrder?.subOrderStatus?.length - 1].name === "completed"
-            ? "Hoàn tất"
-            : "Thất bại"}
-        </p> */}
-      </Grid>
+      <Grid container item xs={2}></Grid>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

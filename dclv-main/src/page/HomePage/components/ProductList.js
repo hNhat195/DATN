@@ -9,7 +9,6 @@ import ListPagination from "../../../components/ListPagination";
 import { makeStyles } from "@material-ui/core/styles";
 import merino from "../data/merino-fabric.json";
 
-
 const pageSize = 9;
 
 const useStyles = makeStyles((theme) => ({
@@ -27,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "550px",
   },
   productStyled: {
-    margin: "20px 20px"
-  }
+    margin: "20px 20px",
+  },
 }));
 
 export default function ProductList() {
@@ -40,10 +39,6 @@ export default function ProductList() {
     setProductsData(merino);
     setOrderPerPage(merino.slice(0, pageSize));
   }, []);
-
-  useEffect(() => {
-    console.log(productsData);
-  }, [productsData]);
 
   return (
     <Grid container className={classes.containerStyled}>

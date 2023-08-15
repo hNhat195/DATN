@@ -13,15 +13,14 @@ const listBillStatus = ["exported", "shipping", "completed", "failed"];
 
 async function InsertToBill() {
   const listOrderId = await getListOrderId();
-  // console.log(listOrderId);
+
   const listFabicRollUsedId = await getListFabricRollUsedId();
-  // console.log(listFabicRollUsedId);
+
   const listSalesmanId = await getListSalesmanId();
-  // console.log(listSalesmanId);
+
   const listCustomerId = await getListCustomerId();
-  // console.log(listCustomerId);
+
   const listShipperId = await getListShipperId();
-  // console.log(listShipperId);
 
   for (let i = 0; i <= 5; i++)
     Bill.create(
@@ -142,10 +141,10 @@ async function InsertToBill() {
 
 async function updateClient() {
   const listBillId = (await getListBillId()) || [];
-  console.log("list bill", listBillId);
+
   listBillId.forEach(async (item) => {
     const clientID = await getClientId(item);
-    console.log(clientID.orderID.clientID);
+
     Bill.findOneAndUpdate(
       { _id: item },
       { $set: { clientID: clientID.orderID.clientID } }
@@ -172,14 +171,7 @@ async function updateSatusField() {
       if (err) {
         throw err;
       }
-      console.log("done!");
     }
   );
-  // Bill.updateMany({}, { $unset: { billStatus: 1 } }, function (err, response) {
-  //   if (err) {
-  //     throw err;
-  //   }
-  //   console.log("done!");
-  // });
 }
 module.exports = { InsertToBill, updateClient, updateSatusField };

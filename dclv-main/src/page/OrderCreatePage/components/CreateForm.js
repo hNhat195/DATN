@@ -81,7 +81,7 @@ export default function CreateForm({
       fabricMaterial == "" ||
       isNaN(Number.parseInt(fabricLength))
     ) {
-      console.log("please add information");
+      alert("please add information");
     } else {
       let addData = {
         colorCode: fabricColor,
@@ -101,7 +101,7 @@ export default function CreateForm({
       }
 
       if (checkDuplicate) {
-        console.log("duplicate");
+        alert("Duplicate product");
       } else {
         setProductList([...productList, addData]);
       }

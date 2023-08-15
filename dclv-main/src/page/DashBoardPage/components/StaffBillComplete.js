@@ -32,18 +32,18 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
   )} 0%, ${alpha(theme.palette.info.dark, 0.24)} 100%)`,
 }));
 
-export default function StaffBillComplete({dateRangeFilter}) {
+export default function StaffBillComplete({ dateRangeFilter }) {
   const [billComplete, setBillComplete] = useState([]);
-  const [filteredList, setFilteredList] = useState([])
+  const [filteredList, setFilteredList] = useState([]);
   useEffect(() => {
     const fetCountBillComplete = async () => {
       try {
         // const response = await billApi.getBillCompleted();
-        const response = await orderApi.getOrderCompleted()
+        const response = await orderApi.getOrderCompleted();
         setBillComplete(response);
-        setFilteredList(response)
+        setFilteredList(response);
       } catch (error) {
-        console.log("Failed to fetch bill complete count", error);
+        alert("Failed to fetch bill complete count");
       }
     };
     fetCountBillComplete();
@@ -55,13 +55,12 @@ export default function StaffBillComplete({dateRangeFilter}) {
           Date.parse(item.orderTime) >= Date.parse(dateRangeFilter.startDate) &&
           Date.parse(item.orderTime) <= Date.parse(dateRangeFilter.endDate)
       );
-      setFilteredList(temp)
+      setFilteredList(temp);
+    } else {
+      let temp = billComplete;
+      setFilteredList(temp);
     }
-    else {
-      let temp = billComplete
-      setFilteredList(temp)
-    }
-  }, [dateRangeFilter])
+  }, [dateRangeFilter]);
   return (
     <RootStyle>
       <IconWrapperStyle>

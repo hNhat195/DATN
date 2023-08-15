@@ -65,56 +65,33 @@ export default function EditForm({
   };
 
   useEffect(async () => {
-    console.log(materialList)
-    console.log(colorList)
     const fetchMaterial = async () => {
       const response = await productApi.getAllMaterialCode();
-      //console.log(response)
+
       setMaterialList(response);
     };
 
-    const fetchColor = async() => {
+    const fetchColor = async () => {
       const response = await productApi.getAllColorCode();
-      setColorList(response)
-    }
-
-    // await fetchMaterial();
-    // await fetchColor();
-    // const response = await productApi.getAllMaterialCode();
-    // console.log(response);
-    // for (let i = 0; i < response.length; i++) {
-    //   if (response[i].name == chosenProduct.row.typeId) {
-    //     setFabricMaterial(response[i].id);
-
-    //     const colorResponse = await productApi.getColorByMaterial(response[i].id);
-    //     for (let j = 0; j < colorResponse.length; j++) {
-    //       if (colorResponse[j].colorCode == chosenProduct.row.colorCode)
-    //         console.log(colorResponse[j])
-    //         setFabricColor(colorResponse[j].colorCode);
-    //     }
-    //   }
-    // }
-
-    // console.log(fabricColor);
-    // setFabricLength(chosenProduct.row.length);
+      setColorList(response);
+    };
   }, []);
 
   useEffect(() => {
     const fetchColor = async () => {
-      console.log(materialType);
       const response = await productApi.getColorByMaterial(materialType);
       return response;
     };
-    console.log("material change");
+
     const response = fetchColor();
     setColorList(response);
   }, [materialType, materialList]);
 
   useEffect(() => {
-    setFabricMaterial(chosenProduct.row.typeId)
-    setFabricColor(chosenProduct.row.colorCode)
-    setFabricLength(chosenProduct.row.length)
-  }, [chosenProduct])
+    setFabricMaterial(chosenProduct.row.typeId);
+    setFabricColor(chosenProduct.row.colorCode);
+    setFabricLength(chosenProduct.row.length);
+  }, [chosenProduct]);
 
   return (
     <form id="order-creation" onSubmit={handleSubmit}>
@@ -202,8 +179,7 @@ export default function EditForm({
         variant="contained"
         color="primary"
         type="button"
-        onClick={handleAdd}
-      >
+        onClick={handleAdd}>
         Thêm
       </Button>
     </form>

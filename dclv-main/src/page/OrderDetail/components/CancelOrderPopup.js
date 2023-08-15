@@ -13,20 +13,25 @@ import { useState, useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   deleteButton: {
-    '&:hover': {
-      color: 'rgb(245, 66, 51)',
+    "&:hover": {
+      color: "rgb(245, 66, 51)",
     },
   },
 }));
 
-export default function CancelOrderPopup({ subOrder, idx, detail, setDetail, disabledChange, handleCancel }) {
+export default function CancelOrderPopup({
+  subOrder,
+  idx,
+  detail,
+  setDetail,
+  disabledChange,
+  handleCancel,
+}) {
   const [open, setOpen] = React.useState(false);
-  
+
   const classes = useStyles();
 
-  useEffect(() => {
-    
-  }, [disabledChange])
+  useEffect(() => {}, [disabledChange]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,26 +41,32 @@ export default function CancelOrderPopup({ subOrder, idx, detail, setDetail, dis
     setOpen(false);
   };
 
-  const handleCancelOrder = async () => {
-    console.log("Huy")
-  };
-
   return (
     <span>
-      <Button variant="outline" onClick={handleClickOpen} className={classes.deleteButton} disabled={disabledChange} title="Hủy order">
+      <Button
+        variant="outline"
+        onClick={handleClickOpen}
+        className={classes.deleteButton}
+        disabled={disabledChange}
+        title="Hủy order">
         Hủy order
       </Button>
       <Dialog open={open} onClose={handleClose} fullWidth={true}>
         <DialogTitle>Hủy order</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Bạn có muốn hủy đơn hàng này?
-          </DialogContentText>
+          <DialogContentText>Bạn có muốn hủy đơn hàng này?</DialogContentText>
         </DialogContent>
 
         <DialogActions>
-          <Button variant="outline" onClick={handleClose}>Không</Button>
-          <Button variant="outline" className={classes.deleteButton} onClick={handleCancel}>Hủy</Button>
+          <Button variant="outline" onClick={handleClose}>
+            Không
+          </Button>
+          <Button
+            variant="outline"
+            className={classes.deleteButton}
+            onClick={handleCancel}>
+            Hủy
+          </Button>
         </DialogActions>
       </Dialog>
     </span>

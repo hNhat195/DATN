@@ -17,10 +17,9 @@ function ChartBillStatus() {
     const fetchBillStatus = async () => {
       try {
         const response = await billApi.getBillStatus();
-        console.log(response);
         setBillStatus(response);
       } catch (error) {
-        console.log("Failed to fetch bill status", error);
+        alert("Failed to fetch bill status");
       }
     };
     fetchBillStatus();
@@ -51,8 +50,7 @@ function ChartBillStatus() {
         palette="Bright"
         dataSource={billstatus}
         title="Tình trạng hóa đơn"
-        customizePoint={customizePoint}
-      >
+        customizePoint={customizePoint}>
         <Legend
           orientation="horizontal"
           itemTextPosition="right"
@@ -65,8 +63,7 @@ function ChartBillStatus() {
           <Label
             visible={true}
             position="columns"
-            customizeText={customizeText}
-          >
+            customizeText={customizeText}>
             <Font size={16} />
             <Connector visible={true} width={0.5} />
           </Label>

@@ -16,7 +16,7 @@ import clsx from "clsx";
 
 import { Done, Cancel, Edit } from "@material-ui/icons";
 import DefaultButton from "../../../components/Button/DefaultButton";
-import { useHistory } from "react-router-dom";
+
 import supportUtil from "../../../utils/support";
 import userUtil from "../../../utils/user";
 import supportApi from "../../../api/supportApi";
@@ -126,7 +126,6 @@ const useStyles = makeStyles((theme) => ({
 export default function SupportItem(props) {
   const { item, user } = props;
   const classes = useStyles();
-  const history = useHistory();
 
   const [support, setSupport] = useState({
     staffId: userUtil.getCurrentUserId,
@@ -149,14 +148,6 @@ export default function SupportItem(props) {
     setOpen(false);
   };
 
-  const [expanded, setExpanded] = useState(false);
-
-  const handleExpandClick = (e) => {
-    //Seperate onClick in child and parents component
-    e.stopPropagation();
-    setExpanded(!expanded);
-  };
-
   const handleConfirm = () => {
     supportApi.responseSupport(support);
     setOpen(false);
@@ -167,8 +158,7 @@ export default function SupportItem(props) {
       <Grid
         item
         xs={1}
-        className={clsx(classes.orderId, classes.verticalCenter)}
-      >
+        className={clsx(classes.orderId, classes.verticalCenter)}>
         <p>MDH{item.orderCode}</p>
       </Grid>
       <Grid item xs={2} className={classes.verticalCenter}>
@@ -213,15 +203,13 @@ export default function SupportItem(props) {
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
-        }}
-      >
+        }}>
         <Card>
           <CardContent>
             <Typography
               gutterBottom
               variant="h4"
-              className={classes.titleModal}
-            >
+              className={classes.titleModal}>
               Phản hồi yêu cầu
             </Typography>
             <form action="" className={classes.formModal}>
@@ -230,8 +218,7 @@ export default function SupportItem(props) {
                   <Typography
                     gutterBottom
                     variant="h6"
-                    className={classes.btnColor}
-                  >
+                    className={classes.btnColor}>
                     Mã đơn đặt hàng
                   </Typography>
                 </InputLabel>
@@ -240,14 +227,12 @@ export default function SupportItem(props) {
                   variant="outlined"
                   disabled
                   defaultValue={"MDH" + item.orderCode}
-                  className={classes.inpBoxWidth}
-                ></TextField>
+                  className={classes.inpBoxWidth}></TextField>
                 <InputLabel htmlFor="order-id">
                   <Typography
                     gutterBottom
                     variant="h6"
-                    className={classes.btnColor}
-                  >
+                    className={classes.btnColor}>
                     Yêu cầu
                   </Typography>
                 </InputLabel>
@@ -259,14 +244,12 @@ export default function SupportItem(props) {
                   minRows={1}
                   maxRows={4}
                   defaultValue={item.content}
-                  className={classes.inpBoxWidth}
-                ></TextField>
+                  className={classes.inpBoxWidth}></TextField>
                 <InputLabel htmlFor="reply-content">
                   <Typography
                     gutterBottom
                     variant="h6"
-                    className={classes.btnColor}
-                  >
+                    className={classes.btnColor}>
                     Nội dung phản hồi
                   </Typography>
                 </InputLabel>
@@ -285,16 +268,14 @@ export default function SupportItem(props) {
                       ...support,
                       feedback: e.target.value,
                     });
-                  }}
-                ></TextField>
+                  }}></TextField>
               </Container>
               <Container className={classes.buttonBox}>
                 <Button
                   startIcon={<Cancel />}
                   size="large"
                   className={classes.btnCancel}
-                  onClick={handleClose}
-                >
+                  onClick={handleClose}>
                   <Typography variant="h6" className={classes.btnCancelTitle}>
                     Hủy
                   </Typography>

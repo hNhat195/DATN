@@ -32,28 +32,6 @@ const createBill = async (req, res) => {
     })
   );
 
-  // Update Has-> Already have in validate
-  // const hasList = await Has.find({
-  //   orderId: mongoose.Types.ObjectId(req.body.orderID),
-  // })
-  //   .populate("colorCode", "colorCode -_id")
-  //   .exec();
-  // const hasUpdate = await Promise.all(
-  //   listFabricRoll.map(async (item, idx) => {
-  //     for (let i = 0; i < hasList.length; i++) {
-  //       if (item.colorCode === hasList[i].colorCode.colorCode) {
-  //         const changeShippedLength = await Has.findOneAndUpdate(
-  //           { _id: mongoose.Types.ObjectId(hasList[i]._id) },
-  //           { $inc: { shippedLength: item.length } }
-  //         );
-  //         console.log(changeShippedLength);
-  //         return 1;
-  //       }
-  //     }
-  //     return 0;
-  //   })
-  // );
-
   // Create Bill and add to list bill of Order
   const billObjId = new mongoose.Types.ObjectId();
   const order = await Order.findOneAndUpdate(
@@ -84,15 +62,6 @@ const createBill = async (req, res) => {
 };
 
 const getListBill = async (req, res) => {
-  //   Bill.find({}, function (err, result) {
-  //     if (err) {
-  //       console.log(err);
-  //       return res.json({ message: "Error" });
-  //     } else {
-  //       return res.json(result);
-  //     }
-  //   });
-  //aggregate bo qua nhung key trong
   try {
     const result = await Bill.aggregate([{ $match: {} }]);
 
@@ -183,16 +152,6 @@ const getListBillByIds = async (req, res) => {
 };
 
 const getListBillByOrderId = async (req, res) => {
-  // const _id = mongoose.Types.ObjectId(req.params.orderid);
-  // Bill.find({ orderID: _id }).exec(function (err, result) {
-  //   if (err) {
-  //     console.log(err);
-  //     res.json(err);
-  //   } else {
-  //     console.log(`Get list bill of ${_id} success!`);
-  //     res.json(result);
-  //   }
-  // });
   try {
     const id = mongoose.Types.ObjectId(req.params.orderid);
     const result = await Bill.aggregate([{ $match: { orderID: id } }]);
@@ -204,23 +163,6 @@ const getListBillByOrderId = async (req, res) => {
 };
 
 const getBillDetail = async (req, res) => {
-  // const id = mongoose.Types.ObjectId(req.params.id);
-  // Bill.findOne({ _id: id })
-  // 	.populate({ path: "clientID", select: "name email phone address" })
-  // 	.populate({ path: "salesmanID", select: "name phone" })
-  // 	.populate({ path: "shipperID", select: "name phone" })
-  // 	.populate({
-  // 	path: "orderID",
-  // 	select: "receiverName receiverPhone receiverAddress",
-  // 	})
-  // 	.exec(function (err, result) {
-  // 	if (err) {
-  // 		console.log(err);
-  // 		return res.json(err);
-  // 	} else {
-  // 		return res.json(result);
-  // 	}
-  // 	});
   try {
     const id = mongoose.Types.ObjectId(req.params.id);
     const result = await Bill.aggregate([
@@ -518,7 +460,7 @@ const updateBillStatus = async (req, res) => {
       }
     );
   } catch (error) {
-    console.log(err);
+    alert("Update Bill Failed!");
   }
 };
 

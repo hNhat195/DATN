@@ -28,7 +28,7 @@ function StaffPage() {
       setStaffs(data);
       setFilteredStaffs(data);
     } catch (error) {
-      console.log("Failed to fetch staff list", error);
+      alert("Failed to fetch staff list");
     }
   };
 

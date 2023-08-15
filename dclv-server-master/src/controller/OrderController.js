@@ -148,12 +148,11 @@ const create = async (req, res) => {
       { new: true }
     );
     let user = await Customer.findOne({ _id: req.body.clientID });
-    console.log(user);
+
     sendMailCreate(temp, user);
 
     res.send({ status: 200, result });
   } catch (err) {
-    console.log(err);
     res.json({ status: 400, message: err });
   }
 };
@@ -261,7 +260,6 @@ const createSubOrder = async (req, res) => {
 
     res.send({ status: 200, result });
   } catch (err) {
-    console.log(err);
     res.json({ status: 400, message: err });
   }
 };

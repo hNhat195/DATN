@@ -117,7 +117,6 @@ function UpdateItem() {
         else console.log(err);
       });
 
-      // console.log(newMarketPrice._id);
       Item.findOneAndUpdate(
         { colorCode: listPrice[i].item },
         {

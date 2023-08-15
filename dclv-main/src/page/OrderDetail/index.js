@@ -77,14 +77,6 @@ export default function OrderDetail() {
   });
   const [lastStatus, setLastStatus] = useState();
 
-  useEffect(() => {
-    console.log(detail);
-  }, [detail]);
-
-  const handleOrderStatus = async () => {
-    console.log(detail);
-  };
-
   const handleCancel = async () => {
     const res = await orderApi.updateStatusCancelOrder(id, {
       status: "cancel",

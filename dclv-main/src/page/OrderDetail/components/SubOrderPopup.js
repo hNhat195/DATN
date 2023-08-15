@@ -74,54 +74,33 @@ export default function SubOrderPopup({ orderId, products, subOrder }) {
   const [subProductsList, setSubProductsList] = useState();
 
   const handleClickOpen = () => {
-    // console.log(subOrder);
     let tempArr = [];
     const copiedProducts = products.map((item) => ({ ...item, quantity: 0 }));
     for (let i = 0; i < products.length; i++) {
-
       let temp = copiedProducts[i];
 
       temp["divided"] = 0;
 
       for (let j = 0; j < subOrder.length; j++) {
         for (let k = 0; k < subOrder[j].products.length; k++) {
-          
           if (
             temp?.fabricID?.fabricType ==
-            subOrder[j]?.products[k].fabricID?.fabricType &&
-            temp?.fabricID?.color ==
-            subOrder[j]?.products[k].fabricID?.color &&
+              subOrder[j]?.products[k].fabricID?.fabricType &&
+            temp?.fabricID?.color == subOrder[j]?.products[k].fabricID?.color &&
             subOrder[j].subOrderStatus.length > 0 &&
             subOrder[j].subOrderStatus[subOrder[j].subOrderStatus.length - 1]
               .name != "canceled"
           ) {
-            
             temp["divided"] += subOrder[j].products[k].quantity;
-          }
-          else {
-            
+          } else {
           }
         }
       }
       tempArr.push(temp);
     }
-    // console.log(tempArr);
+
     setSubProductsList(tempArr);
-    //   const hashTable = {};
-    // array2.forEach((obj) => {
-    //   hashTable[obj.id] = obj;
-    // });
 
-    // // Compare the objects in array1 to the objects in the hash table
-    // const result = [];
-    // array1.forEach((obj) => {
-    //   const matchedObj = hashTable[obj.id];
-    //   if (matchedObj) {
-    //     result.push({ obj1: obj, obj2: matchedObj });
-    //   }
-    // });
-
-    // return result;
     setOpen(true);
   };
 
@@ -135,7 +114,7 @@ export default function SubOrderPopup({ orderId, products, subOrder }) {
     for (let i = 0; i < products.length; i++) {
       if (
         subProductsList[i].quantity >
-        products[i].quantity - subProductsList[i].divided ||
+          products[i].quantity - subProductsList[i].divided ||
         subProductsList[i].quantity < 0
       ) {
         checkQuantity = false;
@@ -154,11 +133,10 @@ export default function SubOrderPopup({ orderId, products, subOrder }) {
         note: "sub order",
         products: tempArr,
       };
-      console.log("tao sub order thanh cong");
       const response = await orderApi.createSubOrder(postData);
       subOrder.push(response);
       setOpen(false);
-    } else console.log("tao sub order that bai");
+    } else alert("Create sub order failed");
   };
 
   const handleQuantity = (e, idx) => {
@@ -176,8 +154,7 @@ export default function SubOrderPopup({ orderId, products, subOrder }) {
         open={open}
         onClose={handleClose}
         fullWidth={true}
-        maxWidth={"lg"}
-      >
+        maxWidth={"lg"}>
         <DialogTitle>Tạo suborder</DialogTitle>
         <DialogContent>
           <DialogContentText>Chia nhỏ đơn hàng</DialogContentText>
@@ -194,8 +171,7 @@ export default function SubOrderPopup({ orderId, products, subOrder }) {
             <Table
               stickyHeader
               sx={{ minWidth: 650 }}
-              aria-label="simple table"
-            >
+              aria-label="simple table">
               <TableHead>
                 <TableRow>
                   <TableCell>STT</TableCell>
@@ -211,8 +187,7 @@ export default function SubOrderPopup({ orderId, products, subOrder }) {
                 {subProductsList?.map((item, idx) => (
                   <TableRow
                     key={idx}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                     <TableCell component="th" scope="row">
                       <Typography variant="subtitle2">{idx + 1}</Typography>
                     </TableCell>

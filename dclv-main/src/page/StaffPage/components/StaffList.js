@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import clsx from "clsx";
 import { useHistory } from "react-router";
 import moment from "moment";
@@ -74,17 +74,17 @@ const useStyles = makeStyles((theme) => ({
     color: "blue",
   },
   firstColumn: {
-    paddingLeft: "10px"
+    paddingLeft: "10px",
   },
   marginVeritcal: {
     marginBottom: "21px",
     marginTop: "21px",
-    height: "35px"
-  }
+    height: "35px",
+  },
 }));
 
 export default function StaffList(props) {
-  const { className, staff } = props;
+  const { staff } = props;
   const classes = useStyles();
   const history = useHistory();
   const handleClick = (id) => {
@@ -97,13 +97,11 @@ export default function StaffList(props) {
           container
           className={clsx(classes.root, classes.marginVeritcal)}
           onClick={() => handleClick(item._id)}
-          key={item._id}
-        >
+          key={item._id}>
           <Grid
             item
             xs={1}
-            className={clsx(classes.orderId, classes.verticalCenter)}
-          >
+            className={clsx(classes.orderId, classes.verticalCenter)}>
             <p className={classes.firstColumn}>{item.id}</p>
           </Grid>
           <Grid item xs={3} className={classes.verticalCenter}>

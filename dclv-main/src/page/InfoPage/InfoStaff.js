@@ -33,7 +33,7 @@ function InfoStaff() {
 
         setStaffInfo(response);
       } catch (error) {
-        console.log("Failed to fetch staff info", error);
+        alert("Failed to fetch staff info");
       }
     };
     fetchStaffInfo();

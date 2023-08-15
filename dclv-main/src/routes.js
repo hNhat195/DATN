@@ -1,5 +1,4 @@
 import { lazy } from "react";
-import { Redirect } from "react-router-dom";
 import SignIn from "./screens/Auth/SignIn";
 import SignUp from "./screens/Auth/SignUp";
 import DashBoard from "./page/DashBoardPage/DashBoard";

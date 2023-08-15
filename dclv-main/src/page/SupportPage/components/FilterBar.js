@@ -11,7 +11,6 @@ import DateFilter from "../../../components/DateFilter";
 import SearchField from "../../../components/SearchField";
 import { Notifications } from "@material-ui/icons";
 import CreateSupportModal from "./CreateSupportModal";
-import userUtil from "../../../utils/user";
 
 const useStyles = makeStyles({
   root: {
@@ -48,8 +47,7 @@ export default function FilterBar() {
               id="demo-simple-select"
               value={statusFilter}
               label="Trạng thái"
-              onChange={handleChange}
-            >
+              onChange={handleChange}>
               <option value={"pending"}>Đang xử lý</option>
               <option value={"complete"}>Đã xử lý</option>
             </Select>

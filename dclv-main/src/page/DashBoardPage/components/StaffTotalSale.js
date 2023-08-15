@@ -31,17 +31,17 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
   )} 0%, ${alpha(theme.palette.primary.dark, 0.24)} 100%)`,
 }));
 
-export default function StaffTotalSale({dateRangeFilter}) {
+export default function StaffTotalSale({ dateRangeFilter }) {
   const [orderTotal, setOrderTotal] = useState([]);
-  const [filteredList, setFilteredList] = useState([])
+  const [filteredList, setFilteredList] = useState([]);
   useEffect(() => {
     const fetCountOrder = async () => {
       try {
         const response = await orderApi.getAll();
         setOrderTotal(response);
-        setFilteredList(response)
+        setFilteredList(response);
       } catch (error) {
-        console.log("Failed to fetch order count", error);
+        alert("Failed to fetch order count");
       }
     };
     fetCountOrder();
@@ -53,14 +53,13 @@ export default function StaffTotalSale({dateRangeFilter}) {
           Date.parse(item.orderTime) >= Date.parse(dateRangeFilter.startDate) &&
           Date.parse(item.orderTime) <= Date.parse(dateRangeFilter.endDate)
       );
-      setFilteredList(temp)
+      setFilteredList(temp);
+    } else {
+      let temp = orderTotal;
+      setFilteredList(temp);
     }
-    else {
-      let temp = orderTotal
-      setFilteredList(temp)
-    }
-  }, [dateRangeFilter])
-  
+  }, [dateRangeFilter]);
+
   return (
     <RootStyle>
       <IconWrapperStyle>

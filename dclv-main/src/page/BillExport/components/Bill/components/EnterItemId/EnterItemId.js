@@ -15,7 +15,9 @@ function EnterItemId(props) {
           if (!error.status) handleAddProduct(response);
         } else setError({ status: true, message: "Mã sản phẩm không hợp lệ" });
       } catch (err) {
-        if (err.response.status === 500) console.log("response", err.response);
+        if (err.response.status === 500) {
+          alert("Have error when fetching product");
+        }
       }
     };
     if (!error.status) {

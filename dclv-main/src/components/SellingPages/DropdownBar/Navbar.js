@@ -26,7 +26,6 @@ const Navbar = () => {
   };
   const renderMenuItems = (groupedFabricTypes) => {
     const materials = Object.keys(groupedFabricTypes);
-    console.log(groupedFabricTypes, materials, "mate");
     const materialsMenu = materials.map((material) => {
       const title = humanizeSnakeCase(material);
       const url = material;

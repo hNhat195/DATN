@@ -60,11 +60,9 @@ export default function EditForm({
 
   useEffect(() => {
     const fetchColor = async () => {
-      console.log(materialType);
       const response = await productApi.getColorByMaterial(materialType);
       return response;
     };
-    console.log("material change");
     const response = fetchColor();
     setColorList(response);
   }, [materialType, materialList]);

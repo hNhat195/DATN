@@ -168,12 +168,7 @@ const Product = () => {
           <div className="thumbnail-images">
             <Carousel
               showStatus={false}
-              selectedItem={fabric?.image?.indexOf(selectedImage)}
-              onChange={
-                (index) => console.log("kkkkkkkkk")
-                // handleThumbnailClick(additionalImages[index])
-              }
-            >
+              selectedItem={fabric?.image?.indexOf(selectedImage)}>
               {fabric?.image?.map((image, index) => (
                 <div key={index}>
                   <img src={image} alt={`Thumbnail ${index + 1}`} />

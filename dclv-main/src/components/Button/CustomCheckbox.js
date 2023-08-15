@@ -81,11 +81,3 @@ function CustomCheckbox(props) {
 }
 
 export default CustomCheckbox;
-// export default function CustomizedCheckbox() {
-//   return (
-//     <div>
-//       <StyledCheckbox />
-//       <StyledCheckbox defaultChecked />
-//     </div>
-//   );
-// }

@@ -34,17 +34,17 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
 
 export default function StaffRevenue({ dateRangeFilter }) {
   const [totalDeposit, setTotalDeposit] = useState([]);
-  const [filteredList, setFilteredList] = useState([])
-  const [displayedValue, setDisplayedValue] = useState(0)
+  const [filteredList, setFilteredList] = useState([]);
+  const [displayedValue, setDisplayedValue] = useState(0);
   useEffect(() => {
     const fetTotalDeposit = async () => {
       try {
         // const response = await orderApi.totalDeposit();
         const response = await orderApi.getAll();
         setTotalDeposit(response);
-        setFilteredList(response)
+        setFilteredList(response);
       } catch (error) {
-        console.log("Failed to fetch deposit", error);
+        alert("Failed to fetch deposit");
       }
     };
     fetTotalDeposit();
@@ -56,20 +56,23 @@ export default function StaffRevenue({ dateRangeFilter }) {
           Date.parse(item.orderTime) >= Date.parse(dateRangeFilter.startDate) &&
           Date.parse(item.orderTime) <= Date.parse(dateRangeFilter.endDate)
       );
-      setFilteredList(temp)
+      setFilteredList(temp);
+    } else {
+      let temp = totalDeposit;
+      setFilteredList(temp);
     }
-    else {
-      let temp = totalDeposit
-      setFilteredList(temp)
-    }
-  }, [dateRangeFilter])
+  }, [dateRangeFilter]);
   useEffect(() => {
-    
-    const temp = filteredList.reduce((accumulator, currentValue) => accumulator + (isNaN(currentValue.totalQuantity) ? 0 : currentValue.totalQuantity), 0)
-    
-    setDisplayedValue(temp)
-  }, [filteredList])
-  
+    const temp = filteredList.reduce(
+      (accumulator, currentValue) =>
+        accumulator +
+        (isNaN(currentValue.totalQuantity) ? 0 : currentValue.totalQuantity),
+      0
+    );
+
+    setDisplayedValue(temp);
+  }, [filteredList]);
+
   return (
     <RootStyle>
       <IconWrapperStyle>

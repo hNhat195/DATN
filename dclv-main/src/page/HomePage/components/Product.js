@@ -18,16 +18,13 @@ export default function Product({ product }) {
   const history = useHistory();
   const classes = useStyles();
   const handleClick = (productId) => {
-    console.log(productId);
     history.push(`/home/${productId}`);
   };
   return (
     <Grid
       onClick={(e) => {
-        console.log(e, "tranquangkhaaaaaa");
         handleClick(product._id);
-      }}
-    >
+      }}>
       <div className="overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md">
         <div className="relative w-full pt-[100%]">
           <img src={product.images[0]} className={classes.imageStyled} />

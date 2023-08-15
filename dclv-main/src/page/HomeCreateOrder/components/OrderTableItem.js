@@ -82,17 +82,15 @@ export default function OrderTableItem({
     }
   }, [isEdit]);
   useEffect(() => {
-    setFabricLength(row.length)
-  }, [row.length])
-  useEffect(() => {
-    console.log(fabricLength)
-  }, [fabricLength])
+    setFabricLength(row.length);
+  }, [row.length]);
+
   return (
     <TableRow>
-      <TableCell width="200px">
-        {row?.typeId}
+      <TableCell width="200px">{row?.typeId}</TableCell>
+      <TableCell width="150px" align="left">
+        {row?.colorCode}
       </TableCell>
-      <TableCell width="150px" align="left">{row?.colorCode}</TableCell>
       <TableCell width="80px" align="left">
         <input
           type="number"
@@ -101,7 +99,8 @@ export default function OrderTableItem({
           onChange={(e) => handleChange(e)}
           ref={inputRef}
           autoFocus
-          min="0" step="1"
+          min="0"
+          step="1"
           className={classes.lengthField}
         />
       </TableCell>
@@ -111,8 +110,7 @@ export default function OrderTableItem({
             variant="outline"
             onClick={() => handleSave()}
             className={clsx(classes.cssButton, classes.saveButton)}
-            title="Lưu"
-          >
+            title="Lưu">
             <CheckIcon />
           </Button>
         ) : (
@@ -120,8 +118,7 @@ export default function OrderTableItem({
             variant="outline"
             onClick={() => handleEdit()}
             className={clsx(classes.cssButton, classes.editButton)}
-            title="Chỉnh sửa số lượng"
-          >
+            title="Chỉnh sửa số lượng">
             <BorderColorIcon />
           </Button>
         )}

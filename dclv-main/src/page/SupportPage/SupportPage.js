@@ -5,14 +5,14 @@ import SupportItem from "./components/SupportItem";
 import FilterBar from "./components/FilterBar";
 import supportApi from "../../api/supportApi";
 import orderApi from "../../api/orderApi";
-import { async } from "validate.js";
 import userUtil from "../../utils/user";
 
 export default function SupportPage() {
-  const [refresh, setRefresh] = useState(true);
+  // const [refresh, setRefresh] = useState(true);
   const [supportList, setSupportList] = useState([]);
   const [userOrderList, setUserOrderList] = useState([]);
 
+  const refresh = true;
   const getSupportList = async () => {
     try {
       const role = userUtil.getCurrentUserRole();
@@ -26,7 +26,7 @@ export default function SupportPage() {
 
       setSupportList(supports);
     } catch (error) {
-      console.log(error);
+      alert("Error when get support list");
     }
   };
 
@@ -36,7 +36,7 @@ export default function SupportPage() {
       const orderList = await orderApi.getOrdersByUserId(userId);
       setUserOrderList(orderList);
     } catch (error) {
-      console.log(error);
+      alert("Error when get User Order list");
     }
   };
 

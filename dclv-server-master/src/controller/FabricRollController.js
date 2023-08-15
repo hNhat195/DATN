@@ -18,7 +18,7 @@ const getProductsHomePage = async (req, res) => {
   } catch (error) {
     res.status(500).json(error);
   }
-}
+};
 
 const getProductsByMaterialSlug = async (req, res) => {
   try {
@@ -53,7 +53,6 @@ const getProductsByCollectionId = async (req, res) => {
 };
 
 const getProductBySlug = async (req, res) => {
-  console.log(req.params.slug)
   await FabricRoll.findOne({ slug: req.params.slug })
     .exec()
     .then((product) => {
@@ -66,16 +65,15 @@ const getProductBySlug = async (req, res) => {
 
 const searchProductBySlug = async (req, res) => {
   try {
-    const slug = req.params.slug
+    const slug = req.params.slug;
     const foundProducts = await FabricRoll.find({
-      slug: { $regex: slug},
+      slug: { $regex: slug },
     }).exec();
     return res.json({
       message: "Thành công",
       status: 200,
       data: foundProducts,
     });
-
   } catch (error) {
     return res.json({
       message: "Thất bại",
@@ -468,72 +466,14 @@ const getChartWarehouseTrue = async (req, res) => {
         },
       },
       { $sort: { _id: 1 } },
-      // }}
-      // { $count: "warehouseId" }
     ]);
 
     res.status(200).json(result);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err });
   }
 };
 
-// const getFabricTypeSell = async (req, res) => {
-//   try {
-//     const result = await FabricRoll.aggregate([
-//       // {$unwind: "$status"},
-//       // // {$unwind: "$status.name"},
-//       { $match: { status: false } },
-//       { $project: { colorCode: 1 } },
-//       {
-//         $lookup: {
-//           from: "Item",
-//           let: { color_code: "$colorCode" },
-//           pipeline: [
-//             { $match: { $expr: { $eq: ["$colorCode", "$$color_code"] } } },
-//             {
-//               $lookup: {
-//                 from: "FabricType",
-//                 let: { type_id: "$typeId" },
-//                 pipeline: [
-//                   {
-//                     $match: { $expr: { $eq: ["$_id", "$$type_id"] } },
-//                   },
-//                 ],
-//                 as: "fabricType",
-//               },
-//             },
-//             { $unwind: "$fabricType" },
-//             {
-//               $group: {
-//                 _id: "$fabricType.name",
-//               },
-//             },
-//           ],
-//           as: "item",
-//         },
-//       },
-//       { $unwind: "$item" },
-//       {
-//         $group: {
-//           _id: "$item._id",
-//           countFabrictype: { $sum: 1 },
-//         },
-//       },
-//       { $sort: { countFabrictype: -1 } },
-//       { $limit: 5 },
-//     ]);
-//     console.log("Get Fabric Type Sell successfully");
-//     // console.log(result);
-//     res.status(200).json(result);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({ err });
-//   }
-// };
-
-//chưa test xong
 const getFabricTypeWarehouse = async (req, res) => {
   try {
     const result = await FabricRoll.aggregate([
@@ -590,7 +530,6 @@ const getFabricTypeWarehouse = async (req, res) => {
 
     res.status(200).json(result);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err });
   }
 };
@@ -665,7 +604,6 @@ async function getMaterialById(typeId) {
 
 async function getMaterialByColor(req, res) {
   const body = req.body;
-  console.log(body);
   const itemList = await Item.find({ colorCode: body.colorCode });
 
   const reformattedArray = await Promise.all(

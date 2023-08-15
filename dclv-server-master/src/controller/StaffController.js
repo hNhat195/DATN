@@ -66,33 +66,11 @@ const loginstaff = async (req, res) => {
   res.send({ ...userLogin._doc, jwt: token });
 };
 
-// const updatePassword = async (req, res) {
-//     // Kiểm tra password
-//     const oldpassword = await bcrypt.compare(req.body.password, userLogin.password);
-//     if(!passLogin) return res.status(400).send("Mật khẩu không hợp lệ")
-
-// }
-
-// const updateInfo = async (req, res) => {
-//     try {
-//         const body = req.body;
-//         const id = req.params.id
-
-//         Staff.findOneAndUpdate({ _id: id }, body, function (err, data) {
-//           if (!err) res.status(200).json("Update Status successfully!");
-//         });
-//       } catch (err) {
-//         res.status(500).json({ err });
-//       }
-// }
-
 const listStaff = async (req, res) => {
   Staff.find({}, function (err, result) {
     if (err) {
-      console.log(err);
       return res.json({ message: "Error" });
     } else {
-      console.log(result);
       return res.json(result);
     }
   });
@@ -101,31 +79,11 @@ const listStaff = async (req, res) => {
 const infoStaffById = async (req, res) => {
   Staff.findOne({ _id: req.params.id }, function (err, result) {
     if (err) {
-      console.log(err);
       return res.json({ message: "Error" });
     } else {
-      console.log(result);
       res.status(200).json(result);
     }
   });
-  // Staff.find({}, function (err, result) {
-  //     if (err) {
-  //         console.log(err);
-  //         return res.json({ message: "Error" });
-  //     } else {
-  //         console.log(result);
-  //         return res.json(result);
-  //         }
-  // });
-  // try {
-  //   const result = await Staff.aggregate([{ $match: {} }]);
-  //   console.log("Get List Staff Completed successfully");
-  //   console.log(result);
-  //   res.status(200).json(result);
-  // } catch (err) {
-  //   console.log(err);
-  //   res.status(500).json({ err });
-  // }
 };
 
 module.exports = {

@@ -23,25 +23,6 @@ const useStyles = makeStyles(() => ({
 function InfoStaffTable(props) {
   const classes = useStyles();
   const { infostaff } = props;
-  // const [staffInfo, setStaffInfo] = useState([]);
-  // useEffect(() => {
-  //     const fetchStaffInfo = async () => {
-  //         try {
-  //           const response = await staffApi.getInfoById();
-  //           setStaffInfo(response);
-  //         }catch (error) {
-  //           console.log("Failed to fetch staff list", error);
-  //         }
-  //     }
-  //     fetchStaffInfo();
-  //   }, []);
-  //   const handleClickChangePhone = () => {
-  //     console.log('Modal Change Phone');
-  //   }
-
-  //   const handleClickChangeAddress = () => {
-  //     console.log('Modal Change Addresss');
-  //   }
 
   return (
     <Box className={classes.container}>

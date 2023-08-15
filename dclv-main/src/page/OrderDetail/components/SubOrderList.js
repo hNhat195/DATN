@@ -13,9 +13,7 @@ export default function SubOrderList({ item, idx, detail, setDetail }) {
     item?.subOrderStatus[item.subOrderStatus.length - 1]?.name
   );
   const [disabledChange, setDisabledChange] = useState(false);
-  useEffect(() => {
-    console.log(item);
-  }, []);
+
   useEffect(() => {
     if (latestStatus == "completed" || latestStatus == "canceled") {
       setDisabledChange(true);
@@ -39,8 +37,7 @@ export default function SubOrderList({ item, idx, detail, setDetail }) {
             idx={idx}
             detail={detail}
             setDetail={setDetail}
-            disabledChange={disabledChange}
-          ></ChangeStatusPopup>
+            disabledChange={disabledChange}></ChangeStatusPopup>
         </Grid>
         <Grid item xs={3}>
           <CancelSubOrderPopup
@@ -48,8 +45,7 @@ export default function SubOrderList({ item, idx, detail, setDetail }) {
             idx={idx}
             detail={detail}
             setDetail={setDetail}
-            disabledChange={disabledChange}
-          ></CancelSubOrderPopup>
+            disabledChange={disabledChange}></CancelSubOrderPopup>
         </Grid>
       </Grid>
     </Grid>

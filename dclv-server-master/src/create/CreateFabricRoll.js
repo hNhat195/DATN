@@ -31,19 +31,7 @@ const CreateFabricRoll = async () => {
     const colorId = await Color.findOne({ colorCode: ele.color });
 
     const fabricTypeId = await FabricType.findOne({ name: ele.material });
-    console.log(colorId, fabricTypeId);
-    // if (colorId.colorCode == null) {
-    //   console.log("OK");
-    // }
-    // if (colorId.colorCode && fabricTypeId.name)
-    //   return {
-    //     fabricTypeId: fabricTypeId._id,
-    //     colorId: colorId._id,
-    //     image: ele.images,
-    //   };
   });
-  // console.log(F);
-  // FabricRoll.insertMany(F);
 };
 
 const upsertFabricRoll = async () => {
@@ -66,12 +54,8 @@ const upsertFabricRoll = async () => {
         },
         { new: true }
       )
-        .then((updatedRoll) => {
-          console.log(updatedRoll);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        .then((updatedRoll) => {})
+        .catch((error) => {});
     });
 };
 
@@ -111,7 +95,7 @@ const upsertMaterialAndSlugForFabricType = async () => {
   const currentMaterial = ["linen", "merino", "silk"];
   try {
     const fabricTypes = await FabricType.find({});
-    console.log(fabricTypes, "fabricTypesfabricTypesfabricTypes");
+
     for (const fabricType of fabricTypes) {
       fabricType.slug = convertToSlug(fabricType.name);
       fabricType.material = findKeyword(
