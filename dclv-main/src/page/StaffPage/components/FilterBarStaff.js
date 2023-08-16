@@ -1,18 +1,9 @@
-import React, { useState } from "react";
-import {
-  Grid,
-  FormControl,
-  InputLabel,
-  Select,
-  Button,
-} from "@material-ui/core";
+import React from "react";
+import { Grid, FormControl, InputLabel, Select } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
-import CustomCheckbox from "../../../components/Button/CustomCheckbox";
 import SearchField from "../../../components/SearchField";
 import NotificationButton from "../../../components/Button/NotificationButton";
-import DefaultButton from "../../../components/Button/DefaultButton";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 import AddStaffModal from "./AddStaffModal";
 
 const useStyles = makeStyles(() => ({
@@ -33,8 +24,7 @@ const useStyles = makeStyles(() => ({
 
 function FilterBarStaff(props) {
   const classes = useStyles();
-  const { filterPos, setFilterPos, filterName, setFilterName, setRefresh } =
-    props;
+  const { filterPos, setFilterPos, setFilterName, setRefresh } = props;
 
   const handleChange = (event) => {
     setFilterPos(event.target.value);
