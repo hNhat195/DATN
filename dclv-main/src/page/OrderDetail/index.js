@@ -156,7 +156,7 @@ export default function OrderDetail() {
           <TimelineStatus statusList={detail.orderStatus} />
         </Grid>
         <Grid container spacing={3} className={classes.btnGroup}>
-          <Grid item xs={7}></Grid>
+          <Grid item xs={6}></Grid>
           <Grid item>
             <SubOrderPopup
               orderId={id}
@@ -195,27 +195,7 @@ export default function OrderDetail() {
         </Grid>
 
         {detail.subOrder?.map((item, idx) => (
-          // <Grid item container key={idx} xs={12} md={12}>
-          //   <Grid item container xs={12} md={6}>
-          //     <OrderInfo products={item.products} />
-          //     <Grid item xs={3}>
-          //       {/* <button
-          //         onClick={(e) => handleUpdateSubOrderStatus(e, item._id, idx)}
-          //       >
-          //         Chuyển trạng thái
-          //       </button> */}
-          //       <ChangeStatusPopup subOrder={item} idx={idx} detail={detail} setDetail={setDetail}></ChangeStatusPopup>
-          //     </Grid>
-          //     <Grid item xs={3}>
-          //       <button onClick={(e) => handleCancelSubOrder(e, item, idx)}>
-          //         Hủy đơn hàng
-          //       </button>
-          //     </Grid>
-          //   </Grid>
-          //   <Grid>
-          //     <TimelineStatus statusList={item.subOrderStatus} />
-          //   </Grid>
-          // </Grid>
+          
           <SubOrderList item={item} idx={idx} detail={detail} setDetail={setDetail}></SubOrderList>
         ))}
       </Grid>

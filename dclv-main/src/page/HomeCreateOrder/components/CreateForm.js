@@ -22,6 +22,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CreateButtonPopup from "./CreateButtonPopup";
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
+import fabricTypeAPI from "../../../api/fabricTypeApi";
 
 const useStyles = makeStyles((theme) => ({
   alignRight: {
@@ -71,11 +72,13 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '300px',
   },
   spaceBlank: {
-    height: '100px'
+    height: '25px'
   }
 }));
 
 const objectIdPattern = /^[0-9a-fA-F]{24}$/;
+const collections =  [{"label": "Silk", "value": "silk"}, {"label": "Linen", "value": "linen"}, {"label": "Merino", "value": "merino"}];
+
 
 function ErrorPopup({ open, closePopup }) {
   const classes = useStyles()
@@ -110,6 +113,8 @@ export default function CreateForm({
   const [fabricLength, setFabricLength] = useState("");
   const [materialId, setMaterialId] = useState("");
   const [errorPopup, setErrorPopup] = useState(false)
+  const [fabricCollection, setFabricCollection] = useState(null)
+
   const history = useHistory();
   const classes = useStyles();
   const postOrder = async (postData) => {
@@ -172,14 +177,22 @@ export default function CreateForm({
     }
   };
 
+  // useEffect(() => {
+  //   const fetchMaterial = async () => {
+  //     const response = await productApi.getAllMaterialCode();
+
+  //     setMaterialList(response);
+  //   };
+  //   fetchMaterial();
+  // }, []);
+
   useEffect(() => {
     const fetchMaterial = async () => {
-      const response = await productApi.getAllMaterialCode();
-
-      setMaterialList(response);
-    };
-    fetchMaterial();
-  }, []);
+      const response = await fabricTypeAPI.getFabricTypesByMaterial(fabricCollection)
+      setMaterialList(response)
+    }
+    fetchMaterial()
+  }, [fabricCollection])
 
   const fetchColor = async () => {
     if (objectIdPattern.test(materialId)) {
@@ -205,6 +218,32 @@ export default function CreateForm({
       <Grid container spacing={3} xs={12}>
         <Grid item xs={12} md={9}></Grid>
         <Grid item xs={12} md={3}></Grid>
+
+        <Grid item xs={12} md={9}>
+          <FormControl fullWidth={true}>
+            <InputLabel id="fabric-collection">Collention</InputLabel>
+            <Select
+              MenuProps={{ classes: { paper: classes.menu } }}
+              labelId="fabric-collection"
+              id="fabric-collection"
+              label="Collection"
+              onChange={async (e) => {
+                setFabricCollection(e.target.value);
+                
+              }}
+              value={fabricCollection || ""}>
+              {collections.length > 0 && collections?.map((item, idx) => {
+                return (
+                  <MenuItem key={idx} value={item.value}>
+                    {item.label}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} md={3}></Grid>
+
         <Grid item xs={12} md={9}>
           <FormControl fullWidth={true}>
             <InputLabel id="fabric-material">Chất liệu</InputLabel>
