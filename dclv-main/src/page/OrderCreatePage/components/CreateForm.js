@@ -124,8 +124,8 @@ export default function CreateForm({
       setColorList(response);
     }
   };
-  useEffect(async () => {
-    await fetchColor();
+  useEffect(() => {
+    fetchColor();
   }, [materialId]);
 
   useEffect(() => {}, [productList]);

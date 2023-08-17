@@ -25,12 +25,12 @@ const ImgContainer = styled.div`
   flex: 1;
 `;
 
-const Image = styled.img`
-  width: 100%;
-  height: 90vh;
-  object-fit: cover;
-  ${mobile({ height: "40vh" })}
-`;
+// const Image = styled.img`
+//   width: 100%;
+//   height: 90vh;
+//   object-fit: cover;
+//   ${mobile({ height: "40vh" })}
+// `;
 
 const InfoContainer = styled.div`
   flex: 1;
@@ -148,7 +148,7 @@ const Product = () => {
     if (productSlug) {
       fetchProduct();
     }
-  }, []);
+  });
 
   if (loading) {
     return <p>Loading...</p>;

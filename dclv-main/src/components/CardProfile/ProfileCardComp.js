@@ -1,8 +1,6 @@
 import React from "react";
-import { Box, Avatar, Typography, Button } from "@material-ui/core";
+import { Box, Avatar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { useHistory } from "react-router";
-import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -34,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
 
 function ProfileCardComp({ staff }) {
   const classes = useStyles();
-  const role = localStorage.getItem("role");
 
   return (
     <Box className={classes.container}>

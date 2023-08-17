@@ -1,22 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Grid,
-  Button,
-  Modal,
-  Backdrop,
-  Card,
-  Collapse,
-  Typography,
-  CardContent,
-  Table,
-  TableCell,
-  TableBody,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from "@material-ui/core";
+import { Grid, Button, Collapse, Typography } from "@material-ui/core";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
 import LotHeader from "./LotHeader";
 import clsx from "clsx";
@@ -95,8 +79,7 @@ export default function TypeItem(props) {
       <Grid
         item
         xs={3}
-        className={clsx(classes.orderId, classes.verticalCenter)}
-      >
+        className={clsx(classes.orderId, classes.verticalCenter)}>
         <Typography>{fabricType.id}</Typography>
       </Grid>
       <Grid item xs={4} className={classes.verticalCenter}>
@@ -111,8 +94,7 @@ export default function TypeItem(props) {
         <Button
           className={classes.buttonWidth}
           onClick={handleExpandClick}
-          aria-expanded={expanded}
-        >
+          aria-expanded={expanded}>
           {expanded ? <ExpandLess /> : <ExpandMore />}
         </Button>
       </Grid>

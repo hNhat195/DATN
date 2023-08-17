@@ -12,11 +12,14 @@ import productApi from "../../api/productApi";
 import { Typography } from "@material-ui/core";
 
 const HomePage = () => {
-  const [products, setProducts] = useState([])
-  useEffect(async () => {
-    const response = await productApi.getProductHomepage();
-    setProducts(response)
-  }, [])
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    const wait = async () => {
+      const response = await productApi.getProductHomepage();
+      setProducts(response);
+    };
+    wait();
+  }, []);
   return (
     <div>
       <div>
@@ -26,7 +29,7 @@ const HomePage = () => {
         <Slider />
         <Categories />
         <Typography variant="h4">Our latest products</Typography>
-        <Products products={products}/>
+        <Products products={products} />
         <Newsletter />
         <Footer />
       </div>

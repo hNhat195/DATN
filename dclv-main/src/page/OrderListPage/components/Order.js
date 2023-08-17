@@ -6,7 +6,6 @@ import {
   Modal,
   Backdrop,
   Card,
-  Collapse,
   Typography,
   CardContent,
   Table,
@@ -17,10 +16,7 @@ import {
   TableRow,
   Paper,
 } from "@material-ui/core";
-import { MoreVert, ExpandLess, ExpandMore } from "@material-ui/icons";
-import BillHeader from "./BillHeader";
 import clsx from "clsx";
-import Bill from "./Bill";
 import { useHistory } from "react-router-dom";
 import orderApi from "../../../api/orderApi";
 import moment from "moment";
@@ -128,15 +124,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   firstColumn: {
-    paddingLeft: "10px"
-  }
+    paddingLeft: "10px",
+  },
 }));
 
 export default function Order(props) {
   const { order } = props;
   const classes = useStyles();
   const history = useHistory();
-  const role = localStorage.getItem("role");
 
   const [open, setOpen] = useState(false);
   const [product, setProduct] = useState({ products: [] });
@@ -168,14 +163,6 @@ export default function Order(props) {
     setOpen(false);
   };
 
-  const [expanded, setExpanded] = useState(false);
-
-  const handleExpandClick = (e) => {
-    //Seperate onClick in child and parents component
-    e.stopPropagation();
-    setExpanded(!expanded);
-  };
-
   const handleClick = (id) => {
     history.push(`/order/orderDetail/${id}`);
   };
@@ -184,13 +171,11 @@ export default function Order(props) {
     <Grid
       container
       className={classes.root}
-      onClick={() => handleClick(order._id)}
-    >
+      onClick={() => handleClick(order._id)}>
       <Grid
         item
         xs={2}
-        className={clsx(classes.orderId, classes.verticalCenter)}
-      >
+        className={clsx(classes.orderId, classes.verticalCenter)}>
         <p className={classes.firstColumn}>MDH{order.orderId}</p>
       </Grid>
       <Grid item xs={1} className={classes.verticalCenter}>
@@ -232,8 +217,7 @@ export default function Order(props) {
               (order.orderStatus[order.orderStatus.length - 1].name ===
                 "canceled" &&
                 classes.statusCancel)
-            }
-          >
+            }>
             {(order.orderStatus[order.orderStatus.length - 1].name ===
               "pending" &&
               "Chờ xử lý") ||
@@ -273,8 +257,7 @@ export default function Order(props) {
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
-        }}
-      >
+        }}>
         <Card>
           <CardContent>
             <Typography gutterBottom variant="h4" component="h2">
@@ -284,8 +267,7 @@ export default function Order(props) {
               <Table
                 stickyHeader
                 sx={{ minWidth: "40vh" }}
-                aria-label="simple table"
-              >
+                aria-label="simple table">
                 <TableHead>
                   <TableRow>
                     <TableCell className={classes.headerTable}>STT</TableCell>
@@ -310,20 +292,19 @@ export default function Order(props) {
                   {product?.products?.map((row, idx) => (
                     <TableRow
                       key={idx}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                      }}>
                       <TableCell
                         component="th"
                         scope="row"
-                        className={classes.tableContentBlack}
-                      >
+                        className={classes.tableContentBlack}>
                         {idx + 1}
                       </TableCell>
                       <TableCell
                         component="th"
                         scope="row"
-                        className={classes.tableContentBlack}
-                      >
+                        className={classes.tableContentBlack}>
                         {row?.fabricID?.fabricType}
                       </TableCell>
                       <TableCell className={classes.tableContentBlack}>
@@ -346,18 +327,6 @@ export default function Order(props) {
           </CardContent>
         </Card>
       </Modal>
-      {/* <Grid container item xs={12}>
-        <Grid item xs={2}></Grid>
-        <Grid item xs={9}>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <BillHeader />
-            { order?.subOrder?.map((item, index) => (
-              <Bill subOrderId={item} key={index} index={index}/>
-            ))}
-          </Collapse>
-        </Grid>
-        <Grid item xs={1}></Grid>
-      </Grid> */}
     </Grid>
   );
 }

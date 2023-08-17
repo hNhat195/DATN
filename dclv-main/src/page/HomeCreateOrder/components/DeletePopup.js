@@ -1,6 +1,5 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -11,13 +10,13 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   deleteButton: {
-    '&:hover': {
-      color: 'rgb(245, 66, 51)',
-   },
+    "&:hover": {
+      color: "rgb(245, 66, 51)",
+    },
   },
 }));
 
-export default function DeletePopup({productList, setProductList, index}) {
+export default function DeletePopup({ productList, setProductList, index }) {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
 
@@ -30,14 +29,18 @@ export default function DeletePopup({productList, setProductList, index}) {
   };
 
   const handleDelete = () => {
-    const temp = productList.filter((item, i) => i !== index);;
+    const temp = productList.filter((item, i) => i !== index);
     setProductList(temp);
     setOpen(false);
-  }
+  };
 
   return (
     <span>
-      <Button variant="outline" onClick={handleClickOpen} className={classes.deleteButton} title="Xóa">
+      <Button
+        variant="outline"
+        onClick={handleClickOpen}
+        className={classes.deleteButton}
+        title="Xóa">
         <CancelIcon />
       </Button>
       <Dialog open={open} onClose={handleClose} fullWidth={true}>

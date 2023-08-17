@@ -107,7 +107,7 @@ export default function SignIn() {
     errors: {},
   });
 
-  const [alert, setAlert] = useState("");
+  const alert = "";
   const [loginError, setLoginError] = useState(false);
 
   useEffect(() => {
@@ -180,8 +180,7 @@ export default function SignIn() {
             <Typography
               component="span"
               variant="subtitle1"
-              className={classes.alert}
-            >
+              className={classes.alert}>
               {alert}
             </Typography>
           </div>
@@ -247,8 +246,7 @@ export default function SignIn() {
               onChange={handleChange}
               SelectProps={{
                 native: true,
-              }}
-            >
+              }}>
               <option value="staff">Nhân viên</option>
               <option value="customer">Khách hàng</option>
             </TextField>
@@ -269,8 +267,7 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}
-            >
+              className={classes.submit}>
               Đăng nhập
             </Button>
             <Grid container>

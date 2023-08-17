@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
-import ProductList from "../../components/ProductList/ProductList";
 import { makeStyles } from "@material-ui/styles";
-import Filter from "./components/Filter";
-import { Grid, Container } from "@material-ui/core";
+
+import { Grid } from "@material-ui/core";
 import SearchField from "../../components/SearchField";
 import NotificationButton from "../../components/Button/NotificationButton";
 import productApi from "../../api/productApi";
 import ListTypeHeader from "./components/ListTypeHeader";
 import TypeItem from "./components/TypeItem";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -25,7 +24,7 @@ const useStyles = makeStyles(() => ({
 }));
 function Product() {
   const classes = useStyles();
-  const {type} = useParams();
+  const { type } = useParams();
   const [product, setProduct] = useState([]);
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState({
@@ -65,10 +64,6 @@ function Product() {
       mounted = false;
     };
   }, [filter]);
-
-  const handleFilterChange = (filter) => {
-    setFilter(filter);
-  };
 
   return (
     <div className={classes.root}>

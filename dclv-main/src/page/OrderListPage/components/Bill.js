@@ -126,17 +126,16 @@ export default function Bill({ subOrderId, index }) {
     setOpen(false);
   };
 
-  useEffect(async () => {
+  const handleGetSub = async (subOrderId) => {
     const response = await orderApi.getSubOrder(subOrderId);
     setSubOrder(response);
+  };
+
+  useEffect(() => {
+    handleGetSub();
   }, []);
 
   const [expanded, setExpanded] = useState(false);
-
-  const handleExpandClick = (e) => {
-    e.stopPropagation();
-    setExpanded(!expanded);
-  };
 
   return (
     <Grid container className={classes.root}>

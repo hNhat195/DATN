@@ -182,13 +182,6 @@ export default function AddStaffModal({ setRefresh }) {
     }
   };
 
-  const [expanded, setExpanded] = useState(false);
-
-  const handleExpandClick = (e) => {
-    e.stopPropagation();
-    setExpanded(!expanded);
-  };
-
   return (
     <div className={classes.root}>
       <DefaultButton
