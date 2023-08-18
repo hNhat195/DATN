@@ -65,7 +65,6 @@ export default function FabricRollBillCompleted({dateRangeFilter}) {
     }
   }, [dateRangeFilter])
   useEffect(() => {
-    console.log(fabricrollTotal)
   }, [fabricrollTotal])
   return (
     <RootStyle>

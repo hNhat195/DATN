@@ -68,15 +68,23 @@ import {
   Export,
 } from "devextreme-react/chart";
 import productApi from "../../../api/productApi";
-
+import warehouseApi from "../../../api/warehouseApi";
 function ChartFabricWarehouse() {
   const [chartWarehouse, setChartWarehouse] = useState([]);
   useEffect(() => {
     const fetChartWarehouse = async () => {
       try {
-        const response = await productApi.getChartWarehouseTrue();
-
-        setChartWarehouse(response);
+        // const response = await productApi.getChartWarehouseTrue();
+        const response = await warehouseApi.getAllWarehouse()
+        // console.log(response)
+        const result = response.map((item, idx) => {
+          return item.products.reduce((accumulator, currentValue) => accumulator + currentValue.quantity, 0)
+        })
+        const arrayResult = []
+        for(let i=0;i<response.length; i++) {
+          arrayResult.push({"name": "Warehouse " + response[i].id, "total": result[i]})
+        }
+        setChartWarehouse(arrayResult);
       } catch (error) {
         console.log("Failed to fetch warehouse", error);
       }
@@ -91,19 +99,10 @@ function ChartFabricWarehouse() {
         dataSource={chartWarehouse}
         // onPointClick={this.onPointClick}
       >
-        {/* <CommonSeriesSettings
-          argumentField="_id"
-          type="bar"
-          hoverMode="allArgumentPoints"
-          selectionMode="allArgumentPoints"
-        >
-          <Label visible={true}>
-            <Format type="fixedPoint" precision={0} />
-          </Label>
-        </CommonSeriesSettings> */}
+
         <Series
-          valueField="countFabric"
-          argumentField="_id"
+          valueField="total"
+          argumentField="name"
           type="bar"
           color="#42A5F5">
           <Label visible={true} />

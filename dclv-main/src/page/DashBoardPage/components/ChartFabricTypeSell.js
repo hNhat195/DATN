@@ -73,13 +73,13 @@ function ChartFabricTypeSell({ dateRangeFilter }) {
   }, []);
   useEffect(() => {
     if (dateRangeFilter.startDate && dateRangeFilter.endDate) {
-      console.log(fabrictypesell)
+      // console.log(fabrictypesell)
       let temp = fabrictypesell?.filter(
         (item) =>
           Date.parse(item.subOrderTime) >= Date.parse(dateRangeFilter.startDate) &&
           Date.parse(item.subOrderTime) <= Date.parse(dateRangeFilter.endDate)
       );
-      console.log(temp)
+      // console.log(temp)
       let mapProducts = temp.map((item) => item.products)
       const flatArray = []
       for (let i = 0; i < mapProducts.length; i++) {

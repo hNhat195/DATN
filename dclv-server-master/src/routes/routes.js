@@ -137,3 +137,9 @@ router.get(
 router.get("/api/supports/get-all", SupportController.getAllSupports);
 router.put("/api/support/response", SupportController.responseSupport);
 module.exports = router;
+
+
+/*-------------------------*/
+//Warehouse routes
+const WarehouseController = require('../controller/WarehouseController');
+router.get("/api/warehouse/get-all", WarehouseController.getAllWarehouse)
