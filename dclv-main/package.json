@@ -60,7 +60,8 @@
     "start": "DISABLE_ESLINT_PLUGIN=true  env-cmd -f ./.env react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy-production": "DISABLE_ESLINT_PLUGIN=true  env-cmd -f ./.env react-scripts build && scp -r -i ~/.ssh/datn ./build/* root@159.223.46.136:/var/www/cloudevis.asia/html"
   },
   "eslintConfig": {
     "extends": [
