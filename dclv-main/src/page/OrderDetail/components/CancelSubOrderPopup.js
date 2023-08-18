@@ -45,6 +45,7 @@ export default function CancelSubOrderPopup({ subOrder, idx, detail, setDetail, 
     temp.subOrder[idx] = res;
     setDetail(temp);
     setOpen(false);
+    window.location.reload()
   };
 
   return (

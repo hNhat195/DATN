@@ -67,6 +67,7 @@ export default function ChangeStatusPopup({ subOrder, idx, detail, setDetail, di
     temp.subOrder[idx] = res;
     setDetail(temp);
     setOpen(false);
+    window.location.reload()
   }
 
   return (

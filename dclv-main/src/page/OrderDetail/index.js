@@ -11,7 +11,7 @@ import SubOrderPopup from "./components/SubOrderPopup";
 import SubOrderList from "./components/SubOrderList";
 import ChangeOrderStatusPopup from "./components/ChangeOrderStatusPopup";
 import CancelOrderPopup from "./components/CancelOrderPopup";
-import OrderStatus from "../../const/OrderStatus"
+import { OrderStatus } from "../../const/OrderStatus";
 
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
@@ -102,7 +102,7 @@ export default function OrderDetail() {
     setLastStatus(
       res?.data.orderStatus[res?.data.orderStatus?.length - 1]?.name
     );
-    setOpenCancel(false)
+    setOpenCancel(false);
   };
 
   const handleUpdateStatus = async () => {
@@ -119,10 +119,10 @@ export default function OrderDetail() {
     setLastStatus(
       res?.data.orderStatus[res?.data.orderStatus?.length - 1]?.name
     );
-    setOpenChange(false)
+    setOpenChange(false);
   };
 
-  useEffect(() => { }, [lastStatus, detail.subOrder]);
+  useEffect(() => {}, [lastStatus, detail.subOrder]);
   const downloadFile = (base64Data, fileName) => {
     // Convert the base64 data to a Blob
     const byteCharacters = atob(base64Data);
@@ -187,17 +187,12 @@ export default function OrderDetail() {
           </Typography>
         </Grid>
         <Grid>
-          <SubOrderPopup
-            orderId={id}
-            products={detail.products}
-            subOrder={detail.subOrder}></SubOrderPopup>
-        </Grid>
-        <Grid>
           <Button
             color="secondary"
             size="large"
             variant="outline"
-            onClick={handleExport}>
+            onClick={handleExport}
+          >
             Xuất hoá đơn
           </Button>
         </Grid>
@@ -215,24 +210,37 @@ export default function OrderDetail() {
             <SubOrderPopup
               orderId={id}
               products={detail.products}
-              subOrder={detail.subOrder}></SubOrderPopup>
+              subOrder={detail.subOrder}
+            ></SubOrderPopup>
           </Grid>
           <Grid item>
             <CancelOrderPopup
-              disabledChange={(lastStatus == OrderStatus.COMPLETED || lastStatus == OrderStatus.CANCELED) ? true : false}
+              disabledChange={
+                lastStatus == OrderStatus.COMPLETED ||
+                lastStatus == OrderStatus.CANCELED
+                  ? true
+                  : false
+              }
               handleCancel={handleCancel}
               open={openCancel}
-              setOpen={setOpenCancel}></CancelOrderPopup>
+              setOpen={setOpenCancel}
+            ></CancelOrderPopup>
           </Grid>
-          
+
           <Grid item>
             <ChangeOrderStatusPopup
               lastStatus={lastStatus}
-              disabledChange={(lastStatus == OrderStatus.COMPLETED || lastStatus == OrderStatus.CANCELED) ? true : false}
+              disabledChange={
+                lastStatus == OrderStatus.COMPLETED ||
+                lastStatus == OrderStatus.CANCELED
+                  ? true
+                  : false
+              }
               orderDetail={detail?.orderStatus}
               handleUpdateStatus={handleUpdateStatus}
               open={openChange}
-              setOpen={setOpenChange}></ChangeOrderStatusPopup>
+              setOpen={setOpenChange}
+            ></ChangeOrderStatusPopup>
           </Grid>
         </Grid>
         <Grid item xs={12} md={7}>
@@ -249,11 +257,14 @@ export default function OrderDetail() {
         </Grid>
 
         {detail.subOrder?.map((item, idx) => (
-          
-          <SubOrderList item={item} idx={idx} detail={detail} setDetail={setDetail}></SubOrderList>
+          <SubOrderList
+            item={item}
+            idx={idx}
+            detail={detail}
+            setDetail={setDetail}
+          ></SubOrderList>
         ))}
       </Grid>
-
     </Container>
   );
 }

@@ -203,7 +203,7 @@ export default function CreateForm({
 
         <Grid item xs={12} md={9}>
           <FormControl fullWidth={true}>
-            <InputLabel id="fabric-collection">Collention</InputLabel>
+            <InputLabel id="fabric-collection">Collection</InputLabel>
             <Select
               MenuProps={{ classes: { paper: classes.menu } }}
               labelId="fabric-collection"

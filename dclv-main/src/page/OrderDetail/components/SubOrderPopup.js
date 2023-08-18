@@ -74,7 +74,6 @@ export default function SubOrderPopup({ orderId, products, subOrder }) {
   const [subProductsList, setSubProductsList] = useState();
 
   const handleClickOpen = () => {
-    // console.log(subOrder);
     let tempArr = [];
     const copiedProducts = products.map((item) => ({ ...item, quantity: 0 }));
     for (let i = 0; i < products.length; i++) {
@@ -158,6 +157,7 @@ export default function SubOrderPopup({ orderId, products, subOrder }) {
       const response = await orderApi.createSubOrder(postData);
       subOrder.push(response);
       setOpen(false);
+      window.location.reload()
     } else console.log("tao sub order that bai");
   };
 
