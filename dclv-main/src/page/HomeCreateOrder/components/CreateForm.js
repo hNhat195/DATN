@@ -14,7 +14,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import clsx from "clsx";
 import orderApi from "../../../api/orderApi";
 import productApi from "../../../api/productApi";
@@ -43,17 +42,17 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   deleteButton: {
-    '&:hover': {
-      color: 'rgb(245, 66, 51)',
+    "&:hover": {
+      color: "rgb(245, 66, 51)",
     },
   },
   acceptButton: {
-    '&:hover': {
-      color: 'rgb(11, 214, 38)',
+    "&:hover": {
+      color: "rgb(11, 214, 38)",
     },
   },
   paddingGrid: {
-    paddingTop: "20px"
+    paddingTop: "20px",
   },
   popupContainer: {
     margin: "0 auto",
@@ -62,9 +61,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "100px",
   },
   errorIcon: {
-    color: 'rgb(245, 66, 51)',
-    border: '3px solid rgb(245, 66, 51)',
-    borderRadius: '50%',
+    color: "rgb(245, 66, 51)",
+    border: "3px solid rgb(245, 66, 51)",
+    borderRadius: "50%",
     marginTop: "10px",
     marginBottom: "20px"
   },
@@ -81,20 +80,27 @@ const collections =  [{"label": "Silk", "value": "silk"}, {"label": "Linen", "va
 
 
 function ErrorPopup({ open, closePopup }) {
-  const classes = useStyles()
+  const classes = useStyles();
   return (
     <Dialog open={open} onClose={closePopup} maxWidth="xs" fullWidth>
       <DialogTitle>Lỗi</DialogTitle>
       <DialogContent>
         <DialogContentText className={classes.popupContainer}>
-          <CloseIcon sx={{ fontSize: 40 }} className={classes.errorIcon}></CloseIcon>
-          
+          <CloseIcon
+            sx={{ fontSize: 40 }}
+            className={classes.errorIcon}></CloseIcon>
+
           <h3>Vui lòng nhập thông tin sản phẩm hợp lệ</h3>
         </DialogContentText>
       </DialogContent>
 
       <DialogActions>
-        <Button variant="outline" onClick={closePopup} className={classes.deleteButton}>OK</Button>
+        <Button
+          variant="outline"
+          onClick={closePopup}
+          className={classes.deleteButton}>
+          OK
+        </Button>
       </DialogActions>
     </Dialog>
   );
@@ -115,33 +121,11 @@ export default function CreateForm({
   const [errorPopup, setErrorPopup] = useState(false)
   const [fabricCollection, setFabricCollection] = useState(null)
 
-  const history = useHistory();
   const classes = useStyles();
-  const postOrder = async (postData) => {
-    const response = await orderApi.create(postData);
-    return response;
-  };
-
-  const handleSubmit = async (event) => {
-    if (productList.length > 0) {
-      let postData = {
-        note: "front end call api",
-        receiverName: "Front end",
-        receiverPhone: "094444",
-        deposit: 10,
-        clientID: null,
-        products: productList,
-        receiverAddress: "front end test",
-      };
-      await postOrder(postData);
-      event.preventDefault();
-      history.push(`/order`);
-    } else console.log("please add product");
-  };
 
   const closePopup = () => {
-    setErrorPopup(false)
-  }
+    setErrorPopup(false);
+  };
 
   const handleAdd = (event) => {
     if (
@@ -150,7 +134,7 @@ export default function CreateForm({
       isNaN(Number.parseInt(fabricLength)) ||
       Number.parseInt(fabricLength) <= 0
     ) {
-      setErrorPopup(true)
+      setErrorPopup(true);
     } else {
       let addData = {
         colorCode: fabricColor,
@@ -158,19 +142,20 @@ export default function CreateForm({
         length: Number.parseInt(fabricLength),
       };
       let checkDuplicate = false;
-      let i = 0
+      let i = 0;
       for (; i < productList.length; i++) {
-        if (addData.colorCode == productList[i].colorCode && addData.typeId == productList[i].typeId) {
+        if (
+          addData.colorCode == productList[i].colorCode &&
+          addData.typeId == productList[i].typeId
+        ) {
           checkDuplicate = true;
           break;
         }
       }
 
       if (checkDuplicate) {
-        setErrorPopup(true)
-
-      }
-      else {
+        setErrorPopup(true);
+      } else {
         setProductList([...productList, addData]);
       }
       event.preventDefault();
@@ -199,15 +184,12 @@ export default function CreateForm({
       const response = await productApi.getColorByMaterial(materialId);
       setColorList(response);
     }
-
   };
   useEffect(async () => {
     await fetchColor();
   }, [materialId]);
 
-  useEffect(() => {
-
-  }, [productList]);
+  useEffect(() => {}, [productList]);
 
   return (
     <div>
@@ -260,13 +242,14 @@ export default function CreateForm({
                 setMaterialId(mat._id);
               }}
               value={fabricMaterial || ""}>
-              {materialList.length > 0 && materialList?.map((item, idx) => {
-                return (
-                  <MenuItem key={idx} value={item.name}>
-                    {item.name}
-                  </MenuItem>
-                );
-              })}
+              {materialList.length > 0 &&
+                materialList?.map((item, idx) => {
+                  return (
+                    <MenuItem key={idx} value={item.name}>
+                      {item.name}
+                    </MenuItem>
+                  );
+                })}
             </Select>
           </FormControl>
         </Grid>
@@ -280,17 +263,17 @@ export default function CreateForm({
               id="fabric-color"
               label="Color"
               onChange={(e) => {
-
                 setFabricColor(e.target.value);
               }}
               value={fabricColor || ""}>
-              {colorList.length > 0 && colorList?.map((item, idx) => {
-                return (
-                  <MenuItem key={idx} value={item.colorCode}>
-                    {item.colorCode}
-                  </MenuItem>
-                );
-              })}
+              {colorList.length > 0 &&
+                colorList?.map((item, idx) => {
+                  return (
+                    <MenuItem key={idx} value={item.colorCode}>
+                      {item.colorCode}
+                    </MenuItem>
+                  );
+                })}
             </Select>
           </FormControl>
         </Grid>
@@ -331,7 +314,9 @@ export default function CreateForm({
           </Button>
         </Grid>
       </Grid>
-      {errorPopup && <ErrorPopup open={errorPopup} closePopup={closePopup}></ErrorPopup>}
+      {errorPopup && (
+        <ErrorPopup open={errorPopup} closePopup={closePopup}></ErrorPopup>
+      )}
     </div>
   );
 }

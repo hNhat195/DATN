@@ -6,16 +6,12 @@ import { Button, Grid, Typography, Container } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import orderApi from "../../api/orderApi";
 import { makeStyles } from "@material-ui/core/styles";
-import { ArrowBack, ArrowUpward, Cancel, Publish } from "@material-ui/icons";
-import DefaultButton from "../../components/Button/DefaultButton";
 import { useHistory, useParams } from "react-router-dom";
 import SubOrderPopup from "./components/SubOrderPopup";
-
-import { OrderStatus } from "../../const/OrderStatus";
-import ChangeStatusPopup from "./components/ChangeStatusPopup";
 import SubOrderList from "./components/SubOrderList";
 import ChangeOrderStatusPopup from "./components/ChangeOrderStatusPopup";
 import CancelOrderPopup from "./components/CancelOrderPopup";
+import OrderStatus from "../../const/OrderStatus"
 
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
@@ -41,10 +37,20 @@ const useStyles = makeStyles((theme) => ({
     color: "#000040",
   },
   btnCancel: {
-    backgroundColor: "#EAECFF",
+    backgroundColor: "#fff",
     color: "#696983",
     "&:hover": {
       backgroundColor: "red",
+      color: "black",
+    },
+    textTransform: "none",
+    padding: theme.spacing(1.5),
+  },
+  btnUpdate: {
+    backgroundColor: "#fff",
+    color: "#696983",
+    "&:hover": {
+      backgroundColor: "rgb(252, 186, 3)",
       color: "black",
     },
     textTransform: "none",
@@ -73,6 +79,10 @@ export default function OrderDetail() {
   const [lastStatus, setLastStatus] = useState();
   const [openChange, setOpenChange] = useState(false);
   const [openCancel, setOpenCancel] = useState(false);
+
+  useEffect(() => {
+    console.log(detail);
+  }, [detail]);
 
   const handleOrderStatus = async () => {
     console.log(detail);
@@ -113,6 +123,40 @@ export default function OrderDetail() {
   };
 
   useEffect(() => { }, [lastStatus, detail.subOrder]);
+  const downloadFile = (base64Data, fileName) => {
+    // Convert the base64 data to a Blob
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const fileBlob = new Blob([byteArray], {
+      type: "application/octet-stream",
+    });
+
+    // Create a URL for the Blob
+    const fileUrl = URL.createObjectURL(fileBlob);
+
+    // Create a link element and simulate a click to initiate the download
+    const link = document.createElement("a");
+    link.href = fileUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+
+    // Cleanup: remove the link and revoke the URL
+    document.body.removeChild(link);
+    URL.revokeObjectURL(fileUrl);
+  };
+
+  const handleExport = async () => {
+    const res = await orderApi.exportBill(id);
+
+    downloadFile(res.data, "Bill.pdf");
+  };
+
+  useEffect(() => {}, [lastStatus, detail.subOrder]);
 
   useEffect(() => {
     let mounted = true;
@@ -130,10 +174,6 @@ export default function OrderDetail() {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(detail);
-  }, [detail]);
-
   const handleBack = () => {
     history.push(`/order`);
   };
@@ -146,7 +186,21 @@ export default function OrderDetail() {
             {"Chi tiết đơn đặt hàng MDH" + detail.orderId}
           </Typography>
         </Grid>
-        
+        <Grid>
+          <SubOrderPopup
+            orderId={id}
+            products={detail.products}
+            subOrder={detail.subOrder}></SubOrderPopup>
+        </Grid>
+        <Grid>
+          <Button
+            color="secondary"
+            size="large"
+            variant="outline"
+            onClick={handleExport}>
+            Xuất hoá đơn
+          </Button>
+        </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.root}>
         <Grid item xs={12} md={7}>

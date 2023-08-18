@@ -72,7 +72,7 @@ function Sidebar(props) {
               height="50"
             /> */}
             <Typography variant="h5" className={classes.titleLogo}>
-              Fabric
+              FABRICVN
             </Typography>
           </Box>
         </Link>

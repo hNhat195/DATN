@@ -40,14 +40,25 @@ export default function OrderTable({ productList, setProductList }) {
           <TableHead>
             <TableRow>
               <TableCell width="200px">Chất liệu</TableCell>
-              <TableCell width="150px" align="left">Mã màu</TableCell>
-              <TableCell width="80px" align="left">Số lượng</TableCell>
-              <TableCell width="170px" align="left"> </TableCell>
+              <TableCell width="150px" align="left">
+                Mã màu
+              </TableCell>
+              <TableCell width="80px" align="left">
+                Số lượng
+              </TableCell>
+              <TableCell width="170px" align="left">
+                {" "}
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {productList.map((row, index) => (
-              <OrderTableItem row={row} key={index} index={index} productList={productList} setProductList={setProductList}></OrderTableItem>
+              <OrderTableItem
+                row={row}
+                key={index}
+                index={index}
+                productList={productList}
+                setProductList={setProductList}></OrderTableItem>
             ))}
           </TableBody>
         </Table>

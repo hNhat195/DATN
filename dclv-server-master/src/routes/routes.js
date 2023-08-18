@@ -5,11 +5,13 @@ const router = express.Router();
 const verify = require("../auth/checkToken");
 
 const OrderController = require("../controller/OrderController");
-
+const { exportBill } = require("../controller/exportBill");
 const {
   getListFabricType,
   getFabricTypesByMaterial,
 } = require("../controller/FabricTypeController");
+
+router.post("/api/generate-invoice", exportBill);
 
 /*----order route------*/
 router.get("/api/order", OrderController.list);
@@ -129,6 +131,7 @@ router.get("/api/user/admin/liststaff", listStaff);
 //Support routes
 
 const SupportController = require("../controller/SupportController");
+
 router.post("/api/support/create", SupportController.createSupport);
 router.get(
   "/api/supports/client/:clientId",
