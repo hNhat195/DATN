@@ -9,6 +9,10 @@ import productApi from "../../api/productApi";
 import ListTypeHeader from "./components/ListTypeHeader";
 import TypeItem from "./components/TypeItem";
 import { useHistory, useParams } from "react-router-dom";
+import { async } from "validate.js";
+import ListPagination from "../../components/ListPagination";
+import SelectWithInput from "./components/SelectWithInput";
+import CreatePopup from "./components/CreatePopup";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -26,6 +30,7 @@ const useStyles = makeStyles(() => ({
 function Product() {
   const classes = useStyles();
   const {type} = useParams();
+  const [perPage, setPerPage] = useState([])
   const [product, setProduct] = useState([]);
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState({
@@ -35,40 +40,50 @@ function Product() {
   });
 
   useEffect(() => {
-    let mounted = true;
+    const fetchData = async () => {
+      const response = await productApi.getAll()
+      // console.log(response)
+      setProduct(response)
+      setFilter(response)
+    }
+    fetchData()
+  }, [])
 
-    const handleFilter = (products) => {
-      if (filter.warehouse !== "")
-        products = products.filter(
-          (item) => item.warehouseId === filter.warehouse
-        );
-      if (filter.type !== "")
-        products = products.filter(
-          (item) => item.item.fabricType.name === filter.type
-        );
-      if (filter.lot !== "")
-        products = products.filter((item) => item.lot === filter.lot);
+  // useEffect(() => {
+  //   let mounted = true;
 
-      return products;
-    };
+  //   const handleFilter = (products) => {
+  //     if (filter.warehouse !== "")
+  //       products = products.filter(
+  //         (item) => item.warehouseId === filter.warehouse
+  //       );
+  //     if (filter.type !== "")
+  //       products = products.filter(
+  //         (item) => item.item.fabricType.name === filter.type
+  //       );
+  //     if (filter.lot !== "")
+  //       products = products.filter((item) => item.lot === filter.lot);
 
-    const fetchProduct = async () => {
-      const params = {};
-      const response = await productApi.getAll(params);
-      if (mounted) {
-        setProduct(handleFilter(response));
-        setData(response);
-      }
-    };
-    fetchProduct();
-    return () => {
-      mounted = false;
-    };
-  }, [filter]);
+  //     return products;
+  //   };
 
-  const handleFilterChange = (filter) => {
-    setFilter(filter);
-  };
+  //   const fetchProduct = async () => {
+  //     const params = {};
+  //     const response = await productApi.getAll();
+  //     if (mounted) {
+  //       setProduct(handleFilter(response));
+  //       setData(response);
+  //     }
+  //   };
+  //   fetchProduct();
+  //   return () => {
+  //     mounted = false;
+  //   };
+  // }, [filter]);
+
+  // const handleFilterChange = (filter) => {
+  //   setFilter(filter);
+  // };
 
   return (
     <div className={classes.root}>
@@ -82,6 +97,9 @@ function Product() {
           /> */}
         </Grid>
         <Grid item sm={6} md={4} className={classes.notiSearch}>
+          <Grid item xs={8}>
+            <CreatePopup setRefresh={true}></CreatePopup>
+          </Grid>
           <Grid item xs={2}>
             <NotificationButton />
           </Grid>
@@ -90,10 +108,19 @@ function Product() {
           </Grid>
         </Grid>
       </Grid>
+      {/* <SelectWithInput></SelectWithInput> */}
       <ListTypeHeader />
-      {product?.map((item, idx) => (
+      {perPage?.length>0 && perPage?.map((item, idx) => (
         <TypeItem key={idx} fabricType={item} />
       ))}
+      <ListPagination
+          pageSize={10}
+          itemList={product}
+          setItemList={setProduct}
+          itemPerPage={perPage}
+          setItemPerPage={setPerPage}
+          filter={filter}
+        />
     </div>
   );
 }

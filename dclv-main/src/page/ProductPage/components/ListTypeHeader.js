@@ -42,15 +42,15 @@ export default function ListTypeHeader() {
     <Grid container className={classes.root}>
       <Grid
         item
-        xs={3}
+        xs={5}
         className={clsx(classes.verticalCenter)}
       >
         <p>Mã loại vải</p>
       </Grid>
-      <Grid item xs={4} className={classes.verticalCenter}>
+      <Grid item xs={5} className={classes.verticalCenter}>
         <p>Tên loại vải</p>
       </Grid>
-      <Grid item xs={3} className={classes.verticalCenter}>
+      <Grid item xs={2} className={classes.verticalCenter}>
         <p>Tồn kho</p>
       </Grid>
     </Grid>

@@ -100,6 +100,8 @@ const {
   getProductBySlug,
   getProductsHomePage,
   searchProductBySlug,
+  getAll,
+  createNewFabric,
 } = require("../controller/FabricRollController");
 
 router.get("/api/collections/:materialSlug", getProductsByMaterialSlug);
@@ -122,7 +124,8 @@ router.post("/api/product/fabricroll-bill", getFabricRollOfBill);
 router.put("/api/product/item/:id", updateMarketPrice);
 router.get("/api/chartwarehouse", getChartWarehouseTrue);
 router.get("/api/getfabricwarehouse", getFabricTypeWarehouse);
-
+router.get("/api/fabric/get-all", getAll)
+router.post("/api/fabric/create", createNewFabric)
 /*------------------------*/
 
 router.get("/api/user/admin/liststaff", listStaff);

@@ -94,20 +94,21 @@ export default function TypeItem(props) {
     <Grid container className={classes.root}>
       <Grid
         item
-        xs={3}
+        xs={5}
         className={clsx(classes.orderId, classes.verticalCenter)}
       >
-        <Typography>{fabricType.id}</Typography>
+        <Typography>{fabricType.slug}</Typography>
       </Grid>
-      <Grid item xs={4} className={classes.verticalCenter}>
+      <Grid item xs={5} className={classes.verticalCenter}>
         <Typography>{fabricType.name}</Typography>
       </Grid>
-      <Grid item xs={3} className={classes.verticalCenter}>
+      <Grid item xs={1} className={classes.verticalCenter}>
         <Typography>
-          {fabricType.fabricRoll.reduce((x, y) => x + y.count, 0)}
+          {/* {fabricType.fabricRoll.reduce((x, y) => x + y.count, 0)} */}
+          0
         </Typography>
       </Grid>
-      <Grid item xs={2} className={classes.dropIcon}>
+      {/* <Grid item xs={2} className={classes.dropIcon}>
         <Button
           className={classes.buttonWidth}
           onClick={handleExpandClick}
@@ -115,8 +116,8 @@ export default function TypeItem(props) {
         >
           {expanded ? <ExpandLess /> : <ExpandMore />}
         </Button>
-      </Grid>
-      <Grid container item xs={12}>
+      </Grid> */}
+      {/* <Grid container item xs={12}>
         <Grid item xs={1}></Grid>
         <Grid item xs={10}>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -127,7 +128,7 @@ export default function TypeItem(props) {
           </Collapse>
         </Grid>
         <Grid item xs={1}></Grid>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 }
