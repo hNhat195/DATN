@@ -9,6 +9,7 @@ const { FabricType } = require("../models/FabricType");
 const { Item } = require("../models/Item");
 const { MarketPrice } = require("../models/MarketPrice");
 const { Color } = require("../models/Color");
+const { Warehouse } = require("../models/Warehouse");
 const ObjectId = require("mongoose").Types.ObjectId;
 
 const getProductsHomePage = async (req, res) => {
@@ -708,32 +709,31 @@ async function getAll(req, res) {
 
 async function createNewFabric(req, res) {
   const body = req.body;
-  console.log(body);
 
   try {
-    const existedType = false;
+    let existedType = false;
     let foundType = await FabricType.findOne({ name: body.fabricType }).exec();
     if (foundType !== null) {
       existedType = true;
     }
-    const existedColor = false;
+    let existedColor = false;
     let foundColor = await Color.findOne({ colorCode: body.colorCode }).exec();
     if (foundColor !== null) {
       existedColor = true;
     }
 
-    if(existedType == false) {
+    if (existedType == false) {
       foundType = await FabricType.create({
         material: body.collection,
         slug: body.slug,
         name: body.fabricType,
-      })
+      });
     }
 
-    if(existedColor == false) {
+    if (existedColor == false) {
       foundColor = await Color.create({
-        colorCode: body.colorCode
-      })
+        colorCode: body.colorCode,
+      });
     }
 
     const newFabric = await FabricRoll.create({
@@ -744,13 +744,31 @@ async function createNewFabric(req, res) {
       color: body.colorCode,
       price: body.price || 10000,
       description: body.name,
-      slug: body.slug
-    })
+      slug: body.slug,
+    });
+
+    //Auto add 100 quantity to warehouse 1
+    await Warehouse.findOneAndUpdate(
+      { id: "1" },
+      {
+        $push: {
+          products: {
+            product_id: newFabric._id,
+            quantity: body.quantity,
+          },
+        },
+      },
+      {
+        new: true,
+      }
+    );
 
     return res.status(200).json(newFabric);
   } catch (e) {
     console.log(e);
-    return res.status(500).json({message: "Internal server error or existed fabric"});
+    return res
+      .status(500)
+      .json({ message: "Internal server error or existed fabric" });
   }
 }
 
