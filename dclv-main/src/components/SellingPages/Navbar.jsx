@@ -2,6 +2,7 @@ import { Badge } from "@material-ui/core";
 import { Search, ShoppingCartOutlined } from "@material-ui/icons";
 import React from "react";
 import styled from "styled-components";
+import Link from "@mui/material/Link";
 import { mobile } from "../../responsive";
 
 import SearchBar from "./SearchBar";
@@ -70,7 +71,7 @@ const MenuItem = styled.div`
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
-const Navbar = ({searchWord, setSearchWord}) => {
+const Navbar = ({ searchWord, setSearchWord }) => {
   return (
     <Container>
       <Wrapper>
@@ -89,9 +90,11 @@ const Navbar = ({searchWord, setSearchWord}) => {
           <MenuItem>REGISTER</MenuItem>
           <MenuItem>SIGN IN</MenuItem>
           <MenuItem>
-            <Badge badgeContent={4} color="primary">
-              <ShoppingCartOutlined />
-            </Badge>
+            <Link href={`/home/create-order`} underline="none" color="inherit">
+              <Badge badgeContent={4} color="primary">
+                <ShoppingCartOutlined />
+              </Badge>
+            </Link>
           </MenuItem>
         </Right>
       </Wrapper>

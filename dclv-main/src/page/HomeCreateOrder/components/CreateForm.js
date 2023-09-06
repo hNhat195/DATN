@@ -19,8 +19,8 @@ import orderApi from "../../../api/orderApi";
 import productApi from "../../../api/productApi";
 import { makeStyles } from "@material-ui/core/styles";
 import CreateButtonPopup from "./CreateButtonPopup";
-import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 import fabricTypeAPI from "../../../api/fabricTypeApi";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "true",
   },
   changeButton: {
-    backgroundColor: 'rgb(252, 186, 3)',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: 'rgb(230, 170, 5)',
+    backgroundColor: "rgb(252, 186, 3)",
+    color: "#fff",
+    "&:hover": {
+      backgroundColor: "rgb(230, 170, 5)",
     },
   },
   deleteButton: {
@@ -65,19 +65,22 @@ const useStyles = makeStyles((theme) => ({
     border: "3px solid rgb(245, 66, 51)",
     borderRadius: "50%",
     marginTop: "10px",
-    marginBottom: "20px"
+    marginBottom: "20px",
   },
   menu: {
-    maxHeight: '300px',
+    maxHeight: "300px",
   },
   spaceBlank: {
-    height: '25px'
-  }
+    height: "25px",
+  },
 }));
 
 const objectIdPattern = /^[0-9a-fA-F]{24}$/;
-const collections =  [{"label": "Silk", "value": "silk"}, {"label": "Linen", "value": "linen"}, {"label": "Merino", "value": "merino"}];
-
+const collections = [
+  { label: "Silk", value: "silk" },
+  { label: "Linen", value: "linen" },
+  { label: "Merino", value: "merino" },
+];
 
 function ErrorPopup({ open, closePopup }) {
   const classes = useStyles();
@@ -88,7 +91,8 @@ function ErrorPopup({ open, closePopup }) {
         <DialogContentText className={classes.popupContainer}>
           <CloseIcon
             sx={{ fontSize: 40 }}
-            className={classes.errorIcon}></CloseIcon>
+            className={classes.errorIcon}
+          ></CloseIcon>
 
           <h3>Vui lòng nhập thông tin sản phẩm hợp lệ</h3>
         </DialogContentText>
@@ -98,7 +102,8 @@ function ErrorPopup({ open, closePopup }) {
         <Button
           variant="outline"
           onClick={closePopup}
-          className={classes.deleteButton}>
+          className={classes.deleteButton}
+        >
           OK
         </Button>
       </DialogActions>
@@ -118,8 +123,8 @@ export default function CreateForm({
   const [fabricMaterial, setFabricMaterial] = useState("");
   const [fabricLength, setFabricLength] = useState("");
   const [materialId, setMaterialId] = useState("");
-  const [errorPopup, setErrorPopup] = useState(false)
-  const [fabricCollection, setFabricCollection] = useState(null)
+  const [errorPopup, setErrorPopup] = useState(false);
+  const [fabricCollection, setFabricCollection] = useState(null);
 
   const classes = useStyles();
 
@@ -173,11 +178,13 @@ export default function CreateForm({
 
   useEffect(() => {
     const fetchMaterial = async () => {
-      const response = await fabricTypeAPI.getFabricTypesByMaterial(fabricCollection)
-      setMaterialList(response)
-    }
-    fetchMaterial()
-  }, [fabricCollection])
+      const response = await fabricTypeAPI.getFabricTypesByMaterial(
+        fabricCollection
+      );
+      setMaterialList(response);
+    };
+    fetchMaterial();
+  }, [fabricCollection]);
 
   const fetchColor = async () => {
     if (objectIdPattern.test(materialId)) {
@@ -203,7 +210,7 @@ export default function CreateForm({
 
         <Grid item xs={12} md={9}>
           <FormControl fullWidth={true}>
-            <InputLabel id="fabric-collection">Collection</InputLabel>
+            <InputLabel id="fabric-collection">Chất liệu</InputLabel>
             <Select
               MenuProps={{ classes: { paper: classes.menu } }}
               labelId="fabric-collection"
@@ -211,16 +218,17 @@ export default function CreateForm({
               label="Collection"
               onChange={async (e) => {
                 setFabricCollection(e.target.value);
-                
               }}
-              value={fabricCollection || ""}>
-              {collections.length > 0 && collections?.map((item, idx) => {
-                return (
-                  <MenuItem key={idx} value={item.value}>
-                    {item.label}
-                  </MenuItem>
-                );
-              })}
+              value={fabricCollection || ""}
+            >
+              {collections.length > 0 &&
+                collections?.map((item, idx) => {
+                  return (
+                    <MenuItem key={idx} value={item.value}>
+                      {item.label}
+                    </MenuItem>
+                  );
+                })}
             </Select>
           </FormControl>
         </Grid>
@@ -228,7 +236,7 @@ export default function CreateForm({
 
         <Grid item xs={12} md={9}>
           <FormControl fullWidth={true}>
-            <InputLabel id="fabric-material">Chất liệu</InputLabel>
+            <InputLabel id="fabric-material">Loại vải</InputLabel>
             <Select
               MenuProps={{ classes: { paper: classes.menu } }}
               labelId="fabric-material"
@@ -241,7 +249,8 @@ export default function CreateForm({
                 });
                 setMaterialId(mat._id);
               }}
-              value={fabricMaterial || ""}>
+              value={fabricMaterial || ""}
+            >
               {materialList.length > 0 &&
                 materialList?.map((item, idx) => {
                   return (
@@ -265,7 +274,8 @@ export default function CreateForm({
               onChange={(e) => {
                 setFabricColor(e.target.value);
               }}
-              value={fabricColor || ""}>
+              value={fabricColor || ""}
+            >
               {colorList.length > 0 &&
                 colorList?.map((item, idx) => {
                   return (
@@ -297,9 +307,7 @@ export default function CreateForm({
       </Grid>
       <Grid container className={classes.spaceBlank}></Grid>
       <Grid container spacing={8} className={classes.paddingGrid}>
-        <Grid item xs={4}>
-
-        </Grid>
+        <Grid item xs={4}></Grid>
         <Grid item xs={2}></Grid>
         <Grid item xs={4}>
           {/* <CreateButtonPopup productList={productList}></CreateButtonPopup> */}
@@ -307,9 +315,8 @@ export default function CreateForm({
             variant="contained"
             type="button"
             onClick={handleAdd}
-
             className={clsx(classes.buttonCss, classes.changeButton)}
-            >
+          >
             Thêm
           </Button>
         </Grid>

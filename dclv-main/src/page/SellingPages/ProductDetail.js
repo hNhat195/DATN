@@ -127,6 +127,7 @@ const Product = () => {
   const [loading, setLoading] = useState(true);
   const [fabric, setFabric] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [number, setNumber] = useState(1);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -206,9 +207,21 @@ const Product = () => {
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
+              <Remove
+                onClick={() => {
+                  if (number > 0) {
+                    setNumber(number - 1);
+                  } else {
+                    setNumber(0);
+                  }
+                }}
+              />
+              <Amount>{number}</Amount>
+              <Add
+                onClick={() => {
+                  setNumber(number + 1);
+                }}
+              />
             </AmountContainer>
             <Button>ADD TO CART</Button>
           </AddContainer>
