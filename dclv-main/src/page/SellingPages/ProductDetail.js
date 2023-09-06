@@ -12,6 +12,7 @@ import { mobile } from "../../responsive";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import productApi from "../../api/productApi";
+import cartUtil from "../../utils/cart";
 
 const Container = styled.div``;
 
@@ -223,7 +224,14 @@ const Product = () => {
                 }}
               />
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            <Button
+              onClick={() => {
+                fabric.quantity = number;
+                cartUtil.addProductToCart(fabric);
+              }}
+            >
+              ADD TO CART
+            </Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>
