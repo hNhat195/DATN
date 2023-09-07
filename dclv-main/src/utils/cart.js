@@ -1,6 +1,14 @@
 const cartUtil = {
+  setCart: (cart) => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  },
+
   getCart: () => {
     return JSON.parse(localStorage.getItem("cart"));
+  },
+
+  clearCart: () => {
+    localStorage.setItem("cart", JSON.stringify([]));
   },
 
   getEssentialProductData: (product) => {

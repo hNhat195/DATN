@@ -12,6 +12,7 @@ import clsx from "clsx";
 import DeletePopup from "./DeletePopup";
 import { BorderAll } from "@material-ui/icons";
 import "./styled.css";
+import cartUtil from "../../../utils/cart";
 const useStyles = makeStyles((theme) => ({
   cssButton: {
     border: "0 0",
@@ -58,7 +59,7 @@ export default function OrderTableItem({
 }) {
   const classes = useStyles();
   const [isEdit, setIsEdit] = useState(false);
-  const [fabricLength, setFabricLength] = useState(row.length);
+  const [fabricQuantity, setFabricQuantity] = useState(row.quantity);
   const inputRef = useRef(null);
   const handleEdit = () => {
     setIsEdit(true);
@@ -67,13 +68,14 @@ export default function OrderTableItem({
 
   const handleSave = () => {
     const temp = productList;
-    temp[index]["length"] = fabricLength;
+    temp[index]["quantity"] = Number(fabricQuantity);
     setProductList(temp);
+    cartUtil.setCart(temp);
     setIsEdit(false);
   };
 
   const handleChange = (e) => {
-    setFabricLength(e.target.value);
+    setFabricQuantity(e.target.value);
   };
 
   useEffect(() => {
@@ -82,26 +84,24 @@ export default function OrderTableItem({
     }
   }, [isEdit]);
   useEffect(() => {
-    setFabricLength(row.length)
-  }, [row.length])
-  useEffect(() => {
-    console.log(fabricLength)
-  }, [fabricLength])
+    setFabricQuantity(row.quantity);
+  }, [row.quantity]);
   return (
     <TableRow>
-      <TableCell width="200px">
-        {row?.typeId}
+      <TableCell width="200px">{row?.fabricType}</TableCell>
+      <TableCell width="150px" align="left">
+        {row?.color}
       </TableCell>
-      <TableCell width="150px" align="left">{row?.colorCode}</TableCell>
       <TableCell width="80px" align="left">
         <input
           type="number"
-          defaultValue={fabricLength}
+          defaultValue={fabricQuantity}
           disabled={!isEdit}
           onChange={(e) => handleChange(e)}
           ref={inputRef}
           autoFocus
-          min="0" step="1"
+          min="0"
+          step="1"
           className={classes.lengthField}
         />
       </TableCell>

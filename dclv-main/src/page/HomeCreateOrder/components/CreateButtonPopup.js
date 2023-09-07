@@ -13,6 +13,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
 import { useHistory } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
+import cartUtil from "../../../utils/cart";
 
 // import {TextField} from "@material-ui/core"
 
@@ -63,7 +64,8 @@ function OrderPopup({ open, closePopup }) {
         <DialogContentText className={classes.popupContainer}>
           <CheckIcon
             sx={{ fontSize: 40 }}
-            className={classes.checkIcon}></CheckIcon>
+            className={classes.checkIcon}
+          ></CheckIcon>
           <h5>Tạo đơn hàng thành công</h5>
         </DialogContentText>
       </DialogContent>
@@ -72,7 +74,8 @@ function OrderPopup({ open, closePopup }) {
         <Button
           variant="outline"
           onClick={closePopup}
-          className={classes.acceptButton}>
+          className={classes.acceptButton}
+        >
           OK
         </Button>
       </DialogActions>
@@ -89,7 +92,8 @@ function ErrorPopup({ open, closePopup, errorMessage }) {
         <DialogContentText className={classes.popupContainer}>
           <CloseIcon
             sx={{ fontSize: 40 }}
-            className={classes.errorIcon}></CloseIcon>
+            className={classes.errorIcon}
+          ></CloseIcon>
           <h5>{errorMessage}</h5>
         </DialogContentText>
       </DialogContent>
@@ -98,7 +102,8 @@ function ErrorPopup({ open, closePopup, errorMessage }) {
         <Button
           variant="outline"
           onClick={closePopup}
-          className={classes.deleteButton}>
+          className={classes.deleteButton}
+        >
           OK
         </Button>
       </DialogActions>
@@ -174,6 +179,7 @@ export default function CreateButtonPopup({ productList }) {
         };
         await postOrder(postData);
         event.preventDefault();
+        cartUtil.clearCart();
         setOpenPopup(true);
       } else {
         setErrorMessage("Vui lòng thêm sản phẩm để tạo đơn hàng");
@@ -187,7 +193,12 @@ export default function CreateButtonPopup({ productList }) {
 
   return (
     <span>
-      <Button variant="contained" color="success" onClick={handleClickOpen} title="Tạo đơn hàng">
+      <Button
+        variant="contained"
+        color="success"
+        onClick={handleClickOpen}
+        title="Tạo đơn hàng"
+      >
         Tạo đơn
       </Button>
       <Dialog open={open} onClose={handleClose} fullWidth={true}>
@@ -201,7 +212,8 @@ export default function CreateButtonPopup({ productList }) {
               fullWidth
               onChange={(e) => {
                 setFullname(e.target.value);
-              }}></Input>
+              }}
+            ></Input>
           </div>
 
           <div className={classes.divContainer}>
@@ -210,7 +222,8 @@ export default function CreateButtonPopup({ productList }) {
               id="phone"
               required
               fullWidth
-              onChange={(e) => setPhone(e.target.value)}></Input>
+              onChange={(e) => setPhone(e.target.value)}
+            ></Input>
           </div>
 
           <div className={classes.divContainer}>
@@ -219,7 +232,8 @@ export default function CreateButtonPopup({ productList }) {
               id="email"
               required
               fullWidth
-              onChange={(e) => setEmail(e.target.value)}></Input>
+              onChange={(e) => setEmail(e.target.value)}
+            ></Input>
           </div>
 
           <div className={classes.divContainer}>
@@ -228,7 +242,8 @@ export default function CreateButtonPopup({ productList }) {
               id="address"
               required
               fullWidth
-              onChange={(e) => setAddress(e.target.value)}></Input>
+              onChange={(e) => setAddress(e.target.value)}
+            ></Input>
           </div>
 
           {openPopup && (
@@ -238,19 +253,22 @@ export default function CreateButtonPopup({ productList }) {
             <ErrorPopup
               open={errorPopup}
               closePopup={closeErrorPopup}
-              errorMessage={errorMessage}></ErrorPopup>
+              errorMessage={errorMessage}
+            ></ErrorPopup>
           )}
           <DialogActions>
             <Button
               className={classes.deleteButton}
               variant="outline"
-              onClick={handleClose}>
+              onClick={handleClose}
+            >
               Hủy
             </Button>
             <Button
               className={classes.acceptButton}
               variant="outline"
-              onClick={handleCreate}>
+              onClick={handleCreate}
+            >
               Tạo
             </Button>
           </DialogActions>
