@@ -80,6 +80,7 @@ router.get("/api/fabrictypes/:material", getFabricTypesByMaterial);
 
 /*-----Fabric Roll route------*/
 const {
+  getAllProducts,
   getProductsByCollectionId,
   getProductList,
   getProductList1,
@@ -112,9 +113,10 @@ router.post("/api/product/colorbymat", getColorByMaterial);
 router.get("/api/product/homepage", getProductsHomePage);
 router.get("/api/product/search/:slug", searchProductBySlug);
 router.get("/api/product/:slug", getProductBySlug);
+
 router.get("/api/products/:id", getProductById);
 
-router.get("/api/product", getProductList);
+router.get("/api/product", getAllProducts);
 router.get("/api/product1", getProductList1);
 router.post("/api/product/list", getListFabricRollWithIds);
 router.post("/api/product/fabricroll-bill", getFabricRollOfBill);
@@ -141,8 +143,7 @@ router.get("/api/supports/get-all", SupportController.getAllSupports);
 router.put("/api/support/response", SupportController.responseSupport);
 module.exports = router;
 
-
 /*-------------------------*/
 //Warehouse routes
-const WarehouseController = require('../controller/WarehouseController');
-router.get("/api/warehouse/get-all", WarehouseController.getAllWarehouse)
+const WarehouseController = require("../controller/WarehouseController");
+router.get("/api/warehouse/get-all", WarehouseController.getAllWarehouse);

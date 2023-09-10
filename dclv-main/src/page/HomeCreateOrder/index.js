@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@material-ui/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { makeStyles, styled } from "@material-ui/core/styles";
 
@@ -9,6 +9,9 @@ import OrderTable from "./components/OrderTable";
 import Announcement from "../../components/SellingPages/Announcement";
 import Navbar from "../../components/SellingPages/Navbar";
 import Footer from "../../components/SellingPages/Footer";
+import productApi from "../../api/productApi";
+import fabricTypeAPI from "../../api/fabricTypeApi";
+import cartUtil from "../../utils/cart";
 
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
@@ -59,15 +62,71 @@ const useStyles = makeStyles((theme) => ({
 export default function HomeCreateOrder() {
   const classes = useStyles();
 
-  const [colorList, setColorList] = useState([]);
-  const [materialList, setMaterialList] = useState([]);
+  const [allMaterials, setAllMaterials] = useState([]);
+  const [allFabricTypes, setAllFabricTypes] = useState([]);
+  const [allFabricColors, setAllFabricColors] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
+
   const [productList, setProductList] = useState([]);
+
+  //set productList and cart in localStorage when add product to cart
+  //we define 3 methods: add, update, remove
+  const syncProductList = (product, quantity, method) => {
+    if (method === "add") {
+      let temp = cartUtil.addProductToCart(product, quantity);
+      setProductList(temp);
+    } else if (method === "update") {
+      let temp = cartUtil.updateProductQuantity(product._id, quantity);
+      setProductList(temp);
+    } else if (method === "remove") {
+      let temp = cartUtil.removeProductFromCart(product._id);
+      setProductList(temp);
+    }
+  };
+
+  const getMaterialsFromFabricTypes = (fabricTypes) => {
+    let materials = [];
+    fabricTypes.forEach((fabricType) => {
+      if (!materials.includes(fabricType.material)) {
+        materials.push(fabricType.material);
+      }
+    });
+    return materials;
+  };
+
+  useEffect(() => {
+    const fetchAllProducts = async () => {
+      const response = await productApi.getAllProducts();
+      setAllProducts(response);
+    };
+    fetchAllProducts();
+  }, []);
+
+  useEffect(() => {
+    const fetchAllFabricTypes = async () => {
+      const fabricTypes = await fabricTypeAPI.getAllFabricTypes();
+      setAllFabricTypes(fabricTypes);
+      setAllMaterials(getMaterialsFromFabricTypes(fabricTypes));
+    };
+    fetchAllFabricTypes();
+  }, []);
+
+  useEffect(() => {
+    const fetchAllFabricColors = async () => {
+      const response = await productApi.getAllColorCode();
+      setAllFabricColors(response);
+    };
+    fetchAllFabricColors();
+  }, []);
+
+  useEffect(() => {
+    setProductList(cartUtil.getCart());
+  }, []);
 
   return (
     <div className={classes.parent}>
       <Announcement></Announcement>
       <Navbar></Navbar>
-
       <div className={classes.contentContainer}>
         <Grid container spacing={2}>
           <Grid item xs={9}>
@@ -78,18 +137,18 @@ export default function HomeCreateOrder() {
           <Grid item md={1}></Grid>
           <Grid item xs={12} md={4}>
             <CreateForm
+              allMaterials={allMaterials}
+              allFabricTypes={allFabricTypes}
+              allFabricColors={allFabricColors}
+              allProducts={allProducts}
               productList={productList}
-              setProductList={setProductList}
-              colorList={colorList}
-              setColorList={setColorList}
-              materialList={materialList}
-              setMaterialList={setMaterialList}
+              syncProductList={syncProductList}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <OrderTable
               productList={productList}
-              setProductList={setProductList}
+              syncProductList={syncProductList}
             />
           </Grid>
           <Grid item md={1}></Grid>

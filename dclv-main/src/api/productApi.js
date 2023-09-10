@@ -19,10 +19,12 @@ class ProductApi {
     const url = `/product/${productId}`;
     return axiosClient.get(url);
   };
-  getAll = (params) => {
-    const url = "/fabric/product";
-    return axiosClient.get(url, { params });
+
+  getAllProducts = () => {
+    const url = `/product`;
+    return axiosClient.get(url);
   };
+
   getOne = (id) => {
     const url = `/fabric/product/${id}`;
     return axiosClient.get(url);
