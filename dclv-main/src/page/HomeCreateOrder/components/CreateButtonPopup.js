@@ -205,6 +205,17 @@ export default function CreateButtonPopup({ productList }) {
         <DialogTitle>Tạo đơn hàng</DialogTitle>
         <DialogContent>
           <div className={classes.divContainer}>
+            <InputLabel htmlFor="email">Email</InputLabel>
+            <Input
+              type="email"
+              id="email"
+              required
+              fullWidth
+              onChange={(e) => setEmail(e.target.value)}
+            ></Input>
+          </div>
+
+          <div className={classes.divContainer}>
             <InputLabel htmlFor="fullname">Họ và tên</InputLabel>
             <Input
               id="fullname"
@@ -223,16 +234,6 @@ export default function CreateButtonPopup({ productList }) {
               required
               fullWidth
               onChange={(e) => setPhone(e.target.value)}
-            ></Input>
-          </div>
-
-          <div className={classes.divContainer}>
-            <InputLabel htmlFor="email">Email</InputLabel>
-            <Input
-              id="email"
-              required
-              fullWidth
-              onChange={(e) => setEmail(e.target.value)}
             ></Input>
           </div>
 

@@ -12,6 +12,7 @@ import Footer from "../../components/SellingPages/Footer";
 import productApi from "../../api/productApi";
 import fabricTypeAPI from "../../api/fabricTypeApi";
 import cartUtil from "../../utils/cart";
+import Navbar2 from "../../components/SellingPages/DropdownBar/Navbar.js";
 
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
@@ -69,6 +70,8 @@ export default function HomeCreateOrder() {
 
   const [productList, setProductList] = useState([]);
 
+  const [cartNumber, setCartNumber] = useState(cartUtil.getCartNumber());
+
   //set productList and cart in localStorage when add product to cart
   //we define 3 methods: add, update, remove
   const syncProductList = (product, quantity, method) => {
@@ -82,6 +85,7 @@ export default function HomeCreateOrder() {
       let temp = cartUtil.removeProductFromCart(product._id);
       setProductList(temp);
     }
+    setCartNumber(cartUtil.getCartNumber());
   };
 
   const getMaterialsFromFabricTypes = (fabricTypes) => {
@@ -126,7 +130,8 @@ export default function HomeCreateOrder() {
   return (
     <div className={classes.parent}>
       <Announcement></Announcement>
-      <Navbar></Navbar>
+      <Navbar cartNumber={cartNumber}></Navbar>
+      <Navbar2></Navbar2>
       <div className={classes.contentContainer}>
         <Grid container spacing={2}>
           <Grid item xs={9}>

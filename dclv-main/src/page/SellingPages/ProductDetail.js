@@ -129,6 +129,7 @@ const Product = () => {
   const [fabric, setFabric] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [number, setNumber] = useState(1);
+  const [cartNumber, setCartNumber] = useState(cartUtil.getCartNumber());
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -163,7 +164,7 @@ const Product = () => {
   return (
     <Container>
       <Announcement />
-      <Navbar />
+      <Navbar cartNumber={cartNumber} />
       <Navbar2 />
       <Wrapper>
         <ImgContainer>
@@ -227,6 +228,7 @@ const Product = () => {
             <Button
               onClick={() => {
                 cartUtil.addProductToCart(fabric, number);
+                setCartNumber(cartUtil.getCartNumber());
               }}
             >
               ADD TO CART

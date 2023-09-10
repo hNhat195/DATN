@@ -3,6 +3,11 @@ const cartUtil = {
     localStorage.setItem("cart", JSON.stringify(cart));
   },
 
+  getCartNumber: () => {
+    const cart = cartUtil.getCart();
+    return cart ? cart.length : 0;
+  },
+
   getCart: () => {
     return JSON.parse(localStorage.getItem("cart"));
   },
