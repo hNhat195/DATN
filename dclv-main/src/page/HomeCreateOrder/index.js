@@ -73,8 +73,7 @@ export default function HomeCreateOrder() {
   //we define 3 methods: add, update, remove
   const syncProductList = (product, quantity, method) => {
     if (method === "add") {
-      let tempProduct = { ...product, quantity: quantity };
-      let temp = cartUtil.addProductToCart(tempProduct);
+      let temp = cartUtil.addProductToCart(product, quantity);
       setProductList(temp);
     } else if (method === "update") {
       let temp = cartUtil.updateProductQuantity(product._id, quantity);
@@ -118,6 +117,10 @@ export default function HomeCreateOrder() {
       setAllFabricColors(response);
     };
     fetchAllFabricColors();
+  }, []);
+
+  useEffect(() => {
+    setProductList(cartUtil.getCart());
   }, []);
 
   return (

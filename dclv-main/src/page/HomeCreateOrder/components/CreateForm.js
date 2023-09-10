@@ -172,6 +172,12 @@ export default function CreateForm({
       setErrorPopup(true);
     } else {
       syncProductList(selectedProduct, fabricQuantity, "add");
+      setFabricColor("");
+      setFabricType("");
+      setFabricQuantity("");
+      setSelectedProduct(null);
+      setFabricCollection(null);
+      setFabricQuantity("");
     }
     event.preventDefault();
   };
@@ -285,6 +291,7 @@ export default function CreateForm({
             variant="standard"
             type="number"
             inputProps={{ min: 0, step: 1 }}
+            value={fabricQuantity}
             onChange={(e) => {
               setFabricQuantity(e.target.value);
             }}

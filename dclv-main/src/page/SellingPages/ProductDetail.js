@@ -226,8 +226,7 @@ const Product = () => {
             </AmountContainer>
             <Button
               onClick={() => {
-                fabric.quantity = number;
-                cartUtil.addProductToCart(fabric);
+                cartUtil.addProductToCart(fabric, number);
               }}
             >
               ADD TO CART

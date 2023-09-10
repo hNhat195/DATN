@@ -22,9 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderTable({ productList, setProductList }) {
-  productList = cartUtil.getCart();
-
+export default function OrderTable({ productList, syncProductList }) {
   const classes = useStyles();
 
   return (
@@ -50,13 +48,13 @@ export default function OrderTable({ productList, setProductList }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {productList.map((row, index) => (
+              {productList?.map((row, index) => (
                 <OrderTableItem
                   row={row}
                   key={index}
                   index={index}
                   productList={productList}
-                  setProductList={setProductList}
+                  syncProductList={syncProductList}
                 ></OrderTableItem>
               ))}
             </TableBody>

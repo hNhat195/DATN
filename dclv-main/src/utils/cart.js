@@ -23,15 +23,21 @@ const cartUtil = {
     };
   },
 
-  addProductToCart: (product) => {
-    product = cartUtil.getEssentialProductData(product);
+  addProductToCart: (product, rawQuantity) => {
+    const quantity = Number.parseInt(rawQuantity);
+
+    product = cartUtil.getEssentialProductData({
+      ...product,
+      quantity: quantity,
+    });
+
     let cart = cartUtil.getCart();
     if (cart) {
       const index = cart.findIndex((item) => item._id === product._id);
       if (index === -1) {
         cart.push(product);
       } else {
-        cart[index].quantity += product.quantity;
+        cart[index].quantity += quantity;
       }
     } else {
       cart = [product];
@@ -53,7 +59,8 @@ const cartUtil = {
     return cart;
   },
 
-  updateProductQuantity: (productId, quantity) => {
+  updateProductQuantity: (productId, rawQuantity) => {
+    const quantity = Number.parseInt(rawQuantity);
     const cart = cartUtil.getCart();
     if (cart) {
       const index = cart.findIndex((item) => item._id === productId);

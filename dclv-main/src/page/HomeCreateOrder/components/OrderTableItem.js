@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 export default function OrderTableItem({
   row,
   index,
-  setProductList,
+  syncProductList,
   productList,
 }) {
   const classes = useStyles();
@@ -67,10 +67,10 @@ export default function OrderTableItem({
   };
 
   const handleSave = () => {
-    const temp = productList;
-    temp[index]["quantity"] = Number(fabricQuantity);
-    setProductList(temp);
-    cartUtil.setCart(temp);
+    const temp = productList[index];
+    const quantity = Number(fabricQuantity);
+    temp["quantity"] = quantity;
+    syncProductList(temp, quantity, "update");
     setIsEdit(false);
   };
 
@@ -86,6 +86,7 @@ export default function OrderTableItem({
   useEffect(() => {
     setFabricQuantity(row.quantity);
   }, [row.quantity]);
+
   return (
     <TableRow>
       <TableCell width="200px">{row?.fabricType}</TableCell>
@@ -128,7 +129,7 @@ export default function OrderTableItem({
 
         <DeletePopup
           productList={productList}
-          setProductList={setProductList}
+          syncProductList={syncProductList}
           index={index}
           className={clsx(classes.cssButton)}
         />
