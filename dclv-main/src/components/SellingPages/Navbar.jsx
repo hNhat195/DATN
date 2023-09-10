@@ -6,6 +6,7 @@ import Link from "@mui/material/Link";
 import { mobile } from "../../responsive";
 
 import SearchBar from "./SearchBar";
+import cartUtil from "../../utils/cart";
 
 const Container = styled.div`
   ${mobile({ height: "50px" })}
@@ -71,7 +72,7 @@ const MenuItem = styled.div`
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
-const Navbar = ({ searchWord, setSearchWord }) => {
+const Navbar = ({ searchWord, setSearchWord, cartNumber }) => {
   return (
     <Container>
       <Wrapper>
@@ -91,7 +92,10 @@ const Navbar = ({ searchWord, setSearchWord }) => {
           <MenuItem>SIGN IN</MenuItem>
           <MenuItem>
             <Link href={`/home/create-order`} underline="none" color="inherit">
-              <Badge badgeContent={4} color="primary">
+              <Badge
+                badgeContent={cartNumber || cartUtil.getCartNumber()}
+                color="primary"
+              >
                 <ShoppingCartOutlined />
               </Badge>
             </Link>
