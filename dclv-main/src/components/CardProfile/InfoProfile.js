@@ -47,8 +47,8 @@ function InfoProfile({ staff }) {
           <TextField
             className={classes.textFieldInfo}
             id="outlined-read-only-input"
-            defaultValue={staff.name}
-            value={staff.name}
+            defaultValue={staff?.name}
+            value={staff?.name}
             InputProps={{
               readOnly: true,
             }}
@@ -60,8 +60,8 @@ function InfoProfile({ staff }) {
           <TextField
             className={classes.textFieldInfo}
             id="outlined-read-only-input"
-            defaultValue={staff.phone}
-            value={staff.phone}
+            defaultValue={staff?.phone}
+            value={staff?.phone}
             InputProps={{
               readOnly: true,
               endAdornment: (
@@ -70,7 +70,8 @@ function InfoProfile({ staff }) {
                     aria-label="EditPhone"
                     onClick={handleClickChangePhone}
                     //onMouseDown={handleMouseDownPassword}
-                    edge="end">
+                    edge="end"
+                  >
                     <EditIcon />
                   </IconButton>
                 </InputAdornment>
@@ -84,8 +85,8 @@ function InfoProfile({ staff }) {
           <TextField
             className={classes.textFieldInfo}
             id="outlined-read-only-input"
-            defaultValue={staff.email}
-            value={staff.email}
+            defaultValue={staff?.email}
+            value={staff?.email}
             InputProps={{
               readOnly: true,
             }}
@@ -97,8 +98,8 @@ function InfoProfile({ staff }) {
           <TextField
             className={classes.textFieldInfo}
             id="outlined-read-only-input"
-            defaultValue={staff.gender}
-            value={staff.gender}
+            defaultValue={staff?.gender}
+            value={staff?.gender}
             InputProps={{
               readOnly: true,
             }}
@@ -110,8 +111,8 @@ function InfoProfile({ staff }) {
           <TextField
             className={classes.textFieldInfo}
             id="outlined-read-only-input"
-            defaultValue={staff.birthday}
-            value={staff.birthday}
+            defaultValue={staff?.birthday}
+            value={staff?.birthday}
             InputProps={{
               readOnly: true,
             }}
@@ -123,8 +124,8 @@ function InfoProfile({ staff }) {
           <TextField
             className={classes.textFieldInfo}
             id="outlined-read-only-input"
-            defaultValue={staff.address}
-            value={staff.address}
+            defaultValue={staff?.address}
+            value={staff?.address}
             InputProps={{
               readOnly: true,
               endAdornment: (
@@ -133,7 +134,8 @@ function InfoProfile({ staff }) {
                     aria-label="EditAddress"
                     onClick={handleClickChangeAddress}
                     //onMouseDown={handleMouseDownPassword}
-                    edge="end">
+                    edge="end"
+                  >
                     <EditIcon />
                   </IconButton>
                 </InputAdornment>
@@ -147,8 +149,8 @@ function InfoProfile({ staff }) {
           <TextField
             className={classes.textFieldInfo}
             id="outlined-read-only-input"
-            defaultValue={staff.role}
-            value={staff.role}
+            defaultValue={staff?.role}
+            value={staff?.role}
             variant="outlined"
             fullWidth
             InputProps={{
