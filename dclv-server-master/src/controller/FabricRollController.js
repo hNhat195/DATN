@@ -11,6 +11,15 @@ const { MarketPrice } = require("../models/MarketPrice");
 const { Color } = require("../models/Color");
 const ObjectId = require("mongoose").Types.ObjectId;
 
+const getAllProducts = async (req, res) => {
+  try {
+    const products = await FabricRoll.find();
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 const getProductsHomePage = async (req, res) => {
   try {
     const products = await FabricRoll.find().limit(6);
@@ -18,7 +27,7 @@ const getProductsHomePage = async (req, res) => {
   } catch (error) {
     res.status(500).json(error);
   }
-}
+};
 
 const getProductsByMaterialSlug = async (req, res) => {
   try {
@@ -65,16 +74,15 @@ const getProductBySlug = async (req, res) => {
 
 const searchProductBySlug = async (req, res) => {
   try {
-    const slug = req.params.slug
+    const slug = req.params.slug;
     const foundProducts = await FabricRoll.find({
-      slug: { $regex: slug},
+      slug: { $regex: slug },
     }).exec();
     return res.json({
       message: "Thành công",
       status: 200,
       data: foundProducts,
     });
-
   } catch (error) {
     return res.json({
       message: "Thất bại",
@@ -698,6 +706,7 @@ async function getColorByMaterial(req, res) {
 }
 
 module.exports = {
+  getAllProducts,
   getProductsByCollectionId,
   getProductList,
   getProductList1,

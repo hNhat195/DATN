@@ -53,12 +53,12 @@ const cartUtil = {
     return cart;
   },
 
-  updateProductQuantity: (productId, undate_value) => {
+  updateProductQuantity: (productId, quantity) => {
     const cart = cartUtil.getCart();
     if (cart) {
       const index = cart.findIndex((item) => item._id === productId);
       if (index !== -1) {
-        cart[index].quantity = cart[index].quantity + undate_value;
+        cart[index].quantity = quantity;
       }
     }
     localStorage.setItem("cart", JSON.stringify(cart));
