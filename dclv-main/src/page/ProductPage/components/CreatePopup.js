@@ -262,12 +262,10 @@ export default function CreatePopup() {
 
   const handleCreateFabric = async () => {
     if (Object.values(newFabric).filter((i) => i === "").length > 0) {
-      console.log("thieu thong tin");
       setErrorMessage("Vui lòng nhập đầy đủ thông tin");
       setErrorPopup(true);
     } else {
       try {
-        console.log("test");
         const tempCollection = newFabric.collection;
         const tempMaterial = capitalized(newFabric.material);
         const tempColorCode = capitalized(newFabric.colorCode);
@@ -286,8 +284,6 @@ export default function CreatePopup() {
         // setOpen(false);
         setSuccessPopup(true);
       } catch (error) {
-        console.log(error);
-        // alert("Thông tin không hợp lệ");
         setErrorMessage("Unexpected error");
         setErrorPopup(true);
       }

@@ -65,6 +65,9 @@ const useStyles = makeStyles({
     //   opacity: '1',
     // }
   },
+  marginLeft: {
+    marginLeft: "10px"
+  }
 });
 
 export default function SubOrderPopup({ orderId, products, subOrder }) {
@@ -168,7 +171,7 @@ export default function SubOrderPopup({ orderId, products, subOrder }) {
   };
 
   return (
-    <span>
+    <span className={classes.marginLeft}>
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Tạo suborder
       </Button>

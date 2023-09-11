@@ -37,7 +37,7 @@ const useStyles = makeStyles({
     fontWeight: "bold",
   },
   tableCss: {
-    width: "470px"
+    width: "440px",
   }
 });
 

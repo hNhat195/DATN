@@ -66,7 +66,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function OrderDetail() {
   const classes = useStyles();
-  const history = useHistory();
   const { id } = useParams();
   const role = localStorage.getItem("role");
 
@@ -174,10 +173,6 @@ export default function OrderDetail() {
     };
   }, []);
 
-  const handleBack = () => {
-    history.push(`/order`);
-  };
-
   return (
     <Container maxWidth="xl" className={classes.orderDetailBox}>
       <Grid container spacing={2}>
@@ -185,16 +180,6 @@ export default function OrderDetail() {
           <Typography variant="h4" className={classes.titlePage}>
             {"Chi tiết đơn đặt hàng MDH" + detail.orderId}
           </Typography>
-        </Grid>
-        <Grid>
-          <Button
-            color="secondary"
-            size="large"
-            variant="outline"
-            onClick={handleExport}
-          >
-            Xuất hoá đơn
-          </Button>
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.root}>
@@ -204,16 +189,24 @@ export default function OrderDetail() {
         <Grid item xs={12} md={5}>
           <TimelineStatus statusList={detail.orderStatus} />
         </Grid>
-        <Grid container spacing={3} className={classes.btnGroup}>
-          <Grid item xs={6}></Grid>
-          <Grid item>
+        <Grid container spacing={2} className={classes.root}>
+          <Grid item xs={2}>
             <SubOrderPopup
               orderId={id}
               products={detail.products}
               subOrder={detail.subOrder}
             ></SubOrderPopup>
           </Grid>
-          <Grid item>
+          <Grid item xs={5}>
+            <Button
+              color="warning"
+              variant="contained"
+              onClick={handleExport}
+            >
+              Xuất hoá đơn
+            </Button>
+          </Grid>
+          <Grid item xs={2}>
             <CancelOrderPopup
               disabledChange={
                 lastStatus == OrderStatus.COMPLETED ||
@@ -226,8 +219,7 @@ export default function OrderDetail() {
               setOpen={setOpenCancel}
             ></CancelOrderPopup>
           </Grid>
-
-          <Grid item>
+          <Grid item xs={3}>
             <ChangeOrderStatusPopup
               lastStatus={lastStatus}
               disabledChange={

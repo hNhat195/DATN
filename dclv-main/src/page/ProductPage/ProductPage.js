@@ -89,7 +89,8 @@ function Product() {
     <div className={classes.root}>
       <h1>{type}</h1>
       <Grid container>
-        <Grid item sm={6} md={8}>
+        <Grid item sm={6} md={8} className={classes.notiSearch}>
+        <CreatePopup setRefresh={true}></CreatePopup>
           {/* <Filter
             handleFilterChange={handleFilterChange}
             filter={filter}
@@ -98,7 +99,7 @@ function Product() {
         </Grid>
         <Grid item sm={6} md={4} className={classes.notiSearch}>
           <Grid item xs={8}>
-            <CreatePopup setRefresh={true}></CreatePopup>
+
           </Grid>
           <Grid item xs={2}>
             <NotificationButton />
