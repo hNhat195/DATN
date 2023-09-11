@@ -19,10 +19,16 @@ class ProductApi {
     const url = `/product/${productId}`;
     return axiosClient.get(url);
   };
-  getAll = (params) => {
-    const url = "/fabric/product";
-    return axiosClient.get(url, { params });
+  getAll = () => {
+    const url = "/fabric/get-all";
+    return axiosClient.get(url);
   };
+
+  getAllProducts = () => {
+    const url = `/product`;
+    return axiosClient.get(url);
+  };
+
   getOne = (id) => {
     const url = `/fabric/product/${id}`;
     return axiosClient.get(url);
@@ -65,6 +71,11 @@ class ProductApi {
     const url = "product/colorbymat";
     return axiosClient.post(url, { materialId: params });
   };
+
+  createNewFabric = (body) => {
+    const url = "fabric/create"
+    return axiosClient.post(url, body)
+  }
 }
 const productApi = new ProductApi();
 export default productApi;

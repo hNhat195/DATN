@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
-import { alpha, styled } from "@material-ui/core/styles";
+import { styled } from "@material-ui/core/styles";
 import { Card, Typography } from "@material-ui/core";
-// utils
-import { fNumber } from "../../../utils/formatNumber";
-import billApi from "../../../api/billApi";
+
 import orderApi from "../../../api/orderApi";
 
 const RootStyle = styled(Card)(({ theme }) => ({

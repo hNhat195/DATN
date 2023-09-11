@@ -13,44 +13,46 @@ import { useState, useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   changeButton: {
-    '&:hover': {
-      color: 'rgb(252, 186, 3)',
+    "&:hover": {
+      color: "rgb(252, 186, 3)",
     },
   },
   deleteButton: {
-    '&:hover': {
-      color: 'rgb(245, 66, 51)',
+    "&:hover": {
+      color: "rgb(245, 66, 51)",
     },
   },
   acceptButton: {
-    '&:hover': {
-      color: 'rgb(11, 214, 38)',
+    "&:hover": {
+      color: "rgb(11, 214, 38)",
     },
   },
 }));
 
-export default function ChangeStatusPopup({ subOrder, idx, detail, setDetail, disabledChange }) {
+export default function ChangeStatusPopup({
+  subOrder,
+  idx,
+  detail,
+  setDetail,
+  disabledChange,
+}) {
   const [open, setOpen] = React.useState(false);
-  const [currentStatus, setCurrentStatus] = useState("")
-  const [nextStatus, setNextStatus] = useState("")
-  
+  const [currentStatus, setCurrentStatus] = useState("");
+  const [nextStatus, setNextStatus] = useState("");
+
   const classes = useStyles();
 
-  useEffect(() => {
-    
-  }, [disabledChange])
+  useEffect(() => {}, [disabledChange]);
 
   const handleClickOpen = () => {
-    const latestStatus = subOrder.subOrderStatus[subOrder.subOrderStatus.length - 1].name;
-    if (latestStatus == 'ready') {
-      setCurrentStatus('Đã sẵn sàng')
-      setNextStatus('Đang giao')
-      
-    }
-    else if (latestStatus == 'in-progress') {
-      setCurrentStatus('Đang giao')
-      setNextStatus('Đã hoàn thành')
-      
+    const latestStatus =
+      subOrder.subOrderStatus[subOrder.subOrderStatus.length - 1].name;
+    if (latestStatus == "ready") {
+      setCurrentStatus("Đã sẵn sàng");
+      setNextStatus("Đang giao");
+    } else if (latestStatus == "in-progress") {
+      setCurrentStatus("Đang giao");
+      setNextStatus("Đã hoàn thành");
     }
     setOpen(true);
   };
@@ -67,11 +69,18 @@ export default function ChangeStatusPopup({ subOrder, idx, detail, setDetail, di
     temp.subOrder[idx] = res;
     setDetail(temp);
     setOpen(false);
-  }
+    window.location.reload();
+  };
 
   return (
     <span>
-      <Button variant="outline" onClick={handleClickOpen} className={classes.changeButton} disabled={disabledChange} title="Chuyển trạng thái">
+      <Button
+        variant="contained"
+        onClick={handleClickOpen}
+        disabled={disabledChange}
+        title="Chuyển trạng thái"
+        color="warning"
+      >
         Chuyển trạng thái
       </Button>
       <Dialog open={open} onClose={handleClose} fullWidth={true}>
@@ -83,14 +92,25 @@ export default function ChangeStatusPopup({ subOrder, idx, detail, setDetail, di
               <b> "{currentStatus}" </b>
               sang trạng thái
               <b> "{nextStatus}" </b>
-
             </p>
           </DialogContentText>
         </DialogContent>
 
         <DialogActions>
-          <Button className={classes.deleteButton} variant="outline" onClick={handleClose}>Không</Button>
-          <Button className={classes.acceptButton} variant="outline" onClick={handleChange}>Đồng ý</Button>
+          <Button
+            className={classes.deleteButton}
+            variant="outline"
+            onClick={handleClose}
+          >
+            Không
+          </Button>
+          <Button
+            className={classes.acceptButton}
+            variant="outline"
+            onClick={handleChange}
+          >
+            Đồng ý
+          </Button>
         </DialogActions>
       </Dialog>
     </span>

@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Typography, Grid, Container, Button } from "@material-ui/core";
+import React, { useState } from "react";
+import { Typography, Grid, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 
 import DateFilter from "../../components/DateFilter";
 import SearchField from "../../components/SearchField";
 import NotificationButton from "../../components/Button/NotificationButton";
-import { Notifications } from "@material-ui/icons";
 
 import StaffTotalSale from "./components/StaffTotalSale";
 import StaffBillComplete from "./components/StaffBillComplete";
@@ -15,7 +14,6 @@ import FabricRollBillCompleted from "./components/FabricRollBillCompleted";
 import ChartFabricTypeSell from "./components/ChartFabricTypeSell";
 import ChartOrderHandle from "./components/ChartOrderHandle";
 import ChartFabricWarehouse from "./components/ChartFabricWarehouse";
-import ChartBillStatus from "./components/ChartBillStatus";
 
 function DashBoard() {
   const classes = useStyles();
@@ -69,9 +67,6 @@ function DashBoard() {
           <Grid item xs={12} sm={6} md={3} className={classes.RevenueProducts}>
             <FabricRollBillCompleted dateRangeFilter={dateRangeFilter} />
           </Grid>
-          {/* <Grid item xs={12} md={6} lg={8} className={classes.Chart1}>
-            <ChartFabricWarehouse />
-          </Grid> */}
 
           {/* <Grid item xs={12} md={6} lg={4} className={classes.ProductsChart}>
             <ChartBillStatus />
@@ -83,6 +78,10 @@ function DashBoard() {
 
           <Grid item xs={12} md={6} lg={4} className={classes.TopProducts}>
             <ChartOrderHandle dateRangeFilter={dateRangeFilter} />
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={8} className={classes.Chart1}>
+            <ChartFabricWarehouse />
           </Grid>
         </Grid>
       </Container>

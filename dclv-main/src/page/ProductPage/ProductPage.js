@@ -7,7 +7,11 @@ import NotificationButton from "../../components/Button/NotificationButton";
 import productApi from "../../api/productApi";
 import ListTypeHeader from "./components/ListTypeHeader";
 import TypeItem from "./components/TypeItem";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import { async } from "validate.js";
+import ListPagination from "../../components/ListPagination";
+import SelectWithInput from "./components/SelectWithInput";
+import CreatePopup from "./components/CreatePopup";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -25,6 +29,7 @@ const useStyles = makeStyles(() => ({
 function Product() {
   const classes = useStyles();
   const { type } = useParams();
+  const [perPage, setPerPage] = useState([]);
   const [product, setProduct] = useState([]);
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState({
@@ -34,42 +39,21 @@ function Product() {
   });
 
   useEffect(() => {
-    let mounted = true;
-
-    const handleFilter = (products) => {
-      if (filter.warehouse !== "")
-        products = products.filter(
-          (item) => item.warehouseId === filter.warehouse
-        );
-      if (filter.type !== "")
-        products = products.filter(
-          (item) => item.item.fabricType.name === filter.type
-        );
-      if (filter.lot !== "")
-        products = products.filter((item) => item.lot === filter.lot);
-
-      return products;
+    const fetchData = async () => {
+      const response = await productApi.getAll();
+      // console.log(response)
+      setProduct(response);
+      setFilter(response);
     };
-
-    const fetchProduct = async () => {
-      const params = {};
-      const response = await productApi.getAll(params);
-      if (mounted) {
-        setProduct(handleFilter(response));
-        setData(response);
-      }
-    };
-    fetchProduct();
-    return () => {
-      mounted = false;
-    };
-  }, [filter]);
+    fetchData();
+  }, []);
 
   return (
     <div className={classes.root}>
       <h1>{type}</h1>
       <Grid container>
-        <Grid item sm={6} md={8}>
+        <Grid item sm={6} md={8} className={classes.notiSearch}>
+          <CreatePopup setRefresh={true}></CreatePopup>
           {/* <Filter
             handleFilterChange={handleFilterChange}
             filter={filter}
@@ -77,6 +61,7 @@ function Product() {
           /> */}
         </Grid>
         <Grid item sm={6} md={4} className={classes.notiSearch}>
+          <Grid item xs={8}></Grid>
           <Grid item xs={2}>
             <NotificationButton />
           </Grid>
@@ -85,10 +70,18 @@ function Product() {
           </Grid>
         </Grid>
       </Grid>
+      {/* <SelectWithInput></SelectWithInput> */}
       <ListTypeHeader />
-      {product?.map((item, idx) => (
-        <TypeItem key={idx} fabricType={item} />
-      ))}
+      {perPage?.length > 0 &&
+        perPage?.map((item, idx) => <TypeItem key={idx} fabricType={item} />)}
+      <ListPagination
+        pageSize={10}
+        itemList={product}
+        setItemList={setProduct}
+        itemPerPage={perPage}
+        setItemPerPage={setPerPage}
+        filter={filter}
+      />
     </div>
   );
 }

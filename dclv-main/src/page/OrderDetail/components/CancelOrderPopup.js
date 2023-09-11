@@ -6,7 +6,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import CancelIcon from "@mui/icons-material/Cancel";
 import { makeStyles } from "@material-ui/core/styles";
 import orderApi from "../../../api/orderApi";
 import { useState, useEffect } from "react";
@@ -20,14 +19,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CancelOrderPopup({
-  subOrder,
-  idx,
-  detail,
-  setDetail,
   disabledChange,
   handleCancel,
+  open,
+  setOpen,
 }) {
-  const [open, setOpen] = React.useState(false);
+  //   const [open, setOpen] = React.useState(false);
 
   const classes = useStyles();
 
@@ -44,9 +41,9 @@ export default function CancelOrderPopup({
   return (
     <span>
       <Button
-        variant="outline"
+        variant="contained"
+        color="error"
         onClick={handleClickOpen}
-        className={classes.deleteButton}
         disabled={disabledChange}
         title="Hủy order">
         Hủy order

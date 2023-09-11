@@ -1,10 +1,24 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Button, Collapse, Typography } from "@material-ui/core";
+import {
+  Grid,
+  Button,
+  Modal,
+  Backdrop,
+  Card,
+  Collapse,
+  Typography,
+  CardContent,
+  Table,
+  TableCell,
+  TableBody,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@material-ui/core";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
-import LotHeader from "./LotHeader";
 import clsx from "clsx";
-import LotItem from "./LotItem";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,53 +77,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TypeItem(props) {
-  const { fabricType } = props;
+export default function WarehouseItem(props) {
+  const { warehouse } = props;
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
-
-  const handleExpandClick = (e) => {
-    //Seperate onClick in child and parents component
-    e.stopPropagation();
-    setExpanded(!expanded);
-  };
 
   return (
     <Grid container className={classes.root}>
       <Grid
         item
-        xs={5}
-        className={clsx(classes.orderId, classes.verticalCenter)}>
-        <Typography>{fabricType.slug}</Typography>
+        xs={3}
+        className={clsx(classes.orderId, classes.verticalCenter)}
+      >
+        <Typography>Warehouse {warehouse.id}</Typography>
       </Grid>
-      <Grid item xs={5} className={classes.verticalCenter}>
-        <Typography>{fabricType.name}</Typography>
+      <Grid item xs={3} className={classes.verticalCenter}>
+        <Typography>{warehouse.address}</Typography>
       </Grid>
-      <Grid item xs={1} className={classes.verticalCenter}>
+      <Grid item xs={3} className={classes.verticalCenter}>
         <Typography>
-          {/* {fabricType.fabricRoll.reduce((x, y) => x + y.count, 0)} */}0
+          {warehouse.products.reduce((accumulator, currentValue) => accumulator + currentValue.quantity, 0)}
         </Typography>
       </Grid>
-      {/* <Grid item xs={2} className={classes.dropIcon}>
-        <Button
-          className={classes.buttonWidth}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}>
-          {expanded ? <ExpandLess /> : <ExpandMore />}
-        </Button>
-      </Grid> */}
-      {/* <Grid container item xs={12}>
-        <Grid item xs={1}></Grid>
-        <Grid item xs={10}>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <LotHeader />
-            {fabricType?.fabricRoll.map((item, index) => (
-              <LotItem fabricLot={item} key={index} />
-            ))}
-          </Collapse>
-        </Grid>
-        <Grid item xs={1}></Grid>
-      </Grid> */}
+      <Grid item xs={3} className={classes.verticalCenter}>
+        <Typography>
+          {warehouse.capacity}
+        </Typography>
+      </Grid>
     </Grid>
   );
 }

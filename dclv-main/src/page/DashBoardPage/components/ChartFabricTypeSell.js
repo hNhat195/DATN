@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Paper from "@material-ui/core/Paper";
-import {
-  Chart,
-  Series,
-  CommonSeriesSettings,
-  Label,
-  Format,
-  Legend,
-  Export,
-} from "devextreme-react/chart";
-import productApi from "../../../api/productApi";
+import { Chart, Series, Label, Legend, Export } from "devextreme-react/chart";
 import orderApi from "../../../api/orderApi";
 
 function ChartFabricTypeSell({ dateRangeFilter }) {
@@ -84,6 +75,7 @@ function ChartFabricTypeSell({ dateRangeFilter }) {
             Date.parse(dateRangeFilter.startDate) &&
           Date.parse(item.subOrderTime) <= Date.parse(dateRangeFilter.endDate)
       );
+
       let mapProducts = temp.map((item) => item.products);
       const flatArray = [];
       for (let i = 0; i < mapProducts.length; i++) {
@@ -114,16 +106,6 @@ function ChartFabricTypeSell({ dateRangeFilter }) {
         dataSource={filteredList}
         // onPointClick={this.onPointClick}
         rotated={true}>
-        {/* <CommonSeriesSettings
-          argumentField="_id"
-          type="bar"
-          hoverMode="allArgumentPoints"
-          selectionMode="allArgumentPoints"
-        >
-          <Label visible={true}>
-            <Format type="fixedPoint" precision={0} />
-          </Label>
-        </CommonSeriesSettings> */}
         <Series
           valueField="quantity"
           argumentField="name"

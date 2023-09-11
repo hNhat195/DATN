@@ -162,11 +162,11 @@ export default function SupportItem(props) {
         <p>MDH{item.orderCode}</p>
       </Grid>
       <Grid item xs={2} className={classes.verticalCenter}>
-        <p>{item.clientId.name}</p>
+        <p>{item?.clientId?.name}</p>
       </Grid>
 
       <Grid item xs={2} className={classes.productList}>
-        <p>{item.clientId.phone}</p>
+        <p>{item?.clientId?.phone}</p>
       </Grid>
 
       <Grid item xs={3} className={classes.verticalCenter}>

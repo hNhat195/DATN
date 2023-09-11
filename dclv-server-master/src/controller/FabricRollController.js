@@ -9,7 +9,17 @@ const { FabricType } = require("../models/FabricType");
 const { Item } = require("../models/Item");
 const { MarketPrice } = require("../models/MarketPrice");
 const { Color } = require("../models/Color");
+const { Warehouse } = require("../models/Warehouse");
 const ObjectId = require("mongoose").Types.ObjectId;
+
+const getAllProducts = async (req, res) => {
+  try {
+    const products = await FabricRoll.find();
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 
 const getProductsHomePage = async (req, res) => {
   try {
@@ -636,7 +646,83 @@ async function getColorByMaterial(req, res) {
   // return res.status(200).json([]);
 }
 
+async function getAll(req, res) {
+  try {
+    const data = await FabricRoll.find({}, "slug name");
+    return res.status(200).json(data);
+  } catch (e) {
+    console.log(e);
+    return res.status(404).json([]);
+  }
+}
+
+async function createNewFabric(req, res) {
+  const body = req.body;
+
+  try {
+    let existedType = false;
+    let foundType = await FabricType.findOne({ name: body.fabricType }).exec();
+    if (foundType !== null) {
+      existedType = true;
+    }
+    let existedColor = false;
+    let foundColor = await Color.findOne({ colorCode: body.colorCode }).exec();
+    if (foundColor !== null) {
+      existedColor = true;
+    }
+
+    if (existedType == false) {
+      foundType = await FabricType.create({
+        material: body.collection,
+        slug: body.slug,
+        name: body.fabricType,
+      });
+    }
+
+    if (existedColor == false) {
+      foundColor = await Color.create({
+        colorCode: body.colorCode,
+      });
+    }
+
+    const newFabric = await FabricRoll.create({
+      name: body.name,
+      fabricTypeId: foundType._id,
+      fabricType: body.fabricType,
+      colorId: foundColor._id,
+      color: body.colorCode,
+      price: body.price || 10000,
+      description: body.name,
+      slug: body.slug,
+    });
+
+    //Auto add 100 quantity to warehouse 1
+    await Warehouse.findOneAndUpdate(
+      { id: "1" },
+      {
+        $push: {
+          products: {
+            product_id: newFabric._id,
+            quantity: body.quantity,
+          },
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
+    return res.status(200).json(newFabric);
+  } catch (e) {
+    console.log(e);
+    return res
+      .status(500)
+      .json({ message: "Internal server error or existed fabric" });
+  }
+}
+
 module.exports = {
+  getAllProducts,
   getProductsByCollectionId,
   getProductList,
   getProductList1,
@@ -658,4 +744,6 @@ module.exports = {
   getProductBySlug,
   getProductsHomePage,
   searchProductBySlug,
+  getAll,
+  createNewFabric,
 };

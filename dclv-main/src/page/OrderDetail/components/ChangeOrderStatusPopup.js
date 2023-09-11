@@ -1,14 +1,12 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import CancelIcon from "@mui/icons-material/Cancel";
 import { makeStyles } from "@material-ui/core/styles";
-import orderApi from "../../../api/orderApi";
+
 import { useState, useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,16 +28,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ChangeOrderStatusPopup({
-  subOrder,
-  idx,
-  detail,
-  setDetail,
   disabledChange,
   lastStatus,
   orderDetail,
   handleUpdateStatus,
+  open,
+  setOpen,
 }) {
-  const [open, setOpen] = React.useState(false);
+  //   const [open, setOpen] = React.useState(false);
   const [currentStatus, setCurrentStatus] = useState("");
   const [nextStatus, setNextStatus] = useState("");
 
@@ -70,14 +66,12 @@ export default function ChangeOrderStatusPopup({
     setOpen(false);
   };
 
-  const handleChange = async () => {};
-
   return (
     <span>
       <Button
-        variant="outline"
+        variant="contained"
+        color="warning"
         onClick={handleClickOpen}
-        className={classes.changeButton}
         disabled={disabledChange}
         title="Chuyển trạng thái">
         Chuyển trạng thái

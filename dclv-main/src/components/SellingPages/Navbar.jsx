@@ -2,10 +2,12 @@ import { Badge } from "@material-ui/core";
 import { ShoppingCartOutlined } from "@material-ui/icons";
 import React from "react";
 import styled from "styled-components";
+import Link from "@mui/material/Link";
 import { mobile } from "../../responsive";
 
 import SearchBar from "./SearchBar";
 import { useHistory } from "react-router";
+import cartUtil from "../../utils/cart";
 
 const Container = styled.div`
   ${mobile({ height: "50px" })}
@@ -50,7 +52,7 @@ const MenuItem = styled.div`
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
-const Navbar = ({ searchWord, setSearchWord }) => {
+const Navbar = ({ searchWord, setSearchWord, cartNumber }) => {
   const history = useHistory();
   return (
     <Container>
@@ -75,9 +77,13 @@ const Navbar = ({ searchWord, setSearchWord }) => {
             SIGN IN
           </MenuItem>
           <MenuItem>
-            <Badge badgeContent={4} color="primary">
-              <ShoppingCartOutlined />
-            </Badge>
+            <Link href={`/home/create-order`} underline="none" color="inherit">
+              <Badge
+                badgeContent={cartNumber || cartUtil.getCartNumber()}
+                color="primary">
+                <ShoppingCartOutlined />
+              </Badge>
+            </Link>
           </MenuItem>
         </Right>
       </Wrapper>

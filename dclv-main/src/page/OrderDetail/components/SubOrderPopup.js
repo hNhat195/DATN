@@ -1,14 +1,13 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
+
 import {
-  Grid,
   Typography,
   Table,
   TableCell,
@@ -64,6 +63,9 @@ const useStyles = makeStyles({
     // "&[disabled]": {
     //   opacity: '1',
     // }
+  },
+  marginLeft: {
+    marginLeft: "10px",
   },
 });
 
@@ -146,8 +148,8 @@ export default function SubOrderPopup({ orderId, products, subOrder }) {
   };
 
   return (
-    <span>
-      <Button size="large" variant="outline" onClick={handleClickOpen}>
+    <span className={classes.marginLeft}>
+      <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Tạo suborder
       </Button>
       <Dialog

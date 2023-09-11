@@ -18,6 +18,7 @@ import ProductDetail from "./page/SellingPages/ProductDetail";
 import HomePage from "./page/SellingPages/HomePage";
 import ProductList from "./page/SellingPages/ProductList";
 import HomeCreateOrder from "./page/HomeCreateOrder";
+import WarehousePage from "./page/WarehousePage/WarehousePage";
 const routes = [
   {
     path: "/signin",
@@ -115,6 +116,11 @@ const routes = [
         exact: true,
         component: InfoPage,
       },
+      {
+        path: "/warehouse",
+        exact: true,
+        component: WarehousePage
+      }
     ],
   },
 ];

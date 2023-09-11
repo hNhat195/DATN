@@ -9,8 +9,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useHistory, useParams } from "react-router-dom";
 import SubOrderPopup from "./components/SubOrderPopup";
 import SubOrderList from "./components/SubOrderList";
-import CancelOrderPopup from "./components/CancelOrderPopup";
 import ChangeOrderStatusPopup from "./components/ChangeOrderStatusPopup";
+import CancelOrderPopup from "./components/CancelOrderPopup";
+import { OrderStatus } from "../../const/OrderStatus";
 
 const useStyles = makeStyles((theme) => ({
   alignStatusRight: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   btnGroup: {
-    justifyContent: "flex-end",
+    // justifyContent: "flex-end",
   },
   titlePage: {
     fontWeight: "bold",
@@ -65,7 +66,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function OrderDetail() {
   const classes = useStyles();
-  const history = useHistory();
   const { id } = useParams();
   const role = localStorage.getItem("role");
 
@@ -76,6 +76,8 @@ export default function OrderDetail() {
     subOrder: [],
   });
   const [lastStatus, setLastStatus] = useState();
+  const [openChange, setOpenChange] = useState(false);
+  const [openCancel, setOpenCancel] = useState(false);
 
   const handleCancel = async () => {
     const res = await orderApi.updateStatusCancelOrder(id, {
@@ -91,7 +93,27 @@ export default function OrderDetail() {
     setLastStatus(
       res?.data.orderStatus[res?.data.orderStatus?.length - 1]?.name
     );
+    setOpenCancel(false);
   };
+
+  const handleUpdateStatus = async () => {
+    const res = await orderApi.updateStatus(id, {
+      status: "change status",
+      reason: "change status by admin",
+    });
+
+    let temp = detail;
+    temp.orderStatus.push(
+      res?.data.orderStatus[res.data.orderStatus.length - 1]
+    );
+    setDetail(temp);
+    setLastStatus(
+      res?.data.orderStatus[res?.data.orderStatus?.length - 1]?.name
+    );
+    setOpenChange(false);
+  };
+
+  useEffect(() => {}, [lastStatus, detail.subOrder]);
   const downloadFile = (base64Data, fileName) => {
     // Convert the base64 data to a Blob
     const byteCharacters = atob(base64Data);
@@ -124,21 +146,6 @@ export default function OrderDetail() {
 
     downloadFile(res.data, "Bill.pdf");
   };
-  const handleUpdateStatus = async () => {
-    const res = await orderApi.updateStatus(id, {
-      status: "change status",
-      reason: "change status by admin",
-    });
-
-    let temp = detail;
-    temp.orderStatus.push(
-      res?.data.orderStatus[res.data.orderStatus.length - 1]
-    );
-    setDetail(temp);
-    setLastStatus(
-      res?.data.orderStatus[res?.data.orderStatus?.length - 1]?.name
-    );
-  };
 
   useEffect(() => {}, [lastStatus, detail.subOrder]);
 
@@ -158,10 +165,6 @@ export default function OrderDetail() {
     };
   }, []);
 
-  const handleBack = () => {
-    history.push(`/order`);
-  };
-
   return (
     <Container maxWidth="xl" className={classes.orderDetailBox}>
       <Grid container spacing={2}>
@@ -169,21 +172,6 @@ export default function OrderDetail() {
           <Typography variant="h4" className={classes.titlePage}>
             {"Chi tiết đơn đặt hàng MDH" + detail.orderId}
           </Typography>
-        </Grid>
-        <Grid>
-          <SubOrderPopup
-            orderId={id}
-            products={detail.products}
-            subOrder={detail.subOrder}></SubOrderPopup>
-        </Grid>
-        <Grid>
-          <Button
-            color="secondary"
-            size="large"
-            variant="outline"
-            onClick={handleExport}>
-            Xuất hoá đơn
-          </Button>
         </Grid>
       </Grid>
       <Grid container spacing={2} className={classes.root}>
@@ -193,25 +181,50 @@ export default function OrderDetail() {
         <Grid item xs={12} md={5}>
           <TimelineStatus statusList={detail.orderStatus} />
         </Grid>
-        <Grid container spacing={2} className={classes.btnGroup}>
-          <Grid item>
+        <Grid container spacing={2} className={classes.root}>
+          <Grid item xs={2}>
             <SubOrderPopup
               orderId={id}
               products={detail.products}
-              subOrder={detail.subOrder}></SubOrderPopup>
+              subOrder={detail.subOrder}
+            ></SubOrderPopup>
           </Grid>
-          <Grid item>
+          <Grid item xs={5}>
+            <Button
+              color="warning"
+              variant="contained"
+              onClick={handleExport}
+            >
+              Xuất hoá đơn
+            </Button>
+          </Grid>
+          <Grid item xs={2}>
             <CancelOrderPopup
-              disabledChange={false}
-              handleCancel={handleCancel}></CancelOrderPopup>
+              disabledChange={
+                lastStatus == OrderStatus.COMPLETED ||
+                lastStatus == OrderStatus.CANCELED
+                  ? true
+                  : false
+              }
+              handleCancel={handleCancel}
+              open={openCancel}
+              setOpen={setOpenCancel}
+            ></CancelOrderPopup>
           </Grid>
-          <Grid item></Grid>
-          <Grid item>
+          <Grid item xs={3}>
             <ChangeOrderStatusPopup
               lastStatus={lastStatus}
-              disabledChange={false}
+              disabledChange={
+                lastStatus == OrderStatus.COMPLETED ||
+                lastStatus == OrderStatus.CANCELED
+                  ? true
+                  : false
+              }
               orderDetail={detail?.orderStatus}
-              handleUpdateStatus={handleUpdateStatus}></ChangeOrderStatusPopup>
+              handleUpdateStatus={handleUpdateStatus}
+              open={openChange}
+              setOpen={setOpenChange}
+            ></ChangeOrderStatusPopup>
           </Grid>
         </Grid>
         <Grid item xs={12} md={7}>
@@ -232,7 +245,8 @@ export default function OrderDetail() {
             item={item}
             idx={idx}
             detail={detail}
-            setDetail={setDetail}></SubOrderList>
+            setDetail={setDetail}
+          ></SubOrderList>
         ))}
       </Grid>
     </Container>

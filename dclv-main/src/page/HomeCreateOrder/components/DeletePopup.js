@@ -7,6 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { makeStyles } from "@material-ui/core/styles";
+import cartUtil from "../../../utils/cart";
 
 const useStyles = makeStyles((theme) => ({
   deleteButton: {
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DeletePopup({ productList, setProductList, index }) {
+export default function DeletePopup({ productList, syncProductList, index }) {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
 
@@ -29,8 +30,8 @@ export default function DeletePopup({ productList, setProductList, index }) {
   };
 
   const handleDelete = () => {
-    const temp = productList.filter((item, i) => i !== index);
-    setProductList(temp);
+    const temp = productList.find((item, i) => i === index);
+    syncProductList(temp, 0, "remove");
     setOpen(false);
   };
 
