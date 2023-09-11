@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { mobile } from "../../responsive";
 
 import SearchBar from "./SearchBar";
+import { useHistory } from "react-router";
 
 const Container = styled.div`
   ${mobile({ height: "50px" })}
@@ -50,23 +51,29 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = ({ searchWord, setSearchWord }) => {
+  const history = useHistory();
   return (
     <Container>
       <Wrapper>
         <Left>
           <SearchBar searchWord={searchWord} setSearchWord={setSearchWord} />
-          {/* <Language>EN</Language> */}
-          {/* <SearchContainer>
-            <Input placeholder="Search" />
-            <Search style={{ color: "gray", fontSize: 18 }} />
-          </SearchContainer> */}
         </Left>
         <Center>
           <Logo>FABRICVN</Logo>
         </Center>
         <Right>
-          <MenuItem>REGISTER</MenuItem>
-          <MenuItem>SIGN IN</MenuItem>
+          <MenuItem
+            onClick={() => {
+              history.push("/signup");
+            }}>
+            REGISTER
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              history.push("/signin");
+            }}>
+            SIGN IN
+          </MenuItem>
           <MenuItem>
             <Badge badgeContent={4} color="primary">
               <ShoppingCartOutlined />

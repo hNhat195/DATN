@@ -60,7 +60,7 @@ const {
 } = require("../controller/StaffController");
 
 //for customer
-router.post("/api/register", createNewCustomer);
+router.post("/api/user/customer/register", createNewCustomer);
 router.post("/api/user/customer/login", login);
 
 //for Staff

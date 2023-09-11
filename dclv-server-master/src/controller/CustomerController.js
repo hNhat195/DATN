@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 
 const createNewCustomer = async (req, res) => {
   // Validate user
-  const { error } = registerValidationCustomer(req.body);
+  const { error } = registerValidationCustomer(req.body.data);
   if (error) return res.status(400).send(error.details[0].message);
 
   // Kiểm tra email có tồn tại hay không
@@ -30,11 +30,10 @@ const createNewCustomer = async (req, res) => {
   newCustomer.password = hashPass;
   newCustomer.phone = req.body.phone;
   newCustomer.address = req.body.address;
-  newCustomer.birthday = req.body.birthday;
   newCustomer.type = true;
   try {
     const Customer = await newCustomer.save();
-    res.send(Customer);
+    res.status(201).send(Customer);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -51,7 +50,8 @@ const login = async (req, res) => {
 
   // Kiểm tra password
   //const passLogin = await bcrypt.compare(req.body.password, userLogin.password);
-  const passLogin = req.body.password === userLogin.password;
+
+  const passLogin = bcrypt.compareSync(req.body.password, userLogin.password);
 
   if (!passLogin) return res.status(400).send("Mật khẩu không hợp lệ");
 

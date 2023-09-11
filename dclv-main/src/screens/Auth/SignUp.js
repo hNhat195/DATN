@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -12,6 +12,8 @@ import { LockOutlined } from "@material-ui/icons";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { FormControl, InputLabel } from "@material-ui/core";
+import customerApi from "../../api/customerApi";
+import { async } from "validate.js";
 
 function Copyright() {
   return (
@@ -65,11 +67,40 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const classes = useStyles();
   const history = useHistory();
+  const [info, setInfo] = useState({});
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      !info.email ||
+      !info.name ||
+      !info.password ||
+      !info.inputPassword ||
+      !info.address ||
+      !info.phone
+    ) {
+      alert("Vui lòng điền thông tin còn thiếu!");
+    } else if (info.password !== info.inputPassword) {
+      alert("Mật khẩu không khớp, vui lòng thử lại");
+    } else {
+      var data = { ...info, role: "customer" };
 
-  const handleSubmit = () => {
-    history.push("/signin");
+      delete data.inputPassword;
+      console.log(data);
+      customerApi
+        .regiter(data)
+        .then((res) => {
+          alert("Đăng kí thành công");
+          setTimeout(3000);
+          history.push("/signin");
+        })
+        .catch((err) => {
+          alert(err.response.data);
+        });
+    }
   };
-
+  useEffect(() => {
+    console.log(info);
+  }, [info]);
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -83,17 +114,8 @@ export default function SignUp() {
             Đăng kí
           </Typography>
           <form className={classes.form} noValidate autoComplete="off">
-            <FormControl
-              fullWidth
-              margin="dense"
-              //   error={Boolean(touched.confirmPass && errors.confirmPass)}
-            >
-              <InputLabel
-                htmlFor="email-customer"
-                // error={Boolean(touched.confirmPass && errors.confirmPass)}
-              >
-                {/* {'Confirm Password'} */}
-              </InputLabel>
+            <FormControl fullWidth margin="dense">
+              <InputLabel htmlFor="email-customer"></InputLabel>
               <Typography
                 gutterBottom
                 variant="h6"
@@ -101,37 +123,17 @@ export default function SignUp() {
                 Email
               </Typography>
               <TextField
-                required
+                required={true}
                 id="standard-required"
                 name="email-customer"
                 variant="outlined"
-                // value={values.confirmPass}
-                // onChange={handleChange}
-                // onBlur={handleBlur}
-                // error={Boolean(touched.confirmPass && errors.confirmPass)}
                 className={classes.inputPassword}
+                onChange={(e) => setInfo({ ...info, email: e.target.value })}
               />
-
-              {/* <FormHelperText
-                        error={Boolean(touched.confirmPass && errors.confirmPass)}
-                    >
-                        {touched.confirmPass && errors.confirmPass
-                        ? errors.confirmPass
-                        : ''}
-                    </FormHelperText> */}
             </FormControl>
 
-            <FormControl
-              fullWidth
-              margin="dense"
-              //   error={Boolean(touched.newPass && errors.newPass)}
-            >
-              <InputLabel
-                htmlFor="telephone-customer"
-                // error={Boolean(touched.newPass && errors.newPass)}
-              >
-                {/* {'New Password'} */}
-              </InputLabel>
+            <FormControl fullWidth margin="dense">
+              <InputLabel htmlFor="telephone-customer"></InputLabel>
               <Typography
                 gutterBottom
                 variant="h6"
@@ -143,29 +145,16 @@ export default function SignUp() {
                 id="standard-required"
                 name="telephone-customer"
                 variant="outlined"
-                // value={values.newPass}
-                // onChange={handleChange}
-                // onBlur={handleBlur}
-                // error={Boolean(touched.newPass && errors.newPass)}
+                type="number"
+                onChange={(e) => setInfo({ ...info, phone: e.target.value })}
               />
-
-              {/* <FormHelperText
-                        error={Boolean(touched.newPass && errors.newPass)}
-                    >
-                        {touched.newPass && errors.newPass ? errors.newPass : ''}
-                    </FormHelperText> */}
             </FormControl>
 
             <FormControl
               fullWidth
               margin="dense"
               style={{ marginRight: "10px" }}>
-              <InputLabel
-                htmlFor="nameCustomer"
-                //error={Boolean(touched.currentPass && errors.currentPass)}
-              >
-                {/* {'Current Password'} */}
-              </InputLabel>
+              <InputLabel htmlFor="nameCustomer"></InputLabel>
               <Typography
                 gutterBottom
                 variant="h6"
@@ -177,27 +166,12 @@ export default function SignUp() {
                 id="standard-required"
                 name="nameCustomer"
                 variant="outlined"
-                // value={values.currentPass}
-                // onChange={handleChange}
-                // onBlur={handleBlur}
-                // error={Boolean(touched.currentPass && errors.currentPass)}
+                onChange={(e) => setInfo({ ...info, name: e.target.value })}
               />
-              {/* <FormHelperText
-                            error={Boolean(touched.currentPass && errors.currentPass)}
-                        >
-                            {touched.currentPass && errors.currentPass
-                            ? errors.currentPass
-                            : ''}
-                        </FormHelperText> */}
             </FormControl>
 
             <FormControl fullWidth margin="dense">
-              <InputLabel
-                htmlFor="address-customer"
-                //error={Boolean(touched.currentPass && errors.currentPass)}
-              >
-                {/* {'Current Password'} */}
-              </InputLabel>
+              <InputLabel htmlFor="address-customer"></InputLabel>
               <Typography
                 gutterBottom
                 variant="h6"
@@ -209,31 +183,12 @@ export default function SignUp() {
                 id="standard-required"
                 name="address-customer"
                 variant="outlined"
-                // value={values.currentPass}
-                // onChange={handleChange}
-                // onBlur={handleBlur}
-                // error={Boolean(touched.currentPass && errors.currentPass)}
+                onChange={(e) => setInfo({ ...info, address: e.target.value })}
               />
-              {/* <FormHelperText
-                            error={Boolean(touched.currentPass && errors.currentPass)}
-                        >
-                            {touched.currentPass && errors.currentPass
-                            ? errors.currentPass
-                            : ''}
-                        </FormHelperText> */}
             </FormControl>
 
-            <FormControl
-              fullWidth
-              margin="dense"
-              //   error={Boolean(touched.newPass && errors.newPass)}
-            >
-              <InputLabel
-                htmlFor="password"
-                // error={Boolean(touched.newPass && errors.newPass)}
-              >
-                {/* {'New Password'} */}
-              </InputLabel>
+            <FormControl fullWidth margin="dense">
+              <InputLabel htmlFor="password"></InputLabel>
               <Typography
                 gutterBottom
                 variant="h6"
@@ -245,29 +200,11 @@ export default function SignUp() {
                 name="newPass"
                 type="password"
                 variant="outlined"
-                // value={values.newPass}
-                // onChange={handleChange}
-                // onBlur={handleBlur}
-                // error={Boolean(touched.newPass && errors.newPass)}
+                onChange={(e) => setInfo({ ...info, password: e.target.value })}
               />
-
-              {/* <FormHelperText
-                        error={Boolean(touched.newPass && errors.newPass)}
-                    >
-                        {touched.newPass && errors.newPass ? errors.newPass : ''}
-                    </FormHelperText> */}
             </FormControl>
-            <FormControl
-              fullWidth
-              margin="dense"
-              //   error={Boolean(touched.confirmPass && errors.confirmPass)}
-            >
-              <InputLabel
-                htmlFor="password-confirm"
-                // error={Boolean(touched.confirmPass && errors.confirmPass)}
-              >
-                {/* {'Confirm Password'} */}
-              </InputLabel>
+            <FormControl fullWidth margin="dense">
+              <InputLabel htmlFor="password-confirm"></InputLabel>
               <Typography
                 gutterBottom
                 variant="h6"
@@ -279,20 +216,11 @@ export default function SignUp() {
                 name="confirmPass"
                 type="password"
                 variant="outlined"
-                // value={values.confirmPass}
-                // onChange={handleChange}
-                // onBlur={handleBlur}
-                // error={Boolean(touched.confirmPass && errors.confirmPass)}
                 className={classes.inputPassword}
+                onChange={(e) =>
+                  setInfo({ ...info, inputPassword: e.target.value })
+                }
               />
-
-              {/* <FormHelperText
-                        error={Boolean(touched.confirmPass && errors.confirmPass)}
-                    >
-                        {touched.confirmPass && errors.confirmPass
-                        ? errors.confirmPass
-                        : ''}
-                    </FormHelperText> */}
             </FormControl>
 
             <Button
@@ -310,11 +238,6 @@ export default function SignUp() {
                   Quay lại đăng nhập
                 </Link>
               </Grid>
-              {/* <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid> */}
             </Grid>
             <Box mt={5}>
               <Copyright />

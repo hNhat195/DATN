@@ -11,6 +11,7 @@ const { SubOrder } = require("../models/SubOrder");
 const { SubOrderItem } = require("../models/SubOrderItem");
 const { OrderStatus, SubOrderStatus } = require("../constant/OrderStatus");
 const { sendMailCreate, sendMailUpdateStatus } = require("./mailer");
+const { Staff } = require("../models/Staff");
 
 async function getNextSequenceValue(sequenceName) {
   let seq = await Counter.findOneAndUpdate(
@@ -147,7 +148,7 @@ const create = async (req, res) => {
       },
       { new: true }
     );
-    let user = await Customer.findOne({ _id: req.body.clientID });
+    let user = await Customer.findOne({ _id: Object(req.body.clientID) });
 
     sendMailCreate(temp, user);
 

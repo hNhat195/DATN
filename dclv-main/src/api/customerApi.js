@@ -17,6 +17,10 @@ class CustomerApi {
     const url = "/user/admin/liststaff/info/:id";
     return axiosClient.get(url, { params });
   };
+  regiter = (data) => {
+    const url = "/user/customer/register";
+    return axiosClient.post(url, data);
+  };
 }
 const customerApi = new CustomerApi();
 export default customerApi;

@@ -55,8 +55,8 @@ const loginstaff = async (req, res) => {
 
   // Kiểm tra password
   // const passLogin = await bcrypt.compare(req.body.password, userLogin.password);
-  const passLogin = req.body.password === userLogin.password;
 
+  const passLogin = bcrypt.compareSync(req.body.password, userLogin.password);
   if (!passLogin) {
     return res.status(403).send("Tài khoản hoặc mật khẩu không đúng");
   }
