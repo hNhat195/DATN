@@ -12,6 +12,7 @@ import { mobile } from "../../responsive";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import productApi from "../../api/productApi";
+import cartUtil from "../../utils/cart";
 
 const Container = styled.div``;
 
@@ -127,6 +128,8 @@ const Product = () => {
   const [loading, setLoading] = useState(true);
   const [fabric, setFabric] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [number, setNumber] = useState(1);
+  const [cartNumber, setCartNumber] = useState(cartUtil.getCartNumber());
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -161,7 +164,7 @@ const Product = () => {
   return (
     <Container>
       <Announcement />
-      <Navbar />
+      <Navbar cartNumber={cartNumber} />
       <Navbar2 />
       <Wrapper>
         <ImgContainer>
@@ -206,11 +209,30 @@ const Product = () => {
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
+              <Remove
+                onClick={() => {
+                  if (number > 0) {
+                    setNumber(number - 1);
+                  } else {
+                    setNumber(0);
+                  }
+                }}
+              />
+              <Amount>{number}</Amount>
+              <Add
+                onClick={() => {
+                  setNumber(number + 1);
+                }}
+              />
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            <Button
+              onClick={() => {
+                cartUtil.addProductToCart(fabric, number);
+                setCartNumber(cartUtil.getCartNumber());
+              }}
+            >
+              ADD TO CART
+            </Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>

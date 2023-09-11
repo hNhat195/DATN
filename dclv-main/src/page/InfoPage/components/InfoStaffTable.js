@@ -56,7 +56,7 @@ function InfoStaffTable(props) {
           <TextField
             className={classes.textFieldInfo}
             id="outlined-read-only-input"
-            defaultValue={infostaff.name}
+            defaultValue={infostaff?.name}
             InputProps={{
               readOnly: true,
             }}
@@ -68,7 +68,7 @@ function InfoStaffTable(props) {
           <TextField
             className={classes.textFieldInfo}
             id="outlined-read-only-input"
-            defaultValue={infostaff.phone}
+            defaultValue={infostaff?.phone}
             InputProps={{
               readOnly: true,
               //   endAdornment:
@@ -91,7 +91,7 @@ function InfoStaffTable(props) {
           <TextField
             className={classes.textFieldInfo}
             id="outlined-read-only-input"
-            defaultValue={infostaff.email}
+            defaultValue={infostaff?.email}
             InputProps={{
               readOnly: true,
             }}
@@ -103,7 +103,7 @@ function InfoStaffTable(props) {
           <TextField
             className={classes.textFieldInfo}
             id="outlined-read-only-input"
-            defaultValue={infostaff.gender}
+            defaultValue={infostaff?.gender}
             InputProps={{
               readOnly: true,
             }}
@@ -115,7 +115,7 @@ function InfoStaffTable(props) {
           <TextField
             className={classes.textFieldInfo}
             id="outlined-read-only-input"
-            defaultValue={infostaff.birthday}
+            defaultValue={infostaff?.birthday}
             InputProps={{
               readOnly: true,
             }}
@@ -127,7 +127,7 @@ function InfoStaffTable(props) {
           <TextField
             className={classes.textFieldInfo}
             id="outlined-read-only-input"
-            defaultValue={infostaff.address}
+            defaultValue={infostaff?.address}
             InputProps={{
               readOnly: true,
               //   endAdornment:
@@ -150,7 +150,7 @@ function InfoStaffTable(props) {
           <TextField
             className={classes.textFieldInfo}
             id="outlined-read-only-input"
-            defaultValue={infostaff.role}
+            defaultValue={infostaff?.role}
             variant="outlined"
             fullWidth
             InputProps={{

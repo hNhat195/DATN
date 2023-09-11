@@ -153,7 +153,8 @@ export default function CreateForm({
                 });
                 setMaterialId(mat._id);
               }}
-              value={fabricMaterial || ""}>
+              value={fabricMaterial || ""}
+            >
               {materialList.map((item, idx) => {
                 return (
                   <MenuItem key={idx} value={item.name}>
@@ -175,7 +176,8 @@ export default function CreateForm({
               onChange={(e) => {
                 setFabricColor(e.target.value);
               }}
-              value={fabricColor || ""}>
+              value={fabricColor || ""}
+            >
               {colorList.map((item, idx) => {
                 return (
                   <MenuItem key={idx} value={item.colorCode}>
@@ -212,7 +214,8 @@ export default function CreateForm({
             variant="contained"
             type="button"
             onClick={handleAdd}
-            className={classes.buttonCss}>
+            className={classes.buttonCss}
+          >
             Thêm
           </Button>
         </Grid>
@@ -222,7 +225,8 @@ export default function CreateForm({
             variant="contained"
             type="button"
             className={classes.buttonCss}
-            onClick={handleSubmit}>
+            onClick={handleSubmit}
+          >
             Tạo đơn
           </Button>
         </Grid>

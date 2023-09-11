@@ -12,6 +12,15 @@ const { Color } = require("../models/Color");
 const { Warehouse } = require("../models/Warehouse");
 const ObjectId = require("mongoose").Types.ObjectId;
 
+const getAllProducts = async (req, res) => {
+  try {
+    const products = await FabricRoll.find();
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 const getProductsHomePage = async (req, res) => {
   try {
     const products = await FabricRoll.find().limit(6);
@@ -773,6 +782,7 @@ async function createNewFabric(req, res) {
 }
 
 module.exports = {
+  getAllProducts,
   getProductsByCollectionId,
   getProductList,
   getProductList1,

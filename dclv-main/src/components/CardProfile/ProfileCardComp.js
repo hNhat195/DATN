@@ -46,9 +46,9 @@ function ProfileCardComp({ staff }) {
 
       <Box className={classes.content}>
         <Typography variant="body1" gutterBottom className={classes.text}>
-          {staff.name}
+          {staff?.name}
         </Typography>
-        <Typography variant="body1">{staff.role}</Typography>
+        <Typography variant="body1">{staff?.role}</Typography>
       </Box>
     </Box>
   );

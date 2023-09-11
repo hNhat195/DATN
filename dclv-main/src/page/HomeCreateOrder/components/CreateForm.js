@@ -19,9 +19,10 @@ import orderApi from "../../../api/orderApi";
 import productApi from "../../../api/productApi";
 import { makeStyles } from "@material-ui/core/styles";
 import CreateButtonPopup from "./CreateButtonPopup";
-import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 import fabricTypeAPI from "../../../api/fabricTypeApi";
+import cartUtil from "../../../utils/cart";
 
 const useStyles = makeStyles((theme) => ({
   alignRight: {
@@ -35,10 +36,10 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "true",
   },
   changeButton: {
-    backgroundColor: 'rgb(252, 186, 3)',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: 'rgb(230, 170, 5)',
+    backgroundColor: "rgb(252, 186, 3)",
+    color: "#fff",
+    "&:hover": {
+      backgroundColor: "rgb(230, 170, 5)",
     },
   },
   deleteButton: {
@@ -65,19 +66,22 @@ const useStyles = makeStyles((theme) => ({
     border: "3px solid rgb(245, 66, 51)",
     borderRadius: "50%",
     marginTop: "10px",
-    marginBottom: "20px"
+    marginBottom: "20px",
   },
   menu: {
-    maxHeight: '300px',
+    maxHeight: "300px",
   },
   spaceBlank: {
-    height: '25px'
-  }
+    height: "25px",
+  },
 }));
 
 const objectIdPattern = /^[0-9a-fA-F]{24}$/;
-const collections =  [{"label": "Silk", "value": "silk"}, {"label": "Linen", "value": "linen"}, {"label": "Merino", "value": "merino"}];
-
+const collections = [
+  { label: "Silk", value: "silk" },
+  { label: "Linen", value: "linen" },
+  { label: "Merino", value: "merino" },
+];
 
 function ErrorPopup({ open, closePopup }) {
   const classes = useStyles();
@@ -88,7 +92,8 @@ function ErrorPopup({ open, closePopup }) {
         <DialogContentText className={classes.popupContainer}>
           <CloseIcon
             sx={{ fontSize: 40 }}
-            className={classes.errorIcon}></CloseIcon>
+            className={classes.errorIcon}
+          ></CloseIcon>
 
           <h3>Vui lòng nhập thông tin sản phẩm hợp lệ</h3>
         </DialogContentText>
@@ -98,7 +103,8 @@ function ErrorPopup({ open, closePopup }) {
         <Button
           variant="outline"
           onClick={closePopup}
-          className={classes.deleteButton}>
+          className={classes.deleteButton}
+        >
           OK
         </Button>
       </DialogActions>
@@ -107,21 +113,50 @@ function ErrorPopup({ open, closePopup }) {
 }
 
 export default function CreateForm({
+  allMaterials,
+  allFabricTypes,
+  allFabricColors,
+  allProducts,
   productList,
-  setProductList,
-  colorList,
-  materialList,
-  setColorList,
-  setMaterialList,
+  syncProductList,
 }) {
   const [fabricColor, setFabricColor] = useState("");
-  const [fabricMaterial, setFabricMaterial] = useState("");
-  const [fabricLength, setFabricLength] = useState("");
-  const [materialId, setMaterialId] = useState("");
-  const [errorPopup, setErrorPopup] = useState(false)
-  const [fabricCollection, setFabricCollection] = useState(null)
+  const [fabricType, setFabricType] = useState("");
+  const [fabricQuantity, setFabricQuantity] = useState("");
+  const [errorPopup, setErrorPopup] = useState(false);
+  const [fabricCollection, setFabricCollection] = useState(null);
+
+  const [filteredFabricTypes, setFilteredFabricTypes] = useState([]);
+  const [filteredFabricColors, setFilteredFabricColors] = useState([]);
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const classes = useStyles();
+
+  const filterFabricTypesByMaterial = (fabricTypes, material) => {
+    return fabricTypes.filter((fabricType) => fabricType.material == material);
+  };
+
+  const filterFabricColorsByFabricTypeId = (fabricColors, fabricTypeId) => {
+    const filtertedProducts = allProducts.filter(
+      (product) => product.fabricTypeId == fabricTypeId
+    );
+
+    const filteredColorIds = filtertedProducts?.map(
+      (product) => product.colorId
+    );
+
+    return fabricColors.filter((fabricColor) =>
+      filteredColorIds.includes(fabricColor._id)
+    );
+  };
+
+  const selectProductByTypeIdAndColorId = (typeId, colorId) => {
+    const selectedProduct = allProducts.find(
+      (product) => product.fabricTypeId == typeId && product.colorId == colorId
+    );
+    return selectedProduct;
+  };
 
   const closePopup = () => {
     setErrorPopup(false);
@@ -130,66 +165,22 @@ export default function CreateForm({
   const handleAdd = (event) => {
     if (
       fabricColor == "" ||
-      fabricMaterial == "" ||
-      isNaN(Number.parseInt(fabricLength)) ||
-      Number.parseInt(fabricLength) <= 0
+      fabricType == "" ||
+      isNaN(Number.parseInt(fabricQuantity)) ||
+      Number.parseInt(fabricQuantity) <= 0
     ) {
       setErrorPopup(true);
     } else {
-      let addData = {
-        colorCode: fabricColor,
-        typeId: fabricMaterial,
-        length: Number.parseInt(fabricLength),
-      };
-      let checkDuplicate = false;
-      let i = 0;
-      for (; i < productList.length; i++) {
-        if (
-          addData.colorCode == productList[i].colorCode &&
-          addData.typeId == productList[i].typeId
-        ) {
-          checkDuplicate = true;
-          break;
-        }
-      }
-
-      if (checkDuplicate) {
-        setErrorPopup(true);
-      } else {
-        setProductList([...productList, addData]);
-      }
-      event.preventDefault();
+      syncProductList(selectedProduct, fabricQuantity, "add");
+      setFabricColor("");
+      setFabricType("");
+      setFabricQuantity("");
+      setSelectedProduct(null);
+      setFabricCollection(null);
+      setFabricQuantity("");
     }
+    event.preventDefault();
   };
-
-  // useEffect(() => {
-  //   const fetchMaterial = async () => {
-  //     const response = await productApi.getAllMaterialCode();
-
-  //     setMaterialList(response);
-  //   };
-  //   fetchMaterial();
-  // }, []);
-
-  useEffect(() => {
-    const fetchMaterial = async () => {
-      const response = await fabricTypeAPI.getFabricTypesByMaterial(fabricCollection)
-      setMaterialList(response)
-    }
-    fetchMaterial()
-  }, [fabricCollection])
-
-  const fetchColor = async () => {
-    if (objectIdPattern.test(materialId)) {
-      const response = await productApi.getColorByMaterial(materialId);
-      setColorList(response);
-    }
-  };
-  useEffect(async () => {
-    await fetchColor();
-  }, [materialId]);
-
-  useEffect(() => {}, [productList]);
 
   return (
     <div>
@@ -203,7 +194,7 @@ export default function CreateForm({
 
         <Grid item xs={12} md={9}>
           <FormControl fullWidth={true}>
-            <InputLabel id="fabric-collection">Collection</InputLabel>
+            <InputLabel id="fabric-collection">Chất liệu</InputLabel>
             <Select
               MenuProps={{ classes: { paper: classes.menu } }}
               labelId="fabric-collection"
@@ -211,16 +202,20 @@ export default function CreateForm({
               label="Collection"
               onChange={async (e) => {
                 setFabricCollection(e.target.value);
-                
-              }}
-              value={fabricCollection || ""}>
-              {collections.length > 0 && collections?.map((item, idx) => {
-                return (
-                  <MenuItem key={idx} value={item.value}>
-                    {item.label}
-                  </MenuItem>
+                setFilteredFabricTypes(
+                  filterFabricTypesByMaterial(allFabricTypes, e.target.value)
                 );
-              })}
+              }}
+              value={fabricCollection || ""}
+            >
+              {collections.length > 0 &&
+                collections?.map((item, idx) => {
+                  return (
+                    <MenuItem key={idx} value={item.value}>
+                      {item.label}
+                    </MenuItem>
+                  );
+                })}
             </Select>
           </FormControl>
         </Grid>
@@ -228,24 +223,28 @@ export default function CreateForm({
 
         <Grid item xs={12} md={9}>
           <FormControl fullWidth={true}>
-            <InputLabel id="fabric-material">Chất liệu</InputLabel>
+            <InputLabel id="fabric-material">Loại vải</InputLabel>
             <Select
               MenuProps={{ classes: { paper: classes.menu } }}
               labelId="fabric-material"
               id="fabric-material"
               label="Material"
               onChange={async (e) => {
-                setFabricMaterial(e.target.value);
-                const mat = await materialList.find((x) => {
-                  return x.name === e.target.value;
-                });
-                setMaterialId(mat._id);
+                setFabricType(e.target.value);
+
+                setFilteredFabricColors(
+                  filterFabricColorsByFabricTypeId(
+                    allFabricColors,
+                    e.target.value
+                  )
+                );
               }}
-              value={fabricMaterial || ""}>
-              {materialList.length > 0 &&
-                materialList?.map((item, idx) => {
+              value={fabricType || ""}
+            >
+              {filteredFabricTypes.length > 0 &&
+                filteredFabricTypes?.map((item, idx) => {
                   return (
-                    <MenuItem key={idx} value={item.name}>
+                    <MenuItem key={idx} value={item._id}>
                       {item.name}
                     </MenuItem>
                   );
@@ -264,12 +263,16 @@ export default function CreateForm({
               label="Color"
               onChange={(e) => {
                 setFabricColor(e.target.value);
+                setSelectedProduct(
+                  selectProductByTypeIdAndColorId(fabricType, e.target.value)
+                );
               }}
-              value={fabricColor || ""}>
-              {colorList.length > 0 &&
-                colorList?.map((item, idx) => {
+              value={fabricColor || ""}
+            >
+              {filteredFabricColors.length > 0 &&
+                filteredFabricColors?.map((item, idx) => {
                   return (
-                    <MenuItem key={idx} value={item.colorCode}>
+                    <MenuItem key={idx} value={item._id}>
                       {item.colorCode}
                     </MenuItem>
                   );
@@ -288,8 +291,9 @@ export default function CreateForm({
             variant="standard"
             type="number"
             inputProps={{ min: 0, step: 1 }}
+            value={fabricQuantity}
             onChange={(e) => {
-              setFabricLength(e.target.value);
+              setFabricQuantity(e.target.value);
             }}
           />
         </Grid>
@@ -297,9 +301,7 @@ export default function CreateForm({
       </Grid>
       <Grid container className={classes.spaceBlank}></Grid>
       <Grid container spacing={8} className={classes.paddingGrid}>
-        <Grid item xs={4}>
-
-        </Grid>
+        <Grid item xs={4}></Grid>
         <Grid item xs={2}></Grid>
         <Grid item xs={4}>
           {/* <CreateButtonPopup productList={productList}></CreateButtonPopup> */}
@@ -307,9 +309,8 @@ export default function CreateForm({
             variant="contained"
             type="button"
             onClick={handleAdd}
-
             className={clsx(classes.buttonCss, classes.changeButton)}
-            >
+          >
             Thêm
           </Button>
         </Grid>
